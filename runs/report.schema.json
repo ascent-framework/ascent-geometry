@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ascent-framework.github.io/ascent-geometry/runs/report.schema.json",
+  "title": "ASCENT-G stage report",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "generated_at",
+    "stage",
+    "phase",
+    "task",
+    "model",
+    "method",
+    "scope",
+    "summary",
+    "config",
+    "metrics",
+    "artifacts",
+    "runtime",
+    "validation",
+    "notes"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "generated_at": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string",
+      "enum": [
+        "training",
+        "extraction",
+        "analysis",
+        "statistics"
+      ]
+    },
+    "phase": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "task": {
+      "type": "string"
+    },
+    "model": {
+      "type": "string"
+    },
+    "method": {
+      "type": "string"
+    },
+    "scope": {
+      "type": "string",
+      "enum": [
+        "registered",
+        "pilot_only",
+        "exploratory"
+      ]
+    },
+    "summary": {
+      "type": "object"
+    },
+    "config": {
+      "type": "object"
+    },
+    "metrics": {
+      "type": "object"
+    },
+    "artifacts": {
+      "type": "object"
+    },
+    "runtime": {
+      "type": "object"
+    },
+    "validation": {
+      "type": "object"
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}
