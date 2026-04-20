@@ -1,0 +1,17 @@
+# ASCENT-G baseline environment for local analysis and Kaggle-style runs.
+#
+# Notes:
+# - torch and bitsandbytes are the most platform-sensitive dependencies.
+# - If your machine needs a different torch build for CUDA/CPU/Metal, install
+#   that build first, then install this file.
+# - Kaggle notebook sessions may already provide torch; this file still serves
+#   as the baseline Python package set for reproducibility.
+
+numpy==2.2.6
+accelerate==1.10.1
+datasets==4.0.0
+peft==0.17.1
+transformers==4.56.1
+trl==0.21.0
+torch==2.8.0
+bitsandbytes==0.47.0

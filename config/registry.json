@@ -1,0 +1,66 @@
+{
+  "schema_version": "2026-04-21",
+  "source_documents": [
+    "../ascent-framework/docs/preregistration/v1.3.md",
+    "../ascent-framework/docs/phase0/execution-plan.md"
+  ],
+  "phase0": {
+    "primary_model": "Qwen/Qwen2.5-1.5B-Instruct",
+    "primary_model_slug": "qwen2.5-1.5b",
+    "pilot_task": "GSM8K",
+    "method": "GRPO",
+    "success_path": [
+      "train",
+      "extract",
+      "svd"
+    ],
+    "acceptance_criteria": [
+      "model_loaded",
+      "training_completed",
+      "adapter_saved_and_reloaded",
+      "update_vector_extracted",
+      "update_vector_non_degenerate",
+      "svd_diagnostic_ran"
+    ]
+  },
+  "registered_models": {
+    "primary": [
+      "Qwen/Qwen2.5-1.5B-Instruct"
+    ],
+    "h2_transfer": [
+      "Qwen/Qwen2.5-1.5B",
+      "Qwen/Qwen2.5-3B",
+      "google/gemma-2-2b-it"
+    ]
+  },
+  "registered_tasks": [
+    "GSM8K",
+    "MATH",
+    "AIME",
+    "AMC",
+    "MATH500",
+    "HumanEval",
+    "MBPP",
+    "CommonsenseQA",
+    "HellaSwag",
+    "ARC-Challenge"
+  ],
+  "lora": {
+    "rank": 8,
+    "alpha": 16,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ]
+  },
+  "analysis": {
+    "registered_primary_object": "concat(Delta W_A, Delta W_B)",
+    "phase1_minimum_tasks": 10,
+    "bootstrap_samples_default": 1000
+  }
+}

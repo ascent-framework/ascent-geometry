@@ -1,0 +1,84 @@
+{
+  "schema_version": "2026-04-21",
+  "tasks": {
+    "GSM8K": {
+      "slug": "gsm8k",
+      "status": "implemented",
+      "dataset_loader": {
+        "path": "openai/gsm8k",
+        "name": "main",
+        "split": "train"
+      },
+      "fields": {
+        "prompt": "question",
+        "answer": "answer"
+      },
+      "prompt_style": "chat_reasoning",
+      "reward": "final_number_exact_match",
+      "notes": "Reference Phase 0 pilot task."
+    },
+    "MATH": {
+      "slug": "math",
+      "status": "planned",
+      "prompt_style": "chat_reasoning",
+      "reward": "task_specific_pending",
+      "notes": "Dataset wiring and reward verification still needed."
+    },
+    "AIME": {
+      "slug": "aime",
+      "status": "planned",
+      "prompt_style": "chat_reasoning",
+      "reward": "task_specific_pending",
+      "notes": "Dataset wiring and reward verification still needed."
+    },
+    "AMC": {
+      "slug": "amc",
+      "status": "planned",
+      "prompt_style": "chat_reasoning",
+      "reward": "task_specific_pending",
+      "notes": "Dataset wiring and reward verification still needed."
+    },
+    "MATH500": {
+      "slug": "math500",
+      "status": "planned",
+      "prompt_style": "chat_reasoning",
+      "reward": "task_specific_pending",
+      "notes": "Dataset wiring and reward verification still needed."
+    },
+    "HumanEval": {
+      "slug": "humaneval",
+      "status": "planned",
+      "prompt_style": "chat_code",
+      "reward": "task_specific_pending",
+      "notes": "Code-eval reward path still needed."
+    },
+    "MBPP": {
+      "slug": "mbpp",
+      "status": "planned",
+      "prompt_style": "chat_code",
+      "reward": "task_specific_pending",
+      "notes": "Code-eval reward path still needed."
+    },
+    "CommonsenseQA": {
+      "slug": "commonsenseqa",
+      "status": "planned",
+      "prompt_style": "chat_mcq",
+      "reward": "task_specific_pending",
+      "notes": "Multiple-choice reward path still needed."
+    },
+    "HellaSwag": {
+      "slug": "hellaswag",
+      "status": "planned",
+      "prompt_style": "chat_mcq",
+      "reward": "task_specific_pending",
+      "notes": "Multiple-choice reward path still needed."
+    },
+    "ARC-Challenge": {
+      "slug": "arc-challenge",
+      "status": "planned",
+      "prompt_style": "chat_mcq",
+      "reward": "task_specific_pending",
+      "notes": "Multiple-choice reward path still needed."
+    }
+  }
+}

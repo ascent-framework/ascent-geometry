@@ -4,6 +4,12 @@ ASCENT-G: Adaptation Geometry experiments (Paper 1)
 
 Theory and pre-registration: [ascent-framework](https://github.com/ascent-framework/ascent-framework)
 
+This repository should track the current ASCENT framework registration and
+execution docs in `../ascent-framework`, especially:
+
+- `docs/preregistration/v1.3.md`
+- `docs/phase0/execution-plan.md`
+
 ## Repository structure
 
 | Directory | Purpose |
@@ -21,11 +27,71 @@ One complete pilot: `train → extract → SVD` on `Qwen2.5-1.5B-Instruct` / `GS
 
 See [`ascent-framework/docs/phase0/execution-plan.md`](https://github.com/ascent-framework/ascent-framework/blob/main/docs/phase0/execution-plan.md) for acceptance criteria.
 
-## Registered models
+## Current status
+
+- The only executable asset in this repository today is the Phase 0 pilot
+  notebook in `notebooks/`.
+- Initial reusable CLI entry points now exist in `training/`, `extraction/`,
+  and `analysis/` for the Phase 0 path.
+- `statistics/` remains intentionally empty until multi-task Phase 1 outputs
+  exist.
+
+## Setup
+
+Install the current Python dependencies from `requirements.txt` before running
+the scripts outside Kaggle.
+
+Reproducible local environment setup:
+
+- `SETUP.md`
+- `scripts/bootstrap_venv.sh`
+- `scripts/verify_env.py`
+- `requirements-notes.md`
+
+Execution metadata:
+
+- `config/registry.json`
+- `config/task_registry.json`
+- `runs/phase0_run_note_template.md`
+
+## Current entry points
+
+- `training/phase0_gsm8k_grpo.py`
+- `extraction/extract_registered_update_vector.py`
+- `analysis/pilot_svd_diagnostic.py`
+- `analysis/h1a_h1b_task_matrix.py`
+
+## Execution checklist
+
+- `EXPERIMENT_CHECKLIST.md`
+
+## Experiment plan
+
+1. Phase 0: validate one complete `train → extract → SVD` pipeline on
+   `Qwen2.5-1.5B-Instruct` and `GSM8K`.
+2. Phase 1: collect registered update vectors for at least 10 tasks, then run
+   H1a and H1b on the normalized task matrix.
+3. Phase 2: run H2 transfer experiments across the registered model pairs.
+4. Exploratory analyses: run H1c, H3, and related follow-up analyses only after
+   the registered primary path is complete.
+
+## Registered models (`v1.3`)
 
 - Primary: `Qwen2.5-1.5B-Instruct`
-- Secondary: `Gemma-2-2B-IT`
+- Secondary A: `Qwen2.5-1.5B`
+- Secondary B: `Qwen2.5-3B`
+- Secondary C: `google/gemma-2-2b-it`
 
-## Registered tasks (Phase 1)
+## Registered tasks (`v1.3`, minimum set for Phase 1)
 
-GSM8K, MATH-500, ARC-Challenge, HellaSwag, WinoGrande
+GSM8K, MATH, AIME, AMC, MATH500, HumanEval, MBPP, CommonsenseQA,
+HellaSwag, ARC-Challenge
+
+## Registration notes
+
+- The registered primary update object is `concat(ΔW_A, ΔW_B)` across all LoRA
+  adapter layers.
+- Any dense effective delta such as `scaling * (B @ A)` should be labeled
+  exploratory or pilot-only unless the registration is explicitly amended.
+- H1a and H1b are registered only for normalized multi-task update matrices.
+  A single-task pilot SVD is a pipeline diagnostic, not hypothesis evidence.

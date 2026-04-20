@@ -7,6 +7,10 @@ Kaggle-ready notebooks for Phase 0 pilot runs.
 Upload notebooks to Kaggle and attach the relevant dataset (checkpoints,
 artifacts). Do not store large outputs in this directory.
 
+These notebooks are for pipeline validation and operational debugging. Unless a
+notebook explicitly says otherwise, treat short-run settings and single-task
+diagnostics here as pilot-only rather than registered Phase 1 analyses.
+
 ## Naming convention
 
 `{phase}-{task}-{model}-{purpose}.ipynb`
