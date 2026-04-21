@@ -38,7 +38,8 @@ PROMPT_TEMPLATES = {
     ),
     "chat_mcq": (
         "You are a reasoning assistant. "
-        "Choose the best answer option and make the final choice explicit."
+        "Choose the best answer option and make the final choice explicit as "
+        "The answer is <option>."
     ),
 }
 
@@ -61,7 +62,6 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--output-dir",
-        required=True,
         help="Directory for adapter outputs and the stage report.",
     )
     parser.add_argument(
@@ -81,11 +81,26 @@ def parse_args() -> argparse.Namespace:
         default="registered",
         help="Report scope label for the resulting stage report.",
     )
+    parser.add_argument(
+        "--print-task-config",
+        action="store_true",
+        help="Print the resolved task config and exit before loading ML dependencies.",
+    )
+    parser.add_argument(
+        "--smoke-test-prompt",
+        action="store_true",
+        help="Render one synthetic formatted example for the task and exit.",
+    )
     return parser.parse_args()
 
 
 def extract_final_number(text: str) -> str | None:
     matches = re.findall(r"[-+]?\d+(?:\.\d+)?", text.replace(",", ""))
+    return matches[-1] if matches else None
+
+
+def extract_final_option(text: str) -> str | None:
+    matches = re.findall(r"\b([A-E])\b", text.upper())
     return matches[-1] if matches else None
 
 
@@ -103,9 +118,71 @@ def final_number_exact_match(completions: list[str], answer: list[str], **_: obj
     return rewards
 
 
+def mcq_label_exact_match(completions: list[str], answer: list[str], **_: object) -> list[float]:
+    n_prompts = len(answer)
+    assert len(completions) % n_prompts == 0, (
+        f"len(completions)={len(completions)} not divisible by n_prompts={n_prompts}"
+    )
+    n_gen = len(completions) // n_prompts
+    rewards = []
+    for i, completion in enumerate(completions):
+        pred = extract_final_option(completion)
+        gold = extract_final_option(answer[i // n_gen])
+        rewards.append(1.0 if pred is not None and pred == gold else 0.0)
+    return rewards
+
+
 REWARD_BUILDERS = {
     "final_number_exact_match": final_number_exact_match,
+    "mcq_label_exact_match": mcq_label_exact_match,
 }
+
+
+def format_commonsenseqa_prompt(example: dict[str, object]) -> str:
+    question = str(example["question"])
+    choices = example["choices"]
+    labels = choices["label"]
+    texts = choices["text"]
+    rendered = "\n".join(f"{label}. {text}" for label, text in zip(labels, texts))
+    return f"{question}\n\nOptions:\n{rendered}"
+
+
+CHOICE_FORMATTERS = {
+    "commonsenseqa": format_commonsenseqa_prompt,
+}
+
+
+def build_formatted_example(task_config: dict[str, object], example: dict[str, object]) -> dict[str, str]:
+    if task_config["prompt_style"] == "chat_mcq":
+        choice_format = task_config.get("choice_format")
+        if choice_format not in CHOICE_FORMATTERS:
+            raise NotImplementedError(f"Choice formatter '{choice_format}' is not implemented.")
+        user_prompt = CHOICE_FORMATTERS[choice_format](example)
+        answer_value = str(example[task_config["fields"]["label"]])
+    else:
+        prompt_field = task_config["fields"]["prompt"]
+        answer_field = task_config["fields"]["answer"]
+        user_prompt = str(example[prompt_field])
+        answer_value = str(example[answer_field])
+    return {"user_prompt": user_prompt, "answer": answer_value}
+
+
+def synthetic_example(task_name: str) -> dict[str, object]:
+    if task_name == "GSM8K":
+        return {
+            "question": "If Mina has 3 apples and buys 2 more, how many apples does she have?",
+            "answer": "She has 5 apples. The answer is 5.",
+        }
+    if task_name == "CommonsenseQA":
+        return {
+            "question": "Where would you usually keep milk cold?",
+            "choices": {
+                "label": ["A", "B", "C", "D", "E"],
+                "text": ["desk drawer", "refrigerator", "bookshelf", "shoe box", "sink"],
+            },
+            "answerKey": "B",
+        }
+    raise NotImplementedError(f"No synthetic example defined for task '{task_name}'.")
 
 
 def detect_hardware() -> tuple[HardwareMetadata, object]:
@@ -136,6 +213,24 @@ def main() -> None:
         )
     if task_config["reward"] not in REWARD_BUILDERS:
         raise NotImplementedError(f"Reward '{task_config['reward']}' is not implemented.")
+
+    if args.print_task_config:
+        print(json.dumps(task_config, indent=2))
+        return
+
+    if args.smoke_test_prompt:
+        payload = build_formatted_example(task_config, synthetic_example(args.task))
+        smoke = {
+            "task": args.task,
+            "prompt_style": task_config["prompt_style"],
+            "reward": task_config["reward"],
+            "formatted_example": payload,
+        }
+        print(json.dumps(smoke, indent=2))
+        return
+
+    if not args.output_dir:
+        raise ValueError("--output-dir is required for real training runs.")
 
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -170,19 +265,17 @@ def main() -> None:
     train_data = dataset[loader.get("split", "train")]
 
     system_prompt = PROMPT_TEMPLATES[task_config["prompt_style"]]
-    prompt_field = task_config["fields"]["prompt"]
-    answer_field = task_config["fields"]["answer"]
-
     def format_example(example: dict[str, str]) -> dict[str, str]:
+        payload = build_formatted_example(task_config, example)
         prompt = tokenizer.apply_chat_template(
             [
                 {"role": "system", "content": system_prompt},
-                {"role": "user", "content": example[prompt_field]},
+                {"role": "user", "content": payload["user_prompt"]},
             ],
             tokenize=False,
             add_generation_prompt=True,
         )
-        return {"prompt": prompt, "answer": example[answer_field]}
+        return {"prompt": prompt, "answer": payload["answer"]}
 
     train_data = train_data.map(format_example)
 
@@ -235,6 +328,7 @@ def main() -> None:
             "dataset_loader": loader,
             "prompt_style": task_config["prompt_style"],
             "reward": task_config["reward"],
+            "choice_format": task_config.get("choice_format"),
             "max_steps": args.max_steps,
             "per_device_train_batch_size": args.per_device_train_batch_size,
             "gradient_accumulation_steps": args.gradient_accumulation_steps,

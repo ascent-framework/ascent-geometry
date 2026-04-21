@@ -12,6 +12,15 @@ This checklist is aligned to:
 Goal: validate one end-to-end `train → extract → SVD` pipeline on
 `Qwen2.5-1.5B-Instruct` and `GSM8K`.
 
+### Preflight
+
+- [ ] Confirm current branch / commit before running
+- [ ] Confirm `config/registry.json` matches the intended Phase 0 target
+- [ ] Confirm `config/task_registry.json` marks `GSM8K` as implemented
+- [ ] Decide the execution environment: local GPU or Kaggle
+- [ ] Decide artifact root location before the run starts
+- [ ] Create or identify the target dated run directory name
+
 ### Environment
 
 - [ ] Create and activate a dedicated Python environment
@@ -19,31 +28,50 @@ Goal: validate one end-to-end `train → extract → SVD` pipeline on
 - [ ] Run `python scripts/verify_env.py`
 - [ ] Confirm GPU availability in the target environment
 - [ ] Log Python version, torch version, GPU model, and precision mode
+- [ ] Record whether the environment exactly matches `requirements.txt`
+- [ ] Confirm that `runs/phase0_run_note_template.md` is available
+
+### Orchestration
+
+- [ ] Decide whether to run:
+  - `runs/run_phase0_pipeline.py`
+  - or stage scripts individually
+- [ ] If using the pipeline runner, verify `--date`, `--task`, `--model-id`, and `--artifacts-root`
+- [ ] Run `python runs/run_phase0_pipeline.py --date <YYYY-MM-DD> --dry-run`
+- [ ] Confirm the dry-run command paths and output locations look correct
 
 ### Training
 
-- [ ] Run `training/phase0_gsm8k_grpo.py` or `runs/run_phase0_pipeline.py`
+- [ ] Run `training/phase0_gsm8k_grpo.py`, `training/train_grpo_task.py`, or `runs/run_phase0_pipeline.py`
 - [ ] Confirm the model loads successfully
 - [ ] Confirm GRPO training reaches the planned stopping point
+- [ ] Record actual training command used
+- [ ] Confirm `training_run_report.json` is written
 - [ ] Save the adapter checkpoint
 - [ ] Reload the saved adapter successfully
-- [ ] Write `training_run_report.json`
+- [ ] Confirm adapter artifact path is recorded in the report
+- [ ] Confirm runtime metadata includes GPU model, precision, and per-step timing
 
 ### Extraction
 
 - [ ] Run `extraction/extract_registered_update_vector.py`
+- [ ] Confirm extraction uses the adapter from the training stage
 - [ ] Confirm the registered object is `concat(ΔW_A, ΔW_B)`
 - [ ] Confirm all registered target modules are covered
 - [ ] Confirm the update vector is non-degenerate
 - [ ] Save the vector file and provenance JSON
 - [ ] Write the extraction stage report
+- [ ] Confirm SHA-256 checksum exists in provenance / report
+- [ ] Confirm vector shape is recorded
 
 ### Analysis
 
 - [ ] Run `analysis/pilot_svd_diagnostic.py`
+- [ ] Confirm analysis reads the same adapter used for extraction
 - [ ] Confirm at least one SVD diagnostic completes successfully
 - [ ] Save the analysis stage report
 - [ ] Confirm the result is labeled `pilot_only`
+- [ ] Confirm the report does not claim registered H1a/H1b evidence
 
 ### Run packaging
 
@@ -52,7 +80,21 @@ Goal: validate one end-to-end `train → extract → SVD` pipeline on
 - [ ] Save `extraction_report.json`
 - [ ] Save `analysis_report.json`
 - [ ] Save `run_manifest.json`
+- [ ] Save `run_note.md`
+- [ ] Copy or fill `runs/phase0_run_note_template.md` into the dated run directory
 - [ ] Add a short run note: what worked, what failed, what to fix next
+- [ ] Verify report paths inside the manifest
+- [ ] Verify large artifacts are outside the repository tree
+
+### Phase 0 completion check
+
+- [ ] `model_loaded = true`
+- [ ] `training_completed = true`
+- [ ] `adapter_saved_and_reloaded = true`
+- [ ] `update_vector_extracted = true`
+- [ ] `update_vector_non_degenerate = true`
+- [ ] `svd_diagnostic_ran = true`
+- [ ] Mark Phase 0 as complete only if all items above are true
 
 ## Phase 1 preparation: multi-task collection
 
@@ -73,8 +115,10 @@ Goal: collect registered update vectors for the minimum registered task set.
 
 ### Collection workflow
 
-- [ ] Generalize the training runner beyond GSM8K
-- [ ] Generalize task-specific reward and formatting logic
+- [x] Generalize the training runner beyond GSM8K
+- [x] Generalize task-specific reward and formatting logic
+- [x] Implement a second registered task path (`CommonsenseQA`)
+- [x] Add preflight validation for task config and prompt rendering
 - [ ] Run training for each registered task
 - [ ] Extract one registered update vector per task
 - [ ] Keep vector dimensions identical across tasks
@@ -152,7 +196,7 @@ These do not block the registered primary path.
 Recommended order for the next concrete steps:
 
 1. [ ] Finish one real Phase 0 run
-2. [ ] Generalize multi-task training and extraction
+2. [x] Generalize multi-task training and extraction
 3. [ ] Collect 10 registered task vectors
 4. [ ] Run H1a and H1b
 5. [ ] Implement and run H2 transfer
