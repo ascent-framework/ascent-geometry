@@ -22,6 +22,7 @@ from common.reporting import make_stage_report, write_report
 DEFAULT_MODEL_ID = "Qwen/Qwen2.5-1.5B-Instruct"
 DEFAULT_TASK = "gsm8k"
 REGISTRY_PATH = REPO_ROOT / "config" / "registry.json"
+TASK_REGISTRY_PATH = REPO_ROOT / "config" / "task_registry.json"
 RUN_NOTE_TEMPLATE_PATH = REPO_ROOT / "runs" / "phase0_run_note_template.md"
 
 
@@ -100,13 +101,17 @@ def main() -> None:
 
     training_cmd = [
         sys.executable,
-        str(REPO_ROOT / "training" / "phase0_gsm8k_grpo.py"),
+        str(REPO_ROOT / "training" / "train_grpo_task.py"),
+        "--task",
+        args.task.upper(),
         "--model-id",
         args.model_id,
         "--output-dir",
         str(artifacts_dir),
         "--max-steps",
         str(args.max_steps),
+        "--scope",
+        "pilot_only",
     ]
     extraction_cmd = [
         sys.executable,
@@ -173,6 +178,7 @@ def main() -> None:
             "run_dir": run_dir,
             "artifacts_dir": artifacts_dir,
             "registry_path": REGISTRY_PATH,
+            "task_registry_path": TASK_REGISTRY_PATH,
             "run_note_template_path": RUN_NOTE_TEMPLATE_PATH,
             "run_note_path": run_note_path,
             "training_report": training_report_path,

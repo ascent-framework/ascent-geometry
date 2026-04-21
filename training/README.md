@@ -48,3 +48,23 @@ occur:
   `Qwen2.5-1.5B-Instruct`
 - `train_grpo_task.py`: task-aware GRPO entrypoint backed by
   `config/task_registry.json`
+
+## Current implementation status
+
+- Implemented tasks: `GSM8K`, `CommonsenseQA`
+- Planned tasks: `MATH`, `AIME`, `AMC`, `MATH500`, `HumanEval`, `MBPP`,
+  `HellaSwag`, `ARC-Challenge`
+
+## Preflight examples
+
+Inspect task config:
+
+```bash
+python training/train_grpo_task.py --task CommonsenseQA --print-task-config
+```
+
+Render a synthetic formatted example without loading ML packages:
+
+```bash
+python training/train_grpo_task.py --task CommonsenseQA --smoke-test-prompt
+```
