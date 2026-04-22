@@ -26,6 +26,20 @@ TASK_REGISTRY_PATH = REPO_ROOT / "config" / "task_registry.json"
 RUN_NOTE_TEMPLATE_PATH = REPO_ROOT / "runs" / "phase0_run_note_template.md"
 
 
+def resolve_registered_task_name(task_arg: str) -> str:
+    with TASK_REGISTRY_PATH.open("r", encoding="utf-8") as handle:
+        tasks = json.load(handle).get("tasks", {})
+
+    lowered = task_arg.lower()
+    for task_name, task_config in tasks.items():
+        if task_name.lower() == lowered:
+            return task_name
+        if str(task_config.get("slug", "")).lower() == lowered:
+            return task_name
+
+    raise KeyError(f"Unknown task '{task_arg}'. Known tasks: {sorted(tasks)}")
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--date", required=True, help="Run date in YYYY-MM-DD format.")
@@ -83,6 +97,7 @@ def run_command(cmd: list[str], *, dry_run: bool) -> None:
 
 def main() -> None:
     args = parse_args()
+    registered_task_name = resolve_registered_task_name(args.task)
     run_name = f"{args.date}-{args.phase}-{args.task}-{args.model_slug}"
     runs_root = Path(args.runs_root)
     run_dir = runs_root / run_name
@@ -103,7 +118,7 @@ def main() -> None:
         sys.executable,
         str(REPO_ROOT / "training" / "train_grpo_task.py"),
         "--task",
-        args.task.upper(),
+        registered_task_name,
         "--model-id",
         args.model_id,
         "--output-dir",
@@ -160,7 +175,7 @@ def main() -> None:
     manifest = make_stage_report(
         stage="analysis",
         phase=0,
-        task=args.task.upper(),
+        task=registered_task_name,
         model=args.model_id,
         method="pipeline",
         scope="pilot_only",
