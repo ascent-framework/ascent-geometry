@@ -88,13 +88,13 @@ Goal: validate one end-to-end `train → extract → SVD` pipeline on
 
 ### Phase 0 completion check
 
-- [ ] `model_loaded = true`
-- [ ] `training_completed = true`
-- [ ] `adapter_saved_and_reloaded = true`
-- [ ] `update_vector_extracted = true`
-- [ ] `update_vector_non_degenerate = true`
-- [ ] `svd_diagnostic_ran = true`
-- [ ] Mark Phase 0 as complete only if all items above are true
+- [x] `model_loaded = true`
+- [x] `training_completed = true`
+- [x] `adapter_saved_and_reloaded = true`
+- [x] `update_vector_extracted = true`
+- [x] `update_vector_non_degenerate = true`
+- [x] `svd_diagnostic_ran = true`
+- [x] Mark Phase 0 as complete only if all items above are true
 
 ## Phase 1 preparation: multi-task collection
 
@@ -195,9 +195,18 @@ These do not block the registered primary path.
 
 Recommended order for the next concrete steps:
 
-1. [ ] Finish one real Phase 0 run
+1. [x] Finish one real Phase 0 run
 2. [x] Generalize multi-task training and extraction
 3. [ ] Collect 10 registered task vectors
 4. [ ] Run H1a and H1b
 5. [ ] Implement and run H2 transfer
 6. [ ] Run exploratory analyses
+
+## Status Note
+
+- `2026-04-22`: One Kaggle Phase 0 pilot run completed for
+  `Qwen2.5-1.5B-Instruct` on `GSM8K`, and the imported run record is stored
+  under `runs/2026-04-22-phase0-gsm8k-qwen2.5-1.5b/`.
+- Remaining unchecked Phase 0 items above should be treated as "not recorded"
+  rather than "known failed" where the imported Kaggle report did not preserve
+  full operator-side preflight or environment details.

@@ -1,0 +1,50 @@
+{
+  "schema_version": "2026-04-21",
+  "generated_at": "2026-04-22T07:08:36+00:00",
+  "stage": "extraction",
+  "phase": 0,
+  "task": "GSM8K",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "method": "registered_concat_lora_A_B",
+  "scope": "pilot_only",
+  "summary": {
+    "description": "Registered update vector extracted from the saved LoRA adapter.",
+    "status": "completed"
+  },
+  "config": {
+    "registered_targets": [
+      "down_proj",
+      "gate_proj",
+      "k_proj",
+      "o_proj",
+      "q_proj",
+      "up_proj",
+      "v_proj"
+    ]
+  },
+  "metrics": {
+    "vector_shape": [
+      9232384
+    ],
+    "vector_norm": 22.89222526550293,
+    "layers_captured": 196
+  },
+  "artifacts": {
+    "vector_path": "/tmp/kaggle-kernel-output/gsm8k-qwen2.5-1.5b-phase0/update_vector.npy",
+    "provenance_path": "/tmp/kaggle-kernel-output/gsm8k-qwen2.5-1.5b-phase0/update_vector_provenance.json",
+    "source_report_path": "/tmp/kaggle-kernel-output/gsm8k-qwen2.5-1.5b-phase0/run_report.json"
+  },
+  "runtime": {
+    "environment": "Kaggle notebook"
+  },
+  "validation": {
+    "update_vector_extracted": true,
+    "update_vector_non_degenerate": true,
+    "registered_targets_all_covered": true,
+    "sha256": "8bb6b927c8b0c39f46016f9d6aaa5eead753faf8a0805e5beff6252970a78420"
+  },
+  "notes": [
+    "The extracted object matches the repository-registered representation concat(Delta W_A, Delta W_B).",
+    "Large vector artifacts remain outside git and are referenced by path only."
+  ]
+}

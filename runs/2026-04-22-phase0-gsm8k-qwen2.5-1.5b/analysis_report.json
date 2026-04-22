@@ -1,0 +1,40 @@
+{
+  "schema_version": "2026-04-21",
+  "generated_at": "2026-04-22T07:08:36+00:00",
+  "stage": "analysis",
+  "phase": 0,
+  "task": "GSM8K",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "method": "pilot_svd_diagnostic",
+  "scope": "pilot_only",
+  "summary": {
+    "description": "Pilot SVD diagnostic completed over extracted LoRA layer updates.",
+    "status": "completed"
+  },
+  "config": {
+    "analysis_scope": {
+      "registered_primary_analysis_run": false,
+      "pilot_svd_diagnostic_run": true
+    }
+  },
+  "metrics": {
+    "svd_result_count": 196,
+    "sample_first_layer": "base_model.model.model.layers.0.self_attn.q_proj",
+    "sample_first_r90": 6,
+    "sample_first_s_max": 0.03383029252290726
+  },
+  "artifacts": {
+    "source_report_path": "/tmp/kaggle-kernel-output/gsm8k-qwen2.5-1.5b-phase0/run_report.json"
+  },
+  "runtime": {
+    "environment": "Kaggle notebook"
+  },
+  "validation": {
+    "svd_diagnostic_ran": true,
+    "pilot_only": true
+  },
+  "notes": [
+    "This report records only pipeline viability and basic diagnostics.",
+    "Do not interpret these pilot SVD outputs as registered H1a or H1b evidence."
+  ]
+}
