@@ -25,6 +25,10 @@ Canonical stage-report schema: `runs/report.schema.json`
 
 Example: `2026-04-20-phase0-gsm8k-qwen2.5-1.5b/`
 
+Imported Phase 0 pilot example:
+
+- `runs/2026-04-22-phase0-gsm8k-qwen2.5-1.5b/`
+
 ## Current entry point
 
 - `run_phase0_pipeline.py`

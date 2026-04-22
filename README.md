@@ -29,10 +29,14 @@ See [`ascent-framework/docs/phase0/execution-plan.md`](https://github.com/ascent
 
 ## Current status
 
-- The only executable asset in this repository today is the Phase 0 pilot
-  notebook in `notebooks/`.
+- One complete Phase 0 pilot run has been completed on Kaggle for
+  `Qwen2.5-1.5B-Instruct` / `GSM8K`, with imported run records under
+  `runs/2026-04-22-phase0-gsm8k-qwen2.5-1.5b/`.
 - Initial reusable CLI entry points now exist in `training/`, `extraction/`,
   and `analysis/` for the Phase 0 path.
+- The imported pilot analysis indicates a stronger adaptation signal in
+  `mlp.gate_proj` and `mlp.up_proj` than in attention `k_proj` or `v_proj`,
+  but this remains diagnostic rather than hypothesis evidence.
 - `statistics/` remains intentionally empty until multi-task Phase 1 outputs
   exist.
 

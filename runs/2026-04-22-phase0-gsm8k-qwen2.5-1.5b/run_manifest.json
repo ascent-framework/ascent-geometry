@@ -1,0 +1,61 @@
+{
+  "schema_version": "2026-04-21",
+  "generated_at": "2026-04-22T07:08:36+00:00",
+  "stage": "analysis",
+  "phase": 0,
+  "task": "GSM8K",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "method": "pipeline",
+  "scope": "pilot_only",
+  "summary": {
+    "description": "Aggregate manifest for the imported Kaggle Phase 0 pilot run.",
+    "run_name": "2026-04-22-phase0-gsm8k-qwen2.5-1.5b",
+    "status": "completed"
+  },
+  "config": {
+    "source_kernel_id": "chson0316/ascent-g-phase-0-pilot-gsm8k-qwen2-5-1-5b",
+    "source_report_timestamp_utc": "2026-04-21T15:47:24.149191Z",
+    "source_report_timestamp_kst": "2026-04-22T00:47:24+09:00"
+  },
+  "metrics": {
+    "max_steps": 50,
+    "training_total_time_sec": 2907.9,
+    "vector_shape": [
+      9232384
+    ],
+    "vector_norm": 22.89222526550293,
+    "svd_result_count": 196
+  },
+  "artifacts": {
+    "run_dir": "runs/2026-04-22-phase0-gsm8k-qwen2.5-1.5b",
+    "training_report": "runs/2026-04-22-phase0-gsm8k-qwen2.5-1.5b/training_report.json",
+    "extraction_report": "runs/2026-04-22-phase0-gsm8k-qwen2.5-1.5b/extraction_report.json",
+    "analysis_report": "runs/2026-04-22-phase0-gsm8k-qwen2.5-1.5b/analysis_report.json",
+    "analysis_summary": "runs/2026-04-22-phase0-gsm8k-qwen2.5-1.5b/analysis_summary.md",
+    "run_note": "runs/2026-04-22-phase0-gsm8k-qwen2.5-1.5b/run_note.md",
+    "adapter_path": "/tmp/kaggle-kernel-output/gsm8k-qwen2.5-1.5b-phase0/adapter",
+    "checkpoint_path": "/tmp/kaggle-kernel-output/gsm8k-qwen2.5-1.5b-phase0/checkpoint-50",
+    "vector_path": "/tmp/kaggle-kernel-output/gsm8k-qwen2.5-1.5b-phase0/update_vector.npy",
+    "provenance_path": "/tmp/kaggle-kernel-output/gsm8k-qwen2.5-1.5b-phase0/update_vector_provenance.json",
+    "source_report_path": "/tmp/kaggle-kernel-output/gsm8k-qwen2.5-1.5b-phase0/run_report.json"
+  },
+  "runtime": {
+    "environment": "Kaggle notebook",
+    "branch": "main",
+    "commit": "cc2ee064294a02781e78c8c56a1c6160a3b231d9"
+  },
+  "validation": {
+    "model_loaded": true,
+    "training_completed": true,
+    "adapter_saved_and_reloaded": true,
+    "update_vector_extracted": true,
+    "update_vector_non_degenerate": true,
+    "registered_targets_all_covered": true,
+    "svd_diagnostic_ran": true
+  },
+  "notes": [
+    "This manifest was created locally from downloaded Kaggle outputs.",
+    "Artifact paths currently point to /tmp downloads and should be replaced with the durable Kaggle Dataset or Drive location if you want long-term references.",
+    "See analysis_summary.md for a human-readable summary of the pilot SVD pattern."
+  ]
+}
