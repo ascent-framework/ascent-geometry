@@ -103,7 +103,7 @@ Goal: collect registered update vectors for the minimum registered task set.
 ### Task coverage
 
 - [x] GSM8K
-- [ ] MATH
+- [x] MATH
 - [ ] AIME
 - [ ] AMC
 - [ ] MATH500
@@ -216,6 +216,16 @@ Recommended order for the next concrete steps:
 - `2026-04-22`: The reusable multi-task path has now been exercised end-to-end
   on both a reasoning task (`GSM8K`) and a multiple-choice task
   (`CommonsenseQA`).
+- `2026-04-23`: One additional Kaggle Phase 0 pilot run completed for
+  `Qwen2.5-1.5B-Instruct` on `MATH`, and the imported run record is stored
+  under `runs/2026-04-23-phase0-math-qwen2.5-1.5b/`.
+- `2026-04-23`: Three valid pilot task vectors now exist: `GSM8K`,
+  `CommonsenseQA`, and `MATH`. All three are non-degenerate and share the same
+  dimensionality (`9,232,384`).
+- `2026-04-23`: A launcher archival gap was identified because `analysis` and
+  `manifest` reports were not mirrored into the top-level artifact bundle; the
+  pipeline has now been updated so future runs copy standardized reports into
+  `artifacts_root`.
 - Remaining unchecked Phase 0 items above should be treated as "not recorded"
   rather than "known failed" where the imported Kaggle report did not preserve
   full operator-side preflight or environment details.

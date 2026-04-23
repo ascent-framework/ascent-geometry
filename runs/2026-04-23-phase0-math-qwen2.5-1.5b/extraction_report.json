@@ -1,0 +1,44 @@
+{
+  "schema_version": "2026-04-21",
+  "generated_at": "2026-04-23T01:06:11+00:00",
+  "stage": "extraction",
+  "phase": 0,
+  "task": "MATH",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "method": "LoRA",
+  "scope": "pilot_only",
+  "summary": {
+    "description": "Registered update-vector extraction for ASCENT-G.",
+    "object_type": "registered_concat_lora_A_B"
+  },
+  "config": {
+    "registered_targets": [
+      "down_proj",
+      "gate_proj",
+      "k_proj",
+      "o_proj",
+      "q_proj",
+      "up_proj",
+      "v_proj"
+    ]
+  },
+  "metrics": {
+    "vector_norm": 22.862762451171875,
+    "vector_numel": 9232384
+  },
+  "artifacts": {
+    "vector_path": "/kaggle/working/2026-04-23-phase0-math-qwen2.5-1.5b/update_vector.npy",
+    "provenance_path": "/kaggle/working/2026-04-23-phase0-math-qwen2.5-1.5b/update_vector_provenance.json"
+  },
+  "runtime": {
+    "device_dtype": "bfloat16"
+  },
+  "validation": {
+    "registered_targets_all_covered": true,
+    "vector_non_degenerate": true,
+    "checksum_sha256": "dbbbae000afc6e2f037dd71c8a23c8e40bf8e9846092fd71ee2f1e8facf47fb5"
+  },
+  "notes": [
+    "This report tracks the preregistered concat(Delta W_A, Delta W_B) object."
+  ]
+}

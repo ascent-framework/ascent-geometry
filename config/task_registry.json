@@ -19,10 +19,19 @@
     },
     "MATH": {
       "slug": "math",
-      "status": "planned",
+      "status": "implemented",
+      "dataset_loader": {
+        "path": "jeggers/competition_math",
+        "name": "numeric",
+        "split": "train"
+      },
+      "fields": {
+        "prompt": "problem",
+        "answer": "extracted_solution"
+      },
       "prompt_style": "chat_reasoning",
-      "reward": "task_specific_pending",
-      "notes": "Dataset wiring and reward verification still needed."
+      "reward": "final_number_exact_match",
+      "notes": "Uses the numeric subset with boxed final answers extracted into extracted_solution."
     },
     "AIME": {
       "slug": "aime",
