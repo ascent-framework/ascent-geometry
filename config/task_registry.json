@@ -102,10 +102,20 @@
     },
     "ARC-Challenge": {
       "slug": "arc-challenge",
-      "status": "planned",
+      "status": "implemented",
+      "dataset_loader": {
+        "path": "allenai/ai2_arc",
+        "name": "ARC-Challenge",
+        "split": "train"
+      },
       "prompt_style": "chat_mcq",
-      "reward": "task_specific_pending",
-      "notes": "Multiple-choice reward path still needed."
+      "reward": "mcq_label_exact_match",
+      "choice_format": "commonsenseqa",
+      "fields": {
+        "question": "question",
+        "label": "answerKey"
+      },
+      "notes": "Multiple-choice baseline task using ARC-Challenge labels and the CommonsenseQA formatter."
     }
   }
 }

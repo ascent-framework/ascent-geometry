@@ -8,3 +8,4 @@ Use the file that matches the notebook you are pushing to Kaggle:
 - `commonsenseqa.json`
 - `math.json`
 - `hellaswag.json`
+- `arc-challenge.json`

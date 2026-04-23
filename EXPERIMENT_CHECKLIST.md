@@ -235,6 +235,9 @@ Recommended order for the next concrete steps:
 - `2026-04-23`: The reusable task path now also covers `HellaSwag`; the task
   registry, training formatter, and label normalization are wired and validated
   by a Kaggle pilot run.
+- `2026-04-23`: The reusable task path now also covers `ARC-Challenge`; the
+  task registry, training formatter, and label normalization are wired and
+  smoke-tested locally, but no Kaggle pilot run has been executed yet.
 - Remaining unchecked Phase 0 items above should be treated as "not recorded"
   rather than "known failed" where the imported Kaggle report did not preserve
   full operator-side preflight or environment details.

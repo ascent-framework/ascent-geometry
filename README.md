@@ -36,6 +36,8 @@ See [`ascent-framework/docs/phase0/execution-plan.md`](https://github.com/ascent
   and the task-aware training path now covers `HellaSwag` as well.
 - Four valid pilot vectors now exist across `GSM8K`, `CommonsenseQA`, `MATH`,
   and `HellaSwag`; the imported run records live under `runs/`.
+- The task-aware training path now also covers `ARC-Challenge`, with launcher
+  notebooks and task-specific Kaggle metadata prepared.
 - Initial reusable CLI entry points now exist in `training/`, `extraction/`,
   and `analysis/` for the Phase 0 path.
 - The imported pilot analysis indicates a stronger adaptation signal in
