@@ -221,6 +221,15 @@ def synthetic_example(task_name: str) -> dict[str, object]:
             },
             "answerKey": "B",
         }
+    if task_name == "ARC-Challenge":
+        return {
+            "question": "What do plants need for photosynthesis?",
+            "choices": {
+                "label": ["A", "B", "C", "D"],
+                "text": ["oxygen and sugar", "sunlight and water", "soil and rocks", "wind and rain"],
+            },
+            "answerKey": "B",
+        }
     if task_name == "HellaSwag":
         return {
             "activity_label": "Making tea",
