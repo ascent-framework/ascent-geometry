@@ -173,6 +173,11 @@ def synthetic_example(task_name: str) -> dict[str, object]:
             "question": "If Mina has 3 apples and buys 2 more, how many apples does she have?",
             "answer": "She has 5 apples. The answer is 5.",
         }
+    if task_name == "MATH":
+        return {
+            "problem": "Solve for x: x + 7 = 10.",
+            "extracted_solution": 3,
+        }
     if task_name == "CommonsenseQA":
         return {
             "question": "Where would you usually keep milk cold?",
