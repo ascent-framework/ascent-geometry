@@ -102,14 +102,14 @@ Goal: collect registered update vectors for the minimum registered task set.
 
 ### Task coverage
 
-- [ ] GSM8K
+- [x] GSM8K
 - [ ] MATH
 - [ ] AIME
 - [ ] AMC
 - [ ] MATH500
 - [ ] HumanEval
 - [ ] MBPP
-- [ ] CommonsenseQA
+- [x] CommonsenseQA
 - [ ] HellaSwag
 - [ ] ARC-Challenge
 
@@ -207,6 +207,18 @@ Recommended order for the next concrete steps:
 - `2026-04-22`: One Kaggle Phase 0 pilot run completed for
   `Qwen2.5-1.5B-Instruct` on `GSM8K`, and the imported run record is stored
   under `runs/2026-04-22-phase0-gsm8k-qwen2.5-1.5b/`.
+- `2026-04-22`: One additional Kaggle Phase 0 pilot run completed for
+  `Qwen2.5-1.5B-Instruct` on `CommonsenseQA`, and the imported run record is
+  stored under `runs/2026-04-22-phase0-commonsenseqa-qwen2.5-1.5b/`.
+- `2026-04-22`: Two valid pilot task vectors now exist: `GSM8K` and
+  `CommonsenseQA`. Both runs produced non-degenerate registered update vectors
+  with matching dimensionality (`9,232,384`) and recorded vector norms.
+- `2026-04-22`: The reusable multi-task path has now been exercised end-to-end
+  on both a reasoning task (`GSM8K`) and a multiple-choice task
+  (`CommonsenseQA`).
 - Remaining unchecked Phase 0 items above should be treated as "not recorded"
   rather than "known failed" where the imported Kaggle report did not preserve
   full operator-side preflight or environment details.
+- Remaining unchecked Phase 1 collection items should be read as "not complete
+  for the full registered task set" rather than "no evidence exists yet" where
+  partial progress is now documented in the run records above.
