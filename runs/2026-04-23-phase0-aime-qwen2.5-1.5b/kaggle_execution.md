@@ -29,7 +29,7 @@ These checks should pass locally before the Kaggle run:
 
 - Dataset: `math-ai/aime25`
 - Prompt field: `problem`
-- Answer field: `answer`
+- Answer field: `extracted_solution`
 
 The task uses the reasoning prompt path and the final-number exact-match reward
 helper.
