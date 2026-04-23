@@ -34,6 +34,8 @@ See [`ascent-framework/docs/phase0/execution-plan.md`](https://github.com/ascent
   `runs/2026-04-22-phase0-gsm8k-qwen2.5-1.5b/`.
 - Additional pilot runs have been completed for `CommonsenseQA` and `MATH`,
   and the task-aware training path now covers `HellaSwag` as well.
+- Four valid pilot vectors now exist across `GSM8K`, `CommonsenseQA`, `MATH`,
+  and `HellaSwag`; the imported run records live under `runs/`.
 - Initial reusable CLI entry points now exist in `training/`, `extraction/`,
   and `analysis/` for the Phase 0 path.
 - The imported pilot analysis indicates a stronger adaptation signal in

@@ -1,0 +1,37 @@
+{
+  "schema_version": "2026-04-21",
+  "generated_at": "2026-04-23T05:18:22.915361",
+  "stage": "extraction",
+  "phase": 0,
+  "task": "HellaSwag",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "method": "LoRA",
+  "scope": "pilot_only",
+  "summary": {
+    "description": "Registered update-vector extraction for ASCENT-G.",
+    "object_type": "registered_concat_lora_A_B"
+  },
+  "config": {
+    "registered_targets": [
+      "down_proj",
+      "gate_proj",
+      "k_proj",
+      "o_proj",
+      "q_proj",
+      "up_proj",
+      "v_proj"
+    ]
+  },
+  "metrics": {
+    "vector_norm": 22.87546157836914,
+    "vector_numel": 9232384
+  },
+  "runtime": {
+    "device_dtype": "bfloat16"
+  },
+  "validation": {
+    "registered_targets_all_covered": true,
+    "vector_non_degenerate": true,
+    "checksum_sha256": "411b5696d868c764f131b34613a65f20b9f1e2331074c933147918ddf3ec5a70"
+  }
+}
