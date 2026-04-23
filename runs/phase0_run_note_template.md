@@ -57,6 +57,12 @@ Use this template inside a dated run directory such as:
 
 - 
 
+## Failure History
+
+- 
+  - Record prior failed attempts here, including the exact blocker and the
+    fix or workaround that followed.
+
 ## Notes
 
 - 

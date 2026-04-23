@@ -106,10 +106,12 @@ Under `runs/2026-04-23-phase0-mbpp-qwen2.5-1.5b/`:
 
 1. Download the Kaggle outputs.
 2. Replace the placeholder sections in `run_note.md`.
-3. Import stage reports into this run directory if they were generated outside
+3. Include a short `Failure History` section with the prior blocker(s) and
+   the fix or workaround that resolved them.
+4. Import stage reports into this run directory if they were generated outside
    the repository workspace.
-4. Add an `analysis_summary.md` only after reading the actual `svd_results`.
-5. Update `EXPERIMENT_CHECKLIST.md` only after the vector is confirmed valid.
+5. Add an `analysis_summary.md` only after reading the actual `svd_results`.
+6. Update `EXPERIMENT_CHECKLIST.md` only after the vector is confirmed valid.
 
 ## Acceptance Target
 

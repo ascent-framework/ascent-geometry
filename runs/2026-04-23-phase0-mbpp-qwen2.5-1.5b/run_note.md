@@ -51,6 +51,15 @@
 - No runtime failure occurred in the final run.
 - The SVD summary in `run_report.json` was degenerate (`s_max = 0.0` across layers), so the analysis is not very informative.
 
+## Failure History
+
+- Initial notebook version used `example["prompt"]` for MBPP, but the dataset
+  exposes `text` and `code`, which caused a `KeyError: 'prompt'`.
+- The first MBPP reward design used exact string equality, which left
+  `reward = 0.0`, `loss = 0.0`, and `grad_norm = 0.0` across training.
+- A later rerun failed immediately because the Kaggle session was still on
+  `Tesla P100-PCIE-16GB` while the notebook required `T4`.
+
 ## What To Fix Next
 
 - Keep the task-aware MBPP path in the shared pipeline.
