@@ -131,6 +131,8 @@ def main() -> None:
     extraction_cmd = [
         sys.executable,
         str(REPO_ROOT / "extraction" / "extract_registered_update_vector.py"),
+        "--task",
+        registered_task_name,
         "--model-id",
         args.model_id,
         "--adapter-path",
@@ -141,6 +143,8 @@ def main() -> None:
     analysis_cmd = [
         sys.executable,
         str(REPO_ROOT / "analysis" / "pilot_svd_diagnostic.py"),
+        "--task",
+        registered_task_name,
         "--model-id",
         args.model_id,
         "--adapter-path",
