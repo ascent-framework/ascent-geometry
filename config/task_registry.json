@@ -69,12 +69,15 @@
         "split": "train"
       },
       "prompt_style": "chat_code",
-      "reward": "code_exact_match",
+      "reward": "mbpp_test_pass",
       "fields": {
         "prompt": "text",
-        "answer": "code"
+        "answer": "code",
+        "test_list": "test_list",
+        "test_setup_code": "test_setup_code",
+        "challenge_test_list": "challenge_test_list"
       },
-      "notes": "Code baseline task using normalized code exact match."
+      "notes": "Code baseline task using MBPP test execution as the reward signal."
     },
     "CommonsenseQA": {
       "slug": "commonsenseqa",
