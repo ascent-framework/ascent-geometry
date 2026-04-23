@@ -1,6 +1,6 @@
 {
   "schema_version": "2026-04-21",
-  "generated_at": "2026-04-23T08:23:53.016796",
+  "generated_at": "2026-04-23T11:33:18.414508",
   "stage": "extraction",
   "phase": 0,
   "task": "MBPP",
@@ -28,8 +28,8 @@
     "shape": [
       9232384
     ],
-    "norm": 22.8558349609375,
-    "sha256": "b76819afe9913397105ca70f54cbc042a4892568b40e3e6191eb377b138962b9",
+    "norm": 22.869491577148438,
+    "sha256": "869f1efe01b46a2cb5656109e6fbc042dd21284d3c68f8c0489f4945612b4056",
     "layers_captured": 196
   },
   "artifacts": {

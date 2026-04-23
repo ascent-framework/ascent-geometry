@@ -1,6 +1,6 @@
 {
   "schema_version": "2026-04-21",
-  "generated_at": "2026-04-23T08:23:53.016796",
+  "generated_at": "2026-04-23T11:33:18.414508",
   "stage": "training",
   "phase": 0,
   "task": "MBPP",
@@ -18,7 +18,7 @@
       "split": "train"
     },
     "prompt_style": "chat_code",
-    "reward": "code_exact_match",
+    "reward": "mbpp_test_pass",
     "max_steps": 50,
     "per_device_train_batch_size": 2,
     "gradient_accumulation_steps": 4,
@@ -39,8 +39,8 @@
   },
   "metrics": {
     "train_examples": 374,
-    "total_time_sec": 2986.9,
-    "per_step_time_sec": 59.74
+    "total_time_sec": 3040.7,
+    "per_step_time_sec": 60.81
   },
   "artifacts": {
     "adapter_path": "/kaggle/working/mbpp-qwen2.5-1.5b-phase0/adapter"
