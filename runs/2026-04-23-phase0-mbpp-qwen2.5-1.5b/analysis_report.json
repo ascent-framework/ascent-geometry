@@ -1,0 +1,38 @@
+{
+  "schema_version": "2026-04-21",
+  "generated_at": "2026-04-23T08:23:53.016796",
+  "stage": "analysis",
+  "phase": 0,
+  "task": "MBPP",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "method": "pilot_svd_diagnostic",
+  "scope": "pilot_only",
+  "summary": {
+    "description": "Pilot SVD diagnostic for MBPP.",
+    "task_status": "implemented"
+  },
+  "metrics": {
+    "layer_count": 196,
+    "r90_mean": 1.0,
+    "r90_min": 1,
+    "r90_max": 1,
+    "s_max_mean": 0.0,
+    "s_max_max": 0.0,
+    "module_means_s_max": {
+      "q_proj": 0.0,
+      "k_proj": 0.0,
+      "v_proj": 0.0,
+      "o_proj": 0.0,
+      "gate_proj": 0.0,
+      "up_proj": 0.0,
+      "down_proj": 0.0
+    }
+  },
+  "validation": {
+    "pilot_svd_diagnostic_ran": true
+  },
+  "notes": [
+    "The diagnostic completed, but every layer reported s_max = 0.0 and r90 = 1.",
+    "Treat this as a diagnostic limitation rather than hypothesis evidence."
+  ]
+}

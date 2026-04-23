@@ -108,7 +108,7 @@ Goal: collect registered update vectors for the minimum registered task set.
 - [ ] AMC
 - [ ] MATH500
 - [ ] HumanEval
-- [ ] MBPP
+- [x] MBPP
 - [x] CommonsenseQA
 - [x] HellaSwag
 - [x] ARC-Challenge
@@ -246,7 +246,13 @@ Recommended order for the next concrete steps:
   non-degenerate and share the same dimensionality (`9,232,384`).
 - `2026-04-23`: The reusable task path now also covers `MBPP`; the task
   registry, code formatter, and normalized code exact-match reward are wired,
-  and the Kaggle pilot run is currently in progress.
+  and the Kaggle pilot run completed successfully on `Tesla T4`.
+- `2026-04-23`: Six valid pilot task vectors now exist: `GSM8K`,
+  `CommonsenseQA`, `MATH`, `HellaSwag`, `ARC-Challenge`, and `MBPP`. All six
+  are non-degenerate and share the same dimensionality (`9,232,384`).
+- `2026-04-23`: The MBPP pilot run completed after correcting the dataset
+  field mapping to `text`/`code`; the notebook and registry now agree on the
+  MBPP schema.
 - Remaining unchecked Phase 0 items above should be treated as "not recorded"
   rather than "known failed" where the imported Kaggle report did not preserve
   full operator-side preflight or environment details.

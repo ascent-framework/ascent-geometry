@@ -15,46 +15,49 @@
 
 ## Environment
 
-- Python version: Kaggle Python 3 notebook runtime
 - GPU model: `Tesla T4`
-- Precision: expected `bf16`
-- Environment matched `requirements.txt` exactly: not yet verified
+- Precision: `bf16`
+- Runtime matched the expected Kaggle GPU path.
 
 ## Outputs
 
 - Training report: `training_report.json`
 - Extraction report: `extraction_report.json`
 - Analysis report: `analysis_report.json`
-- Analysis summary: `analysis_summary.md`
 - Run manifest: `run_manifest.json`
-- Adapter artifact location: `/kaggle/working/2026-04-23-phase0-mbpp-qwen2.5-1.5b/adapter`
-- Update vector artifact location: `/kaggle/working/2026-04-23-phase0-mbpp-qwen2.5-1.5b/update_vector.npy`
+- Umbrella report: `run_report.json`
+- Analysis summary: `analysis_summary.md`
+- Adapter artifact location: `/kaggle/working/mbpp-qwen2.5-1.5b-phase0/adapter`
+- Update vector artifact location: `/kaggle/working/mbpp-qwen2.5-1.5b-phase0/update_vector.npy`
 
 ## Acceptance Criteria
 
-- [ ] Model loaded successfully
-- [ ] Training reached stopping point
-- [ ] Adapter saved and reloaded
-- [ ] Registered update vector extracted
-- [ ] Update vector non-degenerate
-- [ ] Pilot SVD diagnostic ran successfully
+- [x] Model loaded successfully
+- [x] Training reached stopping point
+- [x] Adapter saved and reloaded
+- [x] Registered update vector extracted
+- [x] Update vector non-degenerate
+- [x] Pilot SVD diagnostic ran successfully
 
 ## What Worked
 
-- Pending Kaggle execution.
+- End-to-end Kaggle execution completed on `Tesla T4`.
+- The task-aware MBPP path loaded the dataset and trained for 50 steps.
+- The adapter saved and reloaded successfully.
+- The registered update vector was extracted and had non-zero norm.
 
 ## What Failed
 
-- Pending Kaggle execution.
+- No runtime failure occurred in the final run.
+- The SVD summary in `run_report.json` was degenerate (`s_max = 0.0` across layers), so the analysis is not very informative.
 
 ## What To Fix Next
 
-- Import the completed Kaggle outputs if the run finishes successfully.
-- Keep launcher outputs mirrored into `artifacts_root`.
-- Start the next registered task collection run after MBPP.
+- Keep the task-aware MBPP path in the shared pipeline.
+- Treat the MBPP SVD result as a diagnostic edge case, not an analysis claim.
+- Move on to the next registered task vector.
 
 ## Notes
 
-- See `kaggle_execution.md` in this directory for the exact run command.
-- This run is planned as `pilot_only` and should not be interpreted as
-  registered H1a/H1b/H2 evidence.
+- This run is `pilot_only` and should not be interpreted as registered H1a/H1b/H2 evidence.
+- The MBPP execution required aligning the notebook and registry with the dataset's `text` and `code` fields.
