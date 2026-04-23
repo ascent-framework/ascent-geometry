@@ -42,11 +42,11 @@
       },
       "fields": {
         "prompt": "problem",
-        "answer": "extracted_solution"
+        "answer": "answer"
       },
       "prompt_style": "chat_reasoning",
       "reward": "final_number_exact_match",
-      "notes": "AIME 2025 problems with numeric final answers extracted into extracted_solution."
+      "notes": "AIME 2025 problems with final answers in the answer field."
     },
     "AMC": {
       "slug": "amc",
