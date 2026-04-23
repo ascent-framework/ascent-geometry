@@ -63,10 +63,18 @@
     },
     "MBPP": {
       "slug": "mbpp",
-      "status": "planned",
+      "status": "implemented",
+      "dataset_loader": {
+        "path": "mbpp",
+        "split": "train"
+      },
       "prompt_style": "chat_code",
-      "reward": "task_specific_pending",
-      "notes": "Code-eval reward path still needed."
+      "reward": "code_exact_match",
+      "fields": {
+        "prompt": "prompt",
+        "answer": "code"
+      },
+      "notes": "Code baseline task using normalized code exact match."
     },
     "CommonsenseQA": {
       "slug": "commonsenseqa",

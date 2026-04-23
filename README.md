@@ -40,6 +40,8 @@ See [`ascent-framework/docs/phase0/execution-plan.md`](https://github.com/ascent
   notebooks and task-specific Kaggle metadata prepared.
 - Five valid pilot vectors now exist across `GSM8K`, `CommonsenseQA`, `MATH`,
   `HellaSwag`, and `ARC-Challenge`; the imported run records live under `runs/`.
+- `MBPP` is now wired through the same task-aware code path and its Kaggle pilot
+  run is in progress.
 - Initial reusable CLI entry points now exist in `training/`, `extraction/`,
   and `analysis/` for the Phase 0 path.
 - The imported pilot analysis indicates a stronger adaptation signal in

@@ -9,3 +9,4 @@ Use the file that matches the notebook you are pushing to Kaggle:
 - `math.json`
 - `hellaswag.json`
 - `arc-challenge.json`
+- `mbpp.json`

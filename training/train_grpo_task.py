@@ -104,6 +104,24 @@ def extract_final_option(text: str) -> str | None:
     return matches[-1] if matches else None
 
 
+def extract_code_block(text: str) -> str:
+    fenced_blocks = re.findall(r"```(?:python)?\n(.*?)```", text, flags=re.DOTALL | re.IGNORECASE)
+    if fenced_blocks:
+        return fenced_blocks[-1]
+    return text
+
+
+def normalize_code_text(text: str) -> str:
+    code = extract_code_block(text)
+    lines = []
+    for raw_line in code.splitlines():
+        stripped = raw_line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        lines.append(stripped)
+    return "\n".join(lines)
+
+
 def final_number_exact_match(completions: list[str], answer: list[str], **_: object) -> list[float]:
     n_prompts = len(answer)
     assert len(completions) % n_prompts == 0, (
@@ -132,9 +150,24 @@ def mcq_label_exact_match(completions: list[str], answer: list[str], **_: object
     return rewards
 
 
+def code_exact_match(completions: list[str], answer: list[str], **_: object) -> list[float]:
+    n_prompts = len(answer)
+    assert len(completions) % n_prompts == 0, (
+        f"len(completions)={len(completions)} not divisible by n_prompts={n_prompts}"
+    )
+    n_gen = len(completions) // n_prompts
+    rewards = []
+    for i, completion in enumerate(completions):
+        pred = normalize_code_text(completion)
+        gold = normalize_code_text(answer[i // n_gen])
+        rewards.append(1.0 if pred == gold and pred else 0.0)
+    return rewards
+
+
 REWARD_BUILDERS = {
     "final_number_exact_match": final_number_exact_match,
     "mcq_label_exact_match": mcq_label_exact_match,
+    "code_exact_match": code_exact_match,
 }
 
 
@@ -229,6 +262,11 @@ def synthetic_example(task_name: str) -> dict[str, object]:
                 "text": ["oxygen and sugar", "sunlight and water", "soil and rocks", "wind and rain"],
             },
             "answerKey": "B",
+        }
+    if task_name == "MBPP":
+        return {
+            "prompt": "Write a Python function `add_one` that returns the input plus one.",
+            "code": "def add_one(x):\n    return x + 1",
         }
     if task_name == "HellaSwag":
         return {
