@@ -28,6 +28,7 @@ Example: `2026-04-20-phase0-gsm8k-qwen2.5-1.5b/`
 Imported Phase 0 pilot example:
 
 - `runs/2026-04-22-phase0-gsm8k-qwen2.5-1.5b/`
+- `runs/2026-04-23-phase0-hellaswag-qwen2.5-1.5b/`
 
 ## Current entry point
 
