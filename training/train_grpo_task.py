@@ -208,6 +208,9 @@ def mbpp_test_pass(
             tests.extend(_ensure_list_of_strings(test_list[prompt_idx]))
         if challenge_test_list is not None:
             tests.extend(_ensure_list_of_strings(challenge_test_list[prompt_idx]))
+        if not tests:
+            rewards.append(0.0)
+            continue
         try:
             _run_mbpp_tests(candidate_code, test_setup_code[prompt_idx] if test_setup_code is not None else "", tests)
             rewards.append(1.0)
