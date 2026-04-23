@@ -110,7 +110,7 @@ Goal: collect registered update vectors for the minimum registered task set.
 - [ ] HumanEval
 - [ ] MBPP
 - [x] CommonsenseQA
-- [ ] HellaSwag
+- [x] HellaSwag
 - [ ] ARC-Challenge
 
 ### Collection workflow
@@ -226,6 +226,9 @@ Recommended order for the next concrete steps:
   `manifest` reports were not mirrored into the top-level artifact bundle; the
   pipeline has now been updated so future runs copy standardized reports into
   `artifacts_root`.
+- `2026-04-23`: The reusable task path now also covers `HellaSwag`; the task
+  registry, training formatter, and label normalization are wired, but no
+  Kaggle pilot run has been executed yet.
 - Remaining unchecked Phase 0 items above should be treated as "not recorded"
   rather than "known failed" where the imported Kaggle report did not preserve
   full operator-side preflight or environment details.

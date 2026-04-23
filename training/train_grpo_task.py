@@ -138,18 +138,52 @@ REWARD_BUILDERS = {
 }
 
 
+def render_mcq_options(labels: list[object], texts: list[object]) -> str:
+    return "\n".join(f"{label}. {text}" for label, text in zip(labels, texts))
+
+
 def format_commonsenseqa_prompt(example: dict[str, object]) -> str:
     question = str(example["question"])
     choices = example["choices"]
     labels = choices["label"]
     texts = choices["text"]
-    rendered = "\n".join(f"{label}. {text}" for label, text in zip(labels, texts))
+    rendered = render_mcq_options(labels, texts)
     return f"{question}\n\nOptions:\n{rendered}"
+
+
+def format_hellaswag_prompt(example: dict[str, object]) -> str:
+    activity_label = str(example.get("activity_label", "")).strip()
+    ctx_a = str(example["ctx_a"]).strip()
+    ctx_b = str(example.get("ctx_b", "")).strip()
+    context = f"{ctx_a} {ctx_b}".strip()
+    endings = list(example["endings"])
+    rendered = render_mcq_options(["A", "B", "C", "D"], endings)
+    prefix = f"Activity: {activity_label}\n\n" if activity_label else ""
+    return f"{prefix}Context: {context}\n\nChoose the best continuation:\n{rendered}"
 
 
 CHOICE_FORMATTERS = {
     "commonsenseqa": format_commonsenseqa_prompt,
+    "hellaswag": format_hellaswag_prompt,
 }
+
+
+def normalize_mcq_answer(raw_answer: object, *, choice_labels: list[str] | None = None) -> str:
+    answer_text = str(raw_answer).strip()
+    if choice_labels:
+        if answer_text.isdigit():
+            index = int(answer_text)
+            if 0 <= index < len(choice_labels):
+                return choice_labels[index]
+        if isinstance(raw_answer, int) and 0 <= raw_answer < len(choice_labels):
+            return choice_labels[raw_answer]
+    return answer_text.upper()
+
+
+def format_mcq_answer(task_config: dict[str, object], example: dict[str, object]) -> str:
+    answer_field = task_config["fields"]["label"]
+    raw_answer = example[answer_field]
+    return normalize_mcq_answer(raw_answer, choice_labels=task_config.get("choice_labels"))
 
 
 def build_formatted_example(task_config: dict[str, object], example: dict[str, object]) -> dict[str, str]:
@@ -158,7 +192,7 @@ def build_formatted_example(task_config: dict[str, object], example: dict[str, o
         if choice_format not in CHOICE_FORMATTERS:
             raise NotImplementedError(f"Choice formatter '{choice_format}' is not implemented.")
         user_prompt = CHOICE_FORMATTERS[choice_format](example)
-        answer_value = str(example[task_config["fields"]["label"]])
+        answer_value = format_mcq_answer(task_config, example)
     else:
         prompt_field = task_config["fields"]["prompt"]
         answer_field = task_config["fields"]["answer"]
@@ -186,6 +220,19 @@ def synthetic_example(task_name: str) -> dict[str, object]:
                 "text": ["desk drawer", "refrigerator", "bookshelf", "shoe box", "sink"],
             },
             "answerKey": "B",
+        }
+    if task_name == "HellaSwag":
+        return {
+            "activity_label": "Making tea",
+            "ctx_a": "The person boils water in a kettle.",
+            "ctx_b": "Then",
+            "endings": [
+                "they pour the water into a teacup and add a tea bag.",
+                "they place the kettle inside the refrigerator.",
+                "they hand the kettle to a soccer player.",
+                "they turn off the stove and leave the room.",
+            ],
+            "label": 0,
         }
     raise NotImplementedError(f"No synthetic example defined for task '{task_name}'.")
 

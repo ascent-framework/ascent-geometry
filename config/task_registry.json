@@ -86,10 +86,19 @@
     },
     "HellaSwag": {
       "slug": "hellaswag",
-      "status": "planned",
+      "status": "implemented",
+      "dataset_loader": {
+        "path": "allenai/hellaswag",
+        "split": "train"
+      },
       "prompt_style": "chat_mcq",
-      "reward": "task_specific_pending",
-      "notes": "Multiple-choice reward path still needed."
+      "reward": "mcq_label_exact_match",
+      "choice_format": "hellaswag",
+      "choice_labels": ["A", "B", "C", "D"],
+      "fields": {
+        "label": "label"
+      },
+      "notes": "Multiple-choice baseline task using label exact match and A-D label normalization."
     },
     "ARC-Challenge": {
       "slug": "arc-challenge",

@@ -32,6 +32,8 @@ See [`ascent-framework/docs/phase0/execution-plan.md`](https://github.com/ascent
 - One complete Phase 0 pilot run has been completed on Kaggle for
   `Qwen2.5-1.5B-Instruct` / `GSM8K`, with imported run records under
   `runs/2026-04-22-phase0-gsm8k-qwen2.5-1.5b/`.
+- Additional pilot runs have been completed for `CommonsenseQA` and `MATH`,
+  and the task-aware training path now covers `HellaSwag` as well.
 - Initial reusable CLI entry points now exist in `training/`, `extraction/`,
   and `analysis/` for the Phase 0 path.
 - The imported pilot analysis indicates a stronger adaptation signal in
