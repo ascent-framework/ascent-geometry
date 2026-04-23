@@ -111,7 +111,7 @@ Goal: collect registered update vectors for the minimum registered task set.
 - [ ] MBPP
 - [x] CommonsenseQA
 - [x] HellaSwag
-- [ ] ARC-Challenge
+- [x] ARC-Challenge
 
 ### Collection workflow
 
@@ -237,7 +237,13 @@ Recommended order for the next concrete steps:
   by a Kaggle pilot run.
 - `2026-04-23`: The reusable task path now also covers `ARC-Challenge`; the
   task registry, training formatter, and label normalization are wired and
-  smoke-tested locally, but no Kaggle pilot run has been executed yet.
+  validated by a Kaggle pilot run.
+- `2026-04-23`: One additional Kaggle Phase 0 pilot run completed for
+  `Qwen2.5-1.5B-Instruct` on `ARC-Challenge`, and the imported run record is
+  stored under `runs/2026-04-23-phase0-arc-challenge-qwen2.5-1.5b/`.
+- `2026-04-23`: Five valid pilot task vectors now exist: `GSM8K`,
+  `CommonsenseQA`, `MATH`, `HellaSwag`, and `ARC-Challenge`. All five are
+  non-degenerate and share the same dimensionality (`9,232,384`).
 - Remaining unchecked Phase 0 items above should be treated as "not recorded"
   rather than "known failed" where the imported Kaggle report did not preserve
   full operator-side preflight or environment details.
