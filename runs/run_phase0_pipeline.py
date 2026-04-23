@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -93,6 +94,13 @@ def run_command(cmd: list[str], *, dry_run: bool) -> None:
         print(json.dumps({"dry_run_command": cmd}, indent=2))
         return
     subprocess.run(cmd, check=True, cwd=REPO_ROOT)
+
+
+def copy_if_exists(source_path: Path, dest_path: Path, *, dry_run: bool) -> None:
+    if dry_run or not source_path.exists():
+        return
+    dest_path.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source_path, dest_path)
 
 
 def main() -> None:
@@ -221,6 +229,11 @@ def main() -> None:
     )
     if not args.dry_run:
         write_report(manifest_path, manifest)
+        copy_if_exists(training_report_path, artifacts_dir / "training_report.json", dry_run=args.dry_run)
+        copy_if_exists(extraction_report_path, artifacts_dir / "extraction_report.json", dry_run=args.dry_run)
+        copy_if_exists(analysis_report_path, artifacts_dir / "analysis_report.json", dry_run=args.dry_run)
+        copy_if_exists(manifest_path, artifacts_dir / "run_manifest.json", dry_run=args.dry_run)
+        copy_if_exists(run_note_path, artifacts_dir / "run_note.md", dry_run=args.dry_run)
 
     print(json.dumps(manifest, indent=2))
 
