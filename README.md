@@ -38,6 +38,8 @@ See [`ascent-framework/docs/phase0/execution-plan.md`](https://github.com/ascent
   and `HellaSwag`; the imported run records live under `runs/`.
 - The task-aware training path now also covers `ARC-Challenge`, with launcher
   notebooks and task-specific Kaggle metadata prepared.
+- The task-aware training path now also covers `AIME`, using the `AIME 2025`
+  dataset with a numeric final-answer reward.
 - `MBPP` is now wired through the same task-aware code path, and its Kaggle
   pilot run has completed successfully after aligning the notebook with the
   dataset's `text`/`code` schema.

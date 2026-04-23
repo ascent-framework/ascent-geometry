@@ -304,6 +304,11 @@ def synthetic_example(task_name: str) -> dict[str, object]:
             "problem": "Solve for x: x + 7 = 10.",
             "extracted_solution": 3,
         }
+    if task_name == "AIME":
+        return {
+            "problem": "Find the sum of the digits of 99.",
+            "answer": "18",
+        }
     if task_name == "CommonsenseQA":
         return {
             "question": "Where would you usually keep milk cold?",
