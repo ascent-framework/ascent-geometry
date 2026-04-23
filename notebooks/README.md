@@ -18,6 +18,8 @@ Current notebook set:
 - `phase0-math-qwen2.5-1.5b-pilot.ipynb`
 - `phase0-hellaswag-qwen2.5-1.5b-pilot.ipynb`
 
+Task-specific Kaggle metadata files live in `notebooks/kernel-metadata/`.
+
 ## Naming convention
 
 `{phase}-{task}-{model}-{purpose}.ipynb`
