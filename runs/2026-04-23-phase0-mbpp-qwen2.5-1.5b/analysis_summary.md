@@ -1,7 +1,7 @@
 # MBPP Phase 0 Analysis Summary
 
-The latest MBPP pilot completed end-to-end on `Tesla T4`, but the SVD
-diagnostic is not useful as a geometric signal in its current form.
+The latest MBPP pilot completed end-to-end on `Tesla T4`, but it is excluded
+from the geometry analysis set because the diagnostic signal is flat.
 
 Key observed outputs from `run_report.json`:
 
@@ -27,6 +27,6 @@ Interpretation:
 - This should be treated as a diagnostic limitation, not as evidence of a null adaptation signal.
 
 Operationally, MBPP is still a successful pilot vector capture.
-The next step is to either relax the MBPP reward or treat MBPP as an
-exclusion note for geometry analysis, then keep collecting additional task
-vectors and compare them with the other pilot runs.
+The next step is to either relax the MBPP reward for future experiments or
+keep MBPP as an exclusion note, then continue collecting additional task
+vectors and compare them with the other analyzed pilot runs.

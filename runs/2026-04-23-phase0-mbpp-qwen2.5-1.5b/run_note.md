@@ -69,8 +69,14 @@
 
 - Keep the task-aware MBPP path in the shared pipeline.
 - Relax or redesign the MBPP reward if the goal is to elicit non-zero updates.
-- Treat the MBPP SVD result as a diagnostic edge case, not an analysis claim.
+- Treat the MBPP SVD result as a diagnostic edge case and exclude MBPP from
+  the geometry analysis set.
 - Move on to the next registered task vector.
+
+## Analysis Status
+
+- Excluded from geometry analysis due to flat reward, zero gradient norms, and
+  degenerate SVD output.
 
 ## Notes
 

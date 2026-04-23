@@ -123,7 +123,7 @@ Goal: collect registered update vectors for the minimum registered task set.
 - [ ] Extract one registered update vector per task
 - [ ] Keep vector dimensions identical across tasks
 - [ ] Record vector norms for magnitude analysis
-- [ ] Record all task exclusions with reasons and diagnostics
+- [x] Record all task exclusions with reasons and diagnostics
 
 ### Minimum readiness
 
@@ -253,6 +253,11 @@ Recommended order for the next concrete steps:
 - `2026-04-23`: The MBPP pilot run completed after correcting the dataset
   field mapping to `text`/`code`; the notebook and registry now agree on the
   MBPP schema.
+- `2026-04-23`: The MBPP pilot run is retained as a logged capture, but it is
+  excluded from geometry analysis because the reward signal remained flat and
+  the SVD diagnostic was degenerate.
+- `2026-04-23`: MBPP is documented as an exclusion note with the prior
+  blocker history and diagnostics preserved in `runs/`.
 - Remaining unchecked Phase 0 items above should be treated as "not recorded"
   rather than "known failed" where the imported Kaggle report did not preserve
   full operator-side preflight or environment details.
