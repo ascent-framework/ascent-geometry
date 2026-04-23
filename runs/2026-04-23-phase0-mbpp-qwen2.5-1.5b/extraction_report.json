@@ -1,0 +1,46 @@
+{
+  "schema_version": "2026-04-21",
+  "generated_at": "2026-04-23T11:33:18.414508",
+  "stage": "extraction",
+  "phase": 0,
+  "task": "MBPP",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "method": "registered_concat_lora_A_B",
+  "scope": "pilot_only",
+  "summary": {
+    "description": "Registered update vector extraction for MBPP.",
+    "task_status": "implemented"
+  },
+  "config": {
+    "adapter_path": "/kaggle/working/mbpp-qwen2.5-1.5b-phase0/adapter",
+    "output_path": "/kaggle/working/mbpp-qwen2.5-1.5b-phase0/update_vector.npy",
+    "registered_targets": [
+      "down_proj",
+      "gate_proj",
+      "k_proj",
+      "o_proj",
+      "q_proj",
+      "up_proj",
+      "v_proj"
+    ]
+  },
+  "metrics": {
+    "shape": [
+      9232384
+    ],
+    "norm": 22.869491577148438,
+    "sha256": "869f1efe01b46a2cb5656109e6fbc042dd21284d3c68f8c0489f4945612b4056",
+    "layers_captured": 196
+  },
+  "artifacts": {
+    "vector_path": "/kaggle/working/mbpp-qwen2.5-1.5b-phase0/update_vector.npy",
+    "provenance_path": "/kaggle/working/mbpp-qwen2.5-1.5b-phase0/update_vector_provenance.json"
+  },
+  "validation": {
+    "registered_targets_all_covered": true,
+    "update_vector_non_degenerate": true
+  },
+  "notes": [
+    "Extraction completed successfully on Kaggle."
+  ]
+}

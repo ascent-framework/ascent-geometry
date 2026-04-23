@@ -104,6 +104,24 @@ def extract_final_option(text: str) -> str | None:
     return matches[-1] if matches else None
 
 
+def extract_code_block(text: str) -> str:
+    fenced_blocks = re.findall(r"```(?:python)?\n(.*?)```", text, flags=re.DOTALL | re.IGNORECASE)
+    if fenced_blocks:
+        return fenced_blocks[-1]
+    return text
+
+
+def normalize_code_text(text: str) -> str:
+    code = extract_code_block(text)
+    lines = []
+    for raw_line in code.splitlines():
+        stripped = raw_line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        lines.append(stripped)
+    return "\n".join(lines)
+
+
 def final_number_exact_match(completions: list[str], answer: list[str], **_: object) -> list[float]:
     n_prompts = len(answer)
     assert len(completions) % n_prompts == 0, (
@@ -132,9 +150,77 @@ def mcq_label_exact_match(completions: list[str], answer: list[str], **_: object
     return rewards
 
 
+def code_exact_match(completions: list[str], answer: list[str], **_: object) -> list[float]:
+    n_prompts = len(answer)
+    assert len(completions) % n_prompts == 0, (
+        f"len(completions)={len(completions)} not divisible by n_prompts={n_prompts}"
+    )
+    n_gen = len(completions) // n_prompts
+    rewards = []
+    for i, completion in enumerate(completions):
+        pred = normalize_code_text(completion)
+        gold = normalize_code_text(answer[i // n_gen])
+        rewards.append(1.0 if pred == gold and pred else 0.0)
+    return rewards
+
+
+def _ensure_list_of_strings(value: object) -> list[str]:
+    if value is None:
+        return []
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, (list, tuple)):
+        return [str(item) for item in value if str(item).strip()]
+    return [str(value)]
+
+
+def _run_mbpp_tests(candidate_code: str, test_setup_code: object, tests: object) -> bool:
+    namespace: dict[str, object] = {}
+    setup = str(test_setup_code).strip()
+    if setup:
+        exec(setup, namespace)
+
+    exec(candidate_code, namespace)
+    for test in _ensure_list_of_strings(tests):
+        exec(test, namespace)
+    return True
+
+
+def mbpp_test_pass(
+    completions: list[str],
+    answer: list[str],
+    test_list: list[object] | None = None,
+    test_setup_code: list[object] | None = None,
+    challenge_test_list: list[object] | None = None,
+    **_: object,
+) -> list[float]:
+    n_prompts = len(answer)
+    assert len(completions) % n_prompts == 0, (
+        f"len(completions)={len(completions)} not divisible by n_prompts={n_prompts}"
+    )
+    n_gen = len(completions) // n_prompts
+    rewards = []
+    for i, completion in enumerate(completions):
+        prompt_idx = i // n_gen
+        candidate_code = normalize_code_text(completion)
+        tests = []
+        if test_list is not None:
+            tests.extend(_ensure_list_of_strings(test_list[prompt_idx]))
+        if challenge_test_list is not None:
+            tests.extend(_ensure_list_of_strings(challenge_test_list[prompt_idx]))
+        try:
+            _run_mbpp_tests(candidate_code, test_setup_code[prompt_idx] if test_setup_code is not None else "", tests)
+            rewards.append(1.0)
+        except Exception:
+            rewards.append(0.0)
+    return rewards
+
+
 REWARD_BUILDERS = {
     "final_number_exact_match": final_number_exact_match,
     "mcq_label_exact_match": mcq_label_exact_match,
+    "code_exact_match": code_exact_match,
+    "mbpp_test_pass": mbpp_test_pass,
 }
 
 
@@ -198,7 +284,13 @@ def build_formatted_example(task_config: dict[str, object], example: dict[str, o
         answer_field = task_config["fields"]["answer"]
         user_prompt = str(example[prompt_field])
         answer_value = str(example[answer_field])
-    return {"user_prompt": user_prompt, "answer": answer_value}
+    payload = {"user_prompt": user_prompt, "answer": answer_value}
+    for key, field_name in task_config.get("fields", {}).items():
+        if key in {"prompt", "answer"}:
+            continue
+        if field_name in example:
+            payload[key] = example[field_name]
+    return payload
 
 
 def synthetic_example(task_name: str) -> dict[str, object]:
@@ -229,6 +321,17 @@ def synthetic_example(task_name: str) -> dict[str, object]:
                 "text": ["oxygen and sugar", "sunlight and water", "soil and rocks", "wind and rain"],
             },
             "answerKey": "B",
+        }
+    if task_name == "MBPP":
+        return {
+            "text": "Write a Python function `add_one` that returns the input plus one.",
+            "code": "def add_one(x):\n    return x + 1",
+            "test_list": [
+                "assert add_one(3) == 4",
+                "assert add_one(-1) == 0",
+            ],
+            "test_setup_code": "",
+            "challenge_test_list": [],
         }
     if task_name == "HellaSwag":
         return {

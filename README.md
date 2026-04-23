@@ -38,8 +38,15 @@ See [`ascent-framework/docs/phase0/execution-plan.md`](https://github.com/ascent
   and `HellaSwag`; the imported run records live under `runs/`.
 - The task-aware training path now also covers `ARC-Challenge`, with launcher
   notebooks and task-specific Kaggle metadata prepared.
-- Five valid pilot vectors now exist across `GSM8K`, `CommonsenseQA`, `MATH`,
-  `HellaSwag`, and `ARC-Challenge`; the imported run records live under `runs/`.
+- `MBPP` is now wired through the same task-aware code path, and its Kaggle
+  pilot run has completed successfully after aligning the notebook with the
+  dataset's `text`/`code` schema.
+- `MBPP` is retained as a logged pilot capture, but it is excluded from the
+  geometry analysis set because the reward remained flat and the SVD diagnostic
+  was degenerate.
+- Five analyzed pilot vectors now remain across `GSM8K`, `CommonsenseQA`,
+  `MATH`, `HellaSwag`, and `ARC-Challenge`; the imported run records live
+  under `runs/`.
 - Initial reusable CLI entry points now exist in `training/`, `extraction/`,
   and `analysis/` for the Phase 0 path.
 - The imported pilot analysis indicates a stronger adaptation signal in

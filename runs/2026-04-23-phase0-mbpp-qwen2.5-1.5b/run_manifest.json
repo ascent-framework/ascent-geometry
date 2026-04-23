@@ -1,0 +1,50 @@
+{
+  "schema_version": "2026-04-21",
+  "generated_at": "2026-04-23T11:33:18.414508",
+  "stage": "analysis",
+  "phase": 0,
+  "task": "MBPP",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "method": "pipeline",
+  "scope": "pilot_only",
+  "summary": {
+    "description": "Aggregate manifest for a full Phase 0 pilot pipeline run.",
+    "run_name": "2026-04-23-phase0-mbpp-qwen2.5-1.5b"
+  },
+  "config": {
+    "phase_label": "phase0",
+    "skip_training": false,
+    "max_steps": 50
+  },
+  "metrics": {
+    "train_examples": 374,
+    "total_time_sec": 3040.7,
+    "per_step_time_sec": 60.81,
+    "update_vector_norm": 22.869491577148438
+  },
+  "artifacts": {
+    "run_dir": "/Users/son/prj/ascent-geometry/runs/2026-04-23-phase0-mbpp-qwen2.5-1.5b",
+    "artifacts_dir": "/tmp/kaggle-mbpp-output-current/mbpp-qwen2.5-1.5b-phase0",
+    "registry_path": "/Users/son/prj/ascent-geometry/config/registry.json",
+    "task_registry_path": "/Users/son/prj/ascent-geometry/config/task_registry.json",
+    "run_note_template_path": "/Users/son/prj/ascent-geometry/runs/phase0_run_note_template.md",
+    "run_note_path": "/Users/son/prj/ascent-geometry/runs/2026-04-23-phase0-mbpp-qwen2.5-1.5b/run_note.md",
+    "training_report": "/Users/son/prj/ascent-geometry/runs/2026-04-23-phase0-mbpp-qwen2.5-1.5b/training_report.json",
+    "extraction_report": "/Users/son/prj/ascent-geometry/runs/2026-04-23-phase0-mbpp-qwen2.5-1.5b/extraction_report.json",
+    "analysis_report": "/Users/son/prj/ascent-geometry/runs/2026-04-23-phase0-mbpp-qwen2.5-1.5b/analysis_report.json",
+    "adapter_path": "/kaggle/working/mbpp-qwen2.5-1.5b-phase0/adapter",
+    "vector_path": "/kaggle/working/mbpp-qwen2.5-1.5b-phase0/update_vector.npy"
+  },
+  "runtime": {
+    "dry_run": false
+  },
+  "validation": {
+    "training_stage_requested": true,
+    "extraction_stage_requested": true,
+    "analysis_stage_requested": true
+  },
+  "notes": [
+    "This manifest organizes run-local metadata only.",
+    "Large artifacts remain outside the repository under artifacts_root."
+  ]
+}
