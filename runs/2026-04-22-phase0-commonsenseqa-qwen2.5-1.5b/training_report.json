@@ -1,0 +1,66 @@
+{
+  "schema_version": "2026-04-21",
+  "generated_at": "2026-04-22T14:33:00+00:00",
+  "stage": "training",
+  "phase": 0,
+  "task": "CommonsenseQA",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "method": "GRPO",
+  "scope": "pilot_only",
+  "summary": {
+    "description": "Task-aware GRPO run for CommonsenseQA.",
+    "task_status": "implemented"
+  },
+  "config": {
+    "task_registry_path": "/kaggle/working/ascent-geometry/config/task_registry.json",
+    "dataset_loader": {
+      "path": "tau/commonsense_qa",
+      "split": "train"
+    },
+    "prompt_style": "chat_mcq",
+    "reward": "mcq_label_exact_match",
+    "choice_format": "commonsenseqa",
+    "max_steps": 50,
+    "per_device_train_batch_size": 2,
+    "gradient_accumulation_steps": 4,
+    "num_generations": 4,
+    "max_new_tokens": 256,
+    "learning_rate": 0.0001,
+    "lora_rank": 8,
+    "lora_alpha": 16,
+    "lora_target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ]
+  },
+  "metrics": {
+    "train_examples": 9741,
+    "total_time_sec": 233.9,
+    "per_step_time_sec": 4.68
+  },
+  "artifacts": {
+    "adapter_path": "/kaggle/working/2026-04-22-phase0-commonsenseqa-qwen2.5-1.5b/adapter"
+  },
+  "runtime": {
+    "hardware": {
+      "gpu_model": "Tesla T4",
+      "vram_gb": 15.6,
+      "bf16_supported": true,
+      "torch_version": "2.10.0+cu128"
+    },
+    "precision": "bf16"
+  },
+  "validation": {
+    "model_loaded": true,
+    "training_completed": true,
+    "adapter_saved": true
+  },
+  "notes": [
+    "Task config loaded from /kaggle/working/ascent-geometry/config/task_registry.json."
+  ]
+}

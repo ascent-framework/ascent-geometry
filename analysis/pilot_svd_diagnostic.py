@@ -17,6 +17,7 @@ from common.reporting import make_stage_report, write_report
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--task", default="GSM8K", help="Registered task name for report metadata.")
     parser.add_argument("--model-id", required=True, help="Base model used with the adapter.")
     parser.add_argument("--adapter-path", required=True, help="Path to the saved PEFT adapter.")
     parser.add_argument(
@@ -69,7 +70,7 @@ def main() -> None:
     payload = make_stage_report(
         stage="analysis",
         phase=0,
-        task="GSM8K",
+        task=args.task,
         model=args.model_id,
         method="SVD",
         scope="pilot_only",

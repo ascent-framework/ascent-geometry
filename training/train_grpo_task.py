@@ -285,7 +285,7 @@ def main() -> None:
         per_device_train_batch_size=args.per_device_train_batch_size,
         gradient_accumulation_steps=args.gradient_accumulation_steps,
         num_generations=args.num_generations,
-        max_new_tokens=args.max_new_tokens,
+        max_completion_length=args.max_new_tokens,
         learning_rate=args.learning_rate,
         bf16=hardware.bf16_supported,
         fp16=not hardware.bf16_supported,
@@ -300,7 +300,7 @@ def main() -> None:
         args=grpo_config,
         train_dataset=train_data,
         reward_funcs=REWARD_BUILDERS[task_config["reward"]],
-        tokenizer=tokenizer,
+        processing_class=tokenizer,
     )
 
     t0 = time.time()

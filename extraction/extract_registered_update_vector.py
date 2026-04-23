@@ -33,6 +33,7 @@ REGISTERED_TARGETS = {
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--task", default="GSM8K", help="Registered task name for report metadata.")
     parser.add_argument("--model-id", required=True, help="Base model used with the adapter.")
     parser.add_argument("--adapter-path", required=True, help="Path to the saved PEFT adapter.")
     parser.add_argument(
@@ -119,10 +120,10 @@ def main() -> None:
     stage_report = make_stage_report(
         stage="extraction",
         phase=0,
-        task="GSM8K",
+        task=args.task,
         model=args.model_id,
         method="LoRA",
-        scope="registered",
+        scope="pilot_only",
         summary={
             "description": "Registered update-vector extraction for ASCENT-G.",
             "object_type": "registered_concat_lora_A_B",

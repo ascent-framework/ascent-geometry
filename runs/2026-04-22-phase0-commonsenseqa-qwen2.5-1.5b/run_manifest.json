@@ -1,0 +1,47 @@
+{
+  "schema_version": "2026-04-21",
+  "generated_at": "2026-04-22T14:41:36+00:00",
+  "stage": "analysis",
+  "phase": 0,
+  "task": "CommonsenseQA",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "method": "pipeline",
+  "scope": "pilot_only",
+  "summary": {
+    "description": "Aggregate manifest for a full Phase 0 pilot pipeline run.",
+    "run_name": "2026-04-22-phase0-commonsenseqa-qwen2.5-1.5b"
+  },
+  "config": {
+    "phase_label": "phase0",
+    "skip_training": false,
+    "max_steps": 50
+  },
+  "metrics": {},
+  "artifacts": {
+    "run_dir": "/kaggle/working/ascent-geometry/runs/2026-04-22-phase0-commonsenseqa-qwen2.5-1.5b",
+    "artifacts_dir": "/kaggle/working/2026-04-22-phase0-commonsenseqa-qwen2.5-1.5b",
+    "registry_path": "/kaggle/working/ascent-geometry/config/registry.json",
+    "task_registry_path": "/kaggle/working/ascent-geometry/config/task_registry.json",
+    "run_note_template_path": "/kaggle/working/ascent-geometry/runs/phase0_run_note_template.md",
+    "run_note_path": "/kaggle/working/ascent-geometry/runs/2026-04-22-phase0-commonsenseqa-qwen2.5-1.5b/run_note.md",
+    "training_report": "/kaggle/working/ascent-geometry/runs/2026-04-22-phase0-commonsenseqa-qwen2.5-1.5b/training_report.json",
+    "extraction_report": "/kaggle/working/ascent-geometry/runs/2026-04-22-phase0-commonsenseqa-qwen2.5-1.5b/extraction_report.json",
+    "analysis_report": "/kaggle/working/ascent-geometry/runs/2026-04-22-phase0-commonsenseqa-qwen2.5-1.5b/analysis_report.json",
+    "analysis_summary": "runs/2026-04-22-phase0-commonsenseqa-qwen2.5-1.5b/analysis_summary.md",
+    "adapter_path": "/kaggle/working/2026-04-22-phase0-commonsenseqa-qwen2.5-1.5b/adapter",
+    "vector_path": "/kaggle/working/2026-04-22-phase0-commonsenseqa-qwen2.5-1.5b/update_vector.npy"
+  },
+  "runtime": {
+    "dry_run": false
+  },
+  "validation": {
+    "training_stage_requested": true,
+    "extraction_stage_requested": true,
+    "analysis_stage_requested": true
+  },
+  "notes": [
+    "This manifest organizes run-local metadata only.",
+    "Large artifacts remain outside the repository under artifacts_root.",
+    "The original Kaggle extraction and analysis reports were generated before task metadata was parameterized; the imported local copies were corrected to record CommonsenseQA explicitly."
+  ]
+}
