@@ -71,7 +71,7 @@
       "prompt_style": "chat_code",
       "reward": "code_exact_match",
       "fields": {
-        "prompt": "prompt",
+        "prompt": "text",
         "answer": "code"
       },
       "notes": "Code baseline task using normalized code exact match."

@@ -265,7 +265,7 @@ def synthetic_example(task_name: str) -> dict[str, object]:
         }
     if task_name == "MBPP":
         return {
-            "prompt": "Write a Python function `add_one` that returns the input plus one.",
+            "text": "Write a Python function `add_one` that returns the input plus one.",
             "code": "def add_one(x):\n    return x + 1",
         }
     if task_name == "HellaSwag":
