@@ -50,10 +50,18 @@
     },
     "AMC": {
       "slug": "amc",
-      "status": "planned",
+      "status": "implemented",
+      "dataset_loader": {
+        "path": "kaggle-aimo/amc_filtered",
+        "split": "train"
+      },
+      "fields": {
+        "prompt": "task",
+        "answer": "answer"
+      },
       "prompt_style": "chat_reasoning",
-      "reward": "task_specific_pending",
-      "notes": "Dataset wiring and reward verification still needed."
+      "reward": "final_number_exact_match",
+      "notes": "AMC train set with question text in task and numeric final answers in answer."
     },
     "MATH500": {
       "slug": "math500",
