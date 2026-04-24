@@ -138,6 +138,8 @@ Goal: evaluate shared subspace structure and directional separability.
 
 ### H1a
 
+- [ ] Run `analysis/prepare_h1a_h1b_inputs.py` and confirm all 10 registered
+  `update_vector.npy` inputs are present locally with matching SHA-256
 - [ ] Run `analysis/h1a_h1b_task_matrix.py`
 - [ ] Input at least 10 task vectors
 - [ ] Normalize vectors for direction analysis
