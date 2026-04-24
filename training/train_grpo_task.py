@@ -318,6 +318,11 @@ def synthetic_example(task_name: str) -> dict[str, object]:
             "task": "Evaluate 2 + 3.",
             "answer": 5,
         }
+    if task_name == "MATH500":
+        return {
+            "problem": "Solve for x: x + 7 = 10.",
+            "answer": "3",
+        }
     if task_name == "CommonsenseQA":
         return {
             "question": "Where would you usually keep milk cold?",

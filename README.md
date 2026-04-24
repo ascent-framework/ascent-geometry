@@ -44,6 +44,9 @@ See [`ascent-framework/docs/phase0/execution-plan.md`](https://github.com/ascent
 - The task-aware training path now also covers `AMC`, using
   `kaggle-aimo/amc_filtered` with `task` plus `answer` under the
   numeric final-answer reward.
+- The task-aware training path now also covers `MATH500`, using
+  `HuggingFaceH4/MATH-500` with `problem` plus `answer` under the
+  final-number pilot reward.
 - One additional Kaggle Phase 0 pilot run completed for
   `Qwen2.5-1.5B-Instruct` on `AMC`, and the imported run record is stored
   under `runs/2026-04-24-phase0-amc-qwen2.5-1.5b/`.

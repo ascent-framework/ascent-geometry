@@ -65,10 +65,18 @@
     },
     "MATH500": {
       "slug": "math500",
-      "status": "planned",
+      "status": "implemented",
+      "dataset_loader": {
+        "path": "HuggingFaceH4/MATH-500",
+        "split": "test"
+      },
+      "fields": {
+        "prompt": "problem",
+        "answer": "answer"
+      },
       "prompt_style": "chat_reasoning",
-      "reward": "task_specific_pending",
-      "notes": "Dataset wiring and reward verification still needed."
+      "reward": "final_number_exact_match",
+      "notes": "MATH-500 benchmark with problem/answer fields for pilot collection."
     },
     "HumanEval": {
       "slug": "humaneval",
