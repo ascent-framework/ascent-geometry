@@ -119,7 +119,7 @@ def normalize_code_text(text: str) -> str:
         stripped = raw_line.strip()
         if not stripped or stripped.startswith("#"):
             continue
-        lines.append(stripped)
+        lines.append(raw_line.rstrip())
     return "\n".join(lines)
 
 
@@ -187,6 +187,32 @@ def _run_mbpp_tests(candidate_code: str, test_setup_code: object, tests: object)
     return True
 
 
+def _resolve_humaneval_candidate(prompt: object, completion: object, entry_point: object) -> str:
+    prompt_text = str(prompt)
+    candidate_code = normalize_code_text(str(completion))
+    entry_name = str(entry_point).strip()
+    if not candidate_code:
+        return ""
+    if entry_name and re.search(rf"\bdef\s+{re.escape(entry_name)}\s*\(", candidate_code):
+        return candidate_code
+    return f"{prompt_text}{candidate_code}"
+
+
+def _run_humaneval_check(candidate_program: str, test_code: object, entry_point: object) -> bool:
+    namespace: dict[str, object] = {}
+    exec(candidate_program, namespace)
+    exec(str(test_code), namespace)
+
+    entry_name = str(entry_point).strip()
+    if not entry_name or entry_name not in namespace:
+        raise NameError(f"entry_point '{entry_name}' was not defined by candidate program.")
+    check_fn = namespace.get("check")
+    if not callable(check_fn):
+        raise NameError("HumanEval test block did not define callable 'check'.")
+    check_fn(namespace[entry_name])
+    return True
+
+
 def mbpp_test_pass(
     completions: list[str],
     answer: list[str],
@@ -220,11 +246,49 @@ def mbpp_test_pass(
     return rewards
 
 
+def humaneval_test_pass(
+    completions: list[str],
+    answer: list[str],
+    prompt: list[object] | None = None,
+    test: list[object] | None = None,
+    entry_point: list[object] | None = None,
+    **_: object,
+) -> list[float]:
+    del answer
+    if prompt is None or test is None or entry_point is None:
+        raise ValueError("HumanEval reward requires prompt, test, and entry_point fields.")
+    n_prompts = len(prompt)
+    assert len(completions) % n_prompts == 0, (
+        f"len(completions)={len(completions)} not divisible by n_prompts={n_prompts}"
+    )
+    n_gen = len(completions) // n_prompts
+    rewards = []
+    for i, completion in enumerate(completions):
+        prompt_idx = i // n_gen
+        candidate_program = _resolve_humaneval_candidate(
+            prompt[prompt_idx], completion, entry_point[prompt_idx]
+        )
+        if not candidate_program:
+            rewards.append(0.0)
+            continue
+        try:
+            _run_humaneval_check(
+                candidate_program,
+                test[prompt_idx],
+                entry_point[prompt_idx],
+            )
+            rewards.append(1.0)
+        except Exception:
+            rewards.append(0.0)
+    return rewards
+
+
 REWARD_BUILDERS = {
     "final_number_exact_match": final_number_exact_match,
     "mcq_label_exact_match": mcq_label_exact_match,
     "code_exact_match": code_exact_match,
     "mbpp_test_pass": mbpp_test_pass,
+    "humaneval_test_pass": humaneval_test_pass,
 }
 
 
@@ -351,6 +415,21 @@ def synthetic_example(task_name: str) -> dict[str, object]:
             ],
             "test_setup_code": "",
             "challenge_test_list": [],
+        }
+    if task_name == "HumanEval":
+        return {
+            "task_id": "HumanEval/0",
+            "prompt": (
+                "def add_one(x):\n"
+                "    \"\"\"Return x plus one.\"\"\"\n"
+            ),
+            "canonical_solution": "    return x + 1\n",
+            "test": (
+                "def check(candidate):\n"
+                "    assert candidate(3) == 4\n"
+                "    assert candidate(-1) == 0\n"
+            ),
+            "entry_point": "add_one",
         }
     if task_name == "HellaSwag":
         return {

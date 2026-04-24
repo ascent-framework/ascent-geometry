@@ -8,6 +8,7 @@ Use the file that matches the notebook you are pushing to Kaggle:
 - `aime.json`
 - `amc.json`
 - `math500.json`
+- `humaneval.json`
 - `commonsenseqa.json`
 - `math.json`
 - `hellaswag.json`
