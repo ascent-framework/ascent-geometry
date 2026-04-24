@@ -352,6 +352,15 @@ def build_formatted_example(task_config: dict[str, object], example: dict[str, o
         answer_field = task_config["fields"]["answer"]
         user_prompt = str(example[prompt_field])
         answer_value = str(example[answer_field])
+        test_list_field = task_config.get("fields", {}).get("test_list")
+        if test_list_field and test_list_field in example:
+            tests = _ensure_list_of_strings(example.get(test_list_field))
+            if tests:
+                user_prompt = (
+                    f"{user_prompt}\n\n"
+                    "Your solution must satisfy this test:\n"
+                    f"{tests[0]}"
+                )
     payload = {"user_prompt": user_prompt, "answer": answer_value}
     for key, field_name in task_config.get("fields", {}).items():
         if key in {"prompt", "answer"}:
