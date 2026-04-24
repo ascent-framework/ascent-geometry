@@ -1,0 +1,180 @@
+{
+  "schema_version": "2026-04-21",
+  "generated_at": "2026-04-24T15:42:47+00:00",
+  "stage": "analysis",
+  "phase": 1,
+  "task": "MULTI_TASK",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "method": "SVD+cosine",
+  "scope": "registered",
+  "summary": {
+    "description": "Registered H1a/H1b analysis on normalized task update vectors.",
+    "tasks": [
+      "GSM8K",
+      "MATH",
+      "AIME",
+      "AMC",
+      "MATH500",
+      "HumanEval",
+      "MBPP",
+      "CommonsenseQA",
+      "HellaSwag",
+      "ARC-Challenge"
+    ],
+    "registered_ready": true
+  },
+  "config": {
+    "bootstrap_samples": 1000,
+    "seed": 42,
+    "minimum_registered_tasks": 10,
+    "input_vectors": [
+      {
+        "task": "GSM8K",
+        "path": "/tmp/vectors/gsm8k/gsm8k-qwen2.5-1.5b-phase0/update_vector.npy"
+      },
+      {
+        "task": "MATH",
+        "path": "/tmp/vectors/math/2026-04-23-phase0-math-qwen2.5-1.5b/update_vector.npy"
+      },
+      {
+        "task": "AIME",
+        "path": "/tmp/vectors/aime/aime-qwen2.5-1.5b-phase0/update_vector.npy"
+      },
+      {
+        "task": "AMC",
+        "path": "/tmp/vectors/amc/amc-qwen2.5-1.5b-phase0/update_vector.npy"
+      },
+      {
+        "task": "MATH500",
+        "path": "/tmp/vectors/math500/math500-qwen2.5-1.5b-phase0/update_vector.npy"
+      },
+      {
+        "task": "HumanEval",
+        "path": "/tmp/vectors/humaneval/humaneval-qwen2.5-1.5b-phase0/update_vector.npy"
+      },
+      {
+        "task": "MBPP",
+        "path": "/tmp/vectors/mbpp/mbpp-qwen2.5-1.5b-phase0/update_vector.npy"
+      },
+      {
+        "task": "CommonsenseQA",
+        "path": "/tmp/vectors/commonsenseqa/2026-04-22-phase0-commonsenseqa-qwen2.5-1.5b/update_vector.npy"
+      },
+      {
+        "task": "HellaSwag",
+        "path": "/tmp/vectors/hellaswag/hellaswag-qwen2.5-1.5b-phase0/update_vector.npy"
+      },
+      {
+        "task": "ARC-Challenge",
+        "path": "/tmp/vectors/arc-challenge/arc-challenge-qwen2.5-1.5b-phase0/update_vector.npy"
+      }
+    ]
+  },
+  "metrics": {
+    "num_tasks": 10,
+    "effective_dim": 9232384,
+    "singular_values": [
+      1.0017822980880737,
+      1.000882625579834,
+      1.0008018016815186,
+      1.000429630279541,
+      1.000246524810791,
+      0.9996482133865356,
+      0.9994779825210571,
+      0.9992513656616211,
+      0.9991077184677124,
+      0.9984035491943359
+    ],
+    "r90": 9,
+    "rho": 0.9,
+    "rho_ci_95": [
+      0.4,
+      0.7
+    ],
+    "bootstrap_r90_mean": 5.518,
+    "bootstrap_rho_mean": 0.5518,
+    "h1a_decision": "inconclusive",
+    "h1b": {
+      "computed": true,
+      "decision": "pass",
+      "mean_abs_cos": 0.08586317431957771,
+      "max_abs_cos": 0.31420448422431946,
+      "pair_count": 45
+    },
+    "task_magnitudes": [
+      {
+        "task": "GSM8K",
+        "path": "/tmp/vectors/gsm8k/gsm8k-qwen2.5-1.5b-phase0/update_vector.npy",
+        "norm": 22.893882751464844,
+        "numel": 9232384
+      },
+      {
+        "task": "MATH",
+        "path": "/tmp/vectors/math/2026-04-23-phase0-math-qwen2.5-1.5b/update_vector.npy",
+        "norm": 22.867002487182617,
+        "numel": 9232384
+      },
+      {
+        "task": "AIME",
+        "path": "/tmp/vectors/aime/aime-qwen2.5-1.5b-phase0/update_vector.npy",
+        "norm": 22.875185012817383,
+        "numel": 9232384
+      },
+      {
+        "task": "AMC",
+        "path": "/tmp/vectors/amc/amc-qwen2.5-1.5b-phase0/update_vector.npy",
+        "norm": 22.88356590270996,
+        "numel": 9232384
+      },
+      {
+        "task": "MATH500",
+        "path": "/tmp/vectors/math500/math500-qwen2.5-1.5b-phase0/update_vector.npy",
+        "norm": 22.88688850402832,
+        "numel": 9232384
+      },
+      {
+        "task": "HumanEval",
+        "path": "/tmp/vectors/humaneval/humaneval-qwen2.5-1.5b-phase0/update_vector.npy",
+        "norm": 22.892070770263672,
+        "numel": 9232384
+      },
+      {
+        "task": "MBPP",
+        "path": "/tmp/vectors/mbpp/mbpp-qwen2.5-1.5b-phase0/update_vector.npy",
+        "norm": 22.888227462768555,
+        "numel": 9232384
+      },
+      {
+        "task": "CommonsenseQA",
+        "path": "/tmp/vectors/commonsenseqa/2026-04-22-phase0-commonsenseqa-qwen2.5-1.5b/update_vector.npy",
+        "norm": 22.91707420349121,
+        "numel": 9232384
+      },
+      {
+        "task": "HellaSwag",
+        "path": "/tmp/vectors/hellaswag/hellaswag-qwen2.5-1.5b-phase0/update_vector.npy",
+        "norm": 22.877521514892578,
+        "numel": 9232384
+      },
+      {
+        "task": "ARC-Challenge",
+        "path": "/tmp/vectors/arc-challenge/arc-challenge-qwen2.5-1.5b-phase0/update_vector.npy",
+        "norm": 22.891937255859375,
+        "numel": 9232384
+      }
+    ]
+  },
+  "artifacts": {
+    "report_path": "/tmp/h1a-h1b-report.json"
+  },
+  "runtime": {},
+  "validation": {
+    "all_vectors_same_dimension": true,
+    "all_vectors_nonzero": true,
+    "registered_minimum_tasks_met": true
+  },
+  "notes": [
+    "Input vectors are normalized per preregistration v1.3 for direction analysis.",
+    "Magnitude metadata is retained separately for B_adaptive follow-up analysis."
+  ]
+}
