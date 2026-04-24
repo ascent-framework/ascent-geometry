@@ -113,24 +113,31 @@ Goal: collect registered update vectors for the minimum registered task set.
 - [x] HellaSwag
 - [x] ARC-Challenge
 
-### Collection workflow
+### Run-record collection workflow
 
 - [x] Generalize the training runner beyond GSM8K
 - [x] Generalize task-specific reward and formatting logic
 - [x] Implement a second registered task path (`CommonsenseQA`)
 - [x] Add preflight validation for task config and prompt rendering
-- [ ] Run training for each registered task
-- [ ] Extract one registered update vector per task
-- [ ] Keep vector dimensions identical across tasks
-- [ ] Record vector norms for magnitude analysis
+- [x] Run training for each registered task
+- [x] Extract one registered update vector per task
+- [x] Keep vector dimensions identical across tasks
+- [x] Record vector norms for magnitude analysis
 - [x] Record all task exclusions with reasons and diagnostics
 
-### Minimum readiness
+### Run-record readiness
 
-- [ ] At least 10 valid task vectors exist
-- [ ] All vectors share the same dimensionality
-- [ ] All vectors are non-zero
-- [ ] Every task has a matching stage report or exclusion note
+- [x] At least 10 valid task vectors exist in imported run records
+- [x] All recorded vectors share the same dimensionality
+- [x] All recorded vectors are non-zero
+- [x] Every task has a matching stage report or exclusion note
+
+### Local artifact readiness
+
+- [ ] Download or stage all 10 registered `update_vector.npy` files locally
+- [ ] Verify local vector files against recorded SHA-256 values
+- [ ] Resolve any legacy metadata gaps where early runs recorded only report-local artifact paths
+- [ ] Confirm the exact H1a/H1b input command produced by `analysis/prepare_h1a_h1b_inputs.py`
 
 ## Registered analysis: H1a and H1b
 
@@ -199,7 +206,7 @@ Recommended order for the next concrete steps:
 
 1. [x] Finish one real Phase 0 run
 2. [x] Generalize multi-task training and extraction
-3. [ ] Collect 10 registered task vectors
+3. [ ] Stage 10 registered local vector artifacts for H1a/H1b
 4. [ ] Run H1a and H1b
 5. [ ] Implement and run H2 transfer
 6. [ ] Run exploratory analyses
@@ -315,6 +322,12 @@ Recommended order for the next concrete steps:
   `GSM8K`, `CommonsenseQA`, `MATH`, `HellaSwag`, `ARC-Challenge`, `AIME`,
   `AMC`, `MATH500`, `HumanEval`, and `MBPP`. These analyzed vectors are
   non-degenerate and share dimensionality (`9,232,384`).
+- `2026-04-25`: `analysis/prepare_h1a_h1b_inputs.py` was added to separate
+  imported run-record completeness from local H1a/H1b artifact readiness.
+- `2026-04-25`: H1a/H1b is still blocked on local artifact staging: nine
+  registered `update_vector.npy` files are not present locally, and the local
+  `GSM8K` vector currently fails SHA-256 validation against the recorded run
+  metadata.
 - `2026-04-24`: One additional Kaggle Phase 0 pilot run completed for
   `Qwen2.5-1.5B-Instruct` on `AMC`, and the imported run record is stored
   under `runs/2026-04-24-phase0-amc-qwen2.5-1.5b/`.
