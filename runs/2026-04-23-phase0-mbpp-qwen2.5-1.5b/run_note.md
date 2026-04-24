@@ -2,10 +2,11 @@
 
 ## Summary
 
-- Date: 2026-04-23 KST
+- Date: 2026-04-24 KST
 - Operator: son
 - Environment: Kaggle notebook
-- Branch: `codex/add-mbpp-task-path`
+- Branch: `codex/retry-mbpp-pilot`
+- Commit: `fa1ced0`
 
 ## Target
 
@@ -41,44 +42,36 @@
 
 ## What Worked
 
-- End-to-end Kaggle execution completed on `Tesla T4`.
-- The task-aware MBPP path loaded the dataset and trained for 50 steps.
-- The adapter saved and reloaded successfully.
-- The registered update vector was extracted and had non-zero norm.
-- The final T4 run completed without session failure.
+- End-to-end Kaggle execution completed on `Tesla T4` with the repaired MBPP notebook path.
+- The task-aware MBPP path loaded dataset fields correctly and ran all pipeline stages.
+- Adapter save/reload and registered vector extraction were successful.
 
 ## What Failed
 
-- The training signal was still degenerate: `reward = 0.0`, `loss = 0.0`, and
-  `grad_norm = 0.0` throughout the run.
-- The SVD summary in `run_report.json` was degenerate (`s_max = 0.0` across layers), so the analysis is not very informative.
+- The training signal remained degenerate: `reward = 0.0`, `loss = 0.0`, and `grad_norm = 0.0` at every logged step.
+- `svd_results` remained flat (`s_max = 0.0` layerwise), so geometry analysis value is still absent.
 
 ## Failure History
 
-- Initial notebook version used `example["prompt"]` for MBPP, but the dataset
-  exposes `text` and `code`, which caused a `KeyError: 'prompt'`.
-- The first MBPP reward design used exact string equality, which left
-  `reward = 0.0`, `loss = 0.0`, and `grad_norm = 0.0` across training.
-- A later rerun failed immediately because the Kaggle session was still on
-  `Tesla P100-PCIE-16GB` while the notebook required `T4`.
-- The final T4 rerun completed, but the reward signal still never turned
-  positive, so the effective LoRA delta remained spectrally flat in the SVD
-  diagnostic.
+- Initial notebook version used `example["prompt"]`, but the MBPP dataset exposes `text` and `code` (`KeyError: 'prompt'`).
+- Early reward design (`code_exact_match`) produced fully flat learning signals.
+- Multiple runs failed on `P100` due to the hard GPU guard requiring `T4`.
+- A notebook structure issue could drop MBPP test fields in formatting; this was fixed before the latest rerun.
+- Latest rerun (`2026-04-24`) confirms the path is operational, but still spectrally degenerate.
 
 ## What To Fix Next
 
-- Keep the task-aware MBPP path in the shared pipeline.
-- Relax or redesign the MBPP reward if the goal is to elicit non-zero updates.
-- Treat the MBPP SVD result as a diagnostic edge case and exclude MBPP from
-  the geometry analysis set.
-- Move on to the next registered task vector.
+- Keep MBPP in the run ledger but excluded from geometry analysis.
+- If MBPP must be analyzable, redesign reward shaping or sampling to avoid all-zero rewards.
+- Continue collection on other tasks for analysis-grade vectors.
 
 ## Analysis Status
 
-- Excluded from geometry analysis due to flat reward, zero gradient norms, and
-  degenerate SVD output.
+- Excluded from geometry analysis due to flat reward/gradient and degenerate SVD output.
 
 ## Notes
 
 - This run is `pilot_only` and should not be interpreted as registered H1a/H1b/H2 evidence.
-- The MBPP execution required aligning the notebook and registry with the dataset's `text` and `code` fields.
+- Source kernel: `chson0316/ascent-g-phase-0-pilot-mbpp-qwen2-5-1-5b`
+- Training runtime: `3002.0s` total, `60.04s` per step over `50` steps.
+- Update vector SHA-256: `c7fab727def0044a72b5fafea2acc0858503ed78ed0a90146fad91f8837796dd`

@@ -1,6 +1,6 @@
 {
   "schema_version": "2026-04-21",
-  "generated_at": "2026-04-23T11:33:18.414508",
+  "generated_at": "2026-04-24T02:09:10.305284",
   "stage": "training",
   "phase": 0,
   "task": "MBPP",
@@ -23,31 +23,36 @@
     "per_device_train_batch_size": 2,
     "gradient_accumulation_steps": 4,
     "num_generations": 4,
-    "max_completion_length": 256,
+    "max_new_tokens": 256,
     "learning_rate": 0.0001,
     "lora_rank": 8,
     "lora_alpha": 16,
     "lora_target_modules": [
-      "q_proj",
-      "k_proj",
-      "v_proj",
-      "o_proj",
+      "down_proj",
       "gate_proj",
+      "k_proj",
+      "o_proj",
+      "q_proj",
       "up_proj",
-      "down_proj"
+      "v_proj"
     ]
   },
   "metrics": {
     "train_examples": 374,
-    "total_time_sec": 3040.7,
-    "per_step_time_sec": 60.81
+    "total_time_sec": 3002.0,
+    "per_step_time_sec": 60.04
   },
   "artifacts": {
     "adapter_path": "/kaggle/working/mbpp-qwen2.5-1.5b-phase0/adapter"
   },
   "runtime": {
     "hardware": {
-      "gpu_model": "Tesla T4",
+      "gpu_model": {
+        "gpu_model": "Tesla T4",
+        "vram_gb": 15.6,
+        "bf16_supported": true,
+        "torch_version": "2.10.0+cu128"
+      },
       "vram_gb": 15.6,
       "bf16_supported": true,
       "torch_version": "2.10.0+cu128"

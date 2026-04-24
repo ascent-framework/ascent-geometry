@@ -258,6 +258,9 @@ Recommended order for the next concrete steps:
   the SVD diagnostic was degenerate.
 - `2026-04-23`: MBPP is documented as an exclusion note with the prior
   blocker history and diagnostics preserved in `runs/`.
+- `2026-04-24`: MBPP was rerun on `Tesla T4` after notebook path fixes; the
+  full pipeline completed, but reward/gradient remained flat and SVD stayed
+  degenerate, so MBPP exclusion from geometry analysis remains in effect.
 - `2026-04-23`: The AIME task path has been wired using `math-ai/aime25`
   (`problem`/`answer`) and the reward remains
   `final_number_exact_match`.

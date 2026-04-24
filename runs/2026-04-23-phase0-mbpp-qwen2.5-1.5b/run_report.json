@@ -1,5 +1,5 @@
 {
-  "date": "2026-04-23T11:33:18.414508",
+  "date": "2026-04-24T02:09:10.305284",
   "phase": 0,
   "model": "Qwen/Qwen2.5-1.5B-Instruct",
   "task": "MBPP",
@@ -12,8 +12,8 @@
   },
   "training": {
     "max_steps": 50,
-    "total_time_sec": 3040.7,
-    "per_step_time_sec": 60.81,
+    "total_time_sec": 3002.0,
+    "per_step_time_sec": 60.04,
     "precision": "bf16",
     "phase0_pilot_override": {
       "max_steps": 50
@@ -24,8 +24,8 @@
     "shape": [
       9232384
     ],
-    "norm": 22.869491577148438,
-    "sha256": "869f1efe01b46a2cb5656109e6fbc042dd21284d3c68f8c0489f4945612b4056",
+    "norm": 22.868837356567383,
+    "sha256": "c7fab727def0044a72b5fafea2acc0858503ed78ed0a90146fad91f8837796dd",
     "provenance_path": "/kaggle/working/mbpp-qwen2.5-1.5b-phase0/update_vector_provenance.json",
     "layers_captured": 196,
     "registered_targets": [

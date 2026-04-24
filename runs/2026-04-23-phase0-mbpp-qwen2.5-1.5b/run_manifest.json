@@ -1,6 +1,6 @@
 {
   "schema_version": "2026-04-21",
-  "generated_at": "2026-04-23T11:33:18.414508",
+  "generated_at": "2026-04-24T02:09:10.305284",
   "stage": "analysis",
   "phase": 0,
   "task": "MBPP",
@@ -16,15 +16,10 @@
     "skip_training": false,
     "max_steps": 50
   },
-  "metrics": {
-    "train_examples": 374,
-    "total_time_sec": 3040.7,
-    "per_step_time_sec": 60.81,
-    "update_vector_norm": 22.869491577148438
-  },
+  "metrics": {},
   "artifacts": {
     "run_dir": "/Users/son/prj/ascent-geometry/runs/2026-04-23-phase0-mbpp-qwen2.5-1.5b",
-    "artifacts_dir": "/tmp/kaggle-mbpp-output-current/mbpp-qwen2.5-1.5b-phase0",
+    "artifacts_dir": "/tmp/kaggle-mbpp-out/mbpp-qwen2.5-1.5b-phase0",
     "registry_path": "/Users/son/prj/ascent-geometry/config/registry.json",
     "task_registry_path": "/Users/son/prj/ascent-geometry/config/task_registry.json",
     "run_note_template_path": "/Users/son/prj/ascent-geometry/runs/phase0_run_note_template.md",
