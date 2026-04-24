@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import multiprocessing as mp
 import re
 import sys
 import time
@@ -187,6 +188,50 @@ def _run_mbpp_tests(candidate_code: str, test_setup_code: object, tests: object)
     return True
 
 
+def _run_python_tests_target(
+    result_queue: mp.queues.Queue,
+    candidate_code: str,
+    test_setup_code: str,
+    tests: list[str],
+) -> None:
+    try:
+        namespace: dict[str, object] = {}
+        setup = str(test_setup_code).strip()
+        if setup:
+            exec(setup, namespace)
+        exec(candidate_code, namespace)
+        for test in tests:
+            exec(test, namespace)
+        result_queue.put(True)
+    except Exception:
+        result_queue.put(False)
+
+
+def _run_tests_in_subprocess(
+    candidate_code: str,
+    test_setup_code: object,
+    tests: list[str],
+    *,
+    timeout_sec: float = 3.0,
+) -> bool:
+    ctx = mp.get_context("spawn")
+    result_queue = ctx.Queue()
+    process = ctx.Process(
+        target=_run_python_tests_target,
+        args=(result_queue, candidate_code, str(test_setup_code), tests),
+    )
+    process.start()
+    process.join(timeout_sec)
+    if process.is_alive():
+        process.terminate()
+        process.join(1.0)
+        return False
+    try:
+        return bool(result_queue.get_nowait())
+    except Exception:
+        return False
+
+
 def _resolve_humaneval_candidate(prompt: object, completion: object, entry_point: object) -> str:
     prompt_text = str(prompt)
     candidate_code = normalize_code_text(str(completion))
@@ -238,11 +283,16 @@ def mbpp_test_pass(
         if not tests:
             rewards.append(0.0)
             continue
-        try:
-            _run_mbpp_tests(candidate_code, test_setup_code[prompt_idx] if test_setup_code is not None else "", tests)
-            rewards.append(1.0)
-        except Exception:
-            rewards.append(0.0)
+        rewards.append(
+            1.0
+            if _run_tests_in_subprocess(
+                candidate_code,
+                test_setup_code[prompt_idx] if test_setup_code is not None else "",
+                tests,
+                timeout_sec=3.0,
+            )
+            else 0.0
+        )
     return rewards
 
 
