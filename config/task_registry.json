@@ -80,10 +80,21 @@
     },
     "HumanEval": {
       "slug": "humaneval",
-      "status": "planned",
+      "status": "implemented",
+      "dataset_loader": {
+        "path": "openai/openai_humaneval",
+        "split": "test"
+      },
       "prompt_style": "chat_code",
-      "reward": "task_specific_pending",
-      "notes": "Code-eval reward path still needed."
+      "reward": "humaneval_test_pass",
+      "fields": {
+        "prompt": "prompt",
+        "answer": "canonical_solution",
+        "test": "test",
+        "entry_point": "entry_point",
+        "task_id": "task_id"
+      },
+      "notes": "HumanEval test-execution reward path using prompt/canonical_solution/test/entry_point."
     },
     "MBPP": {
       "slug": "mbpp",
