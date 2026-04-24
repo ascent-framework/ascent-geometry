@@ -5,8 +5,8 @@ from __future__ import annotations
 
 import argparse
 import json
-import multiprocessing as mp
 import re
+import subprocess
 import sys
 import time
 from dataclasses import asdict, dataclass
@@ -188,23 +188,19 @@ def _run_mbpp_tests(candidate_code: str, test_setup_code: object, tests: object)
     return True
 
 
-def _run_python_tests_target(
-    result_queue: mp.queues.Queue,
-    candidate_code: str,
-    test_setup_code: str,
-    tests: list[str],
-) -> None:
-    try:
-        namespace: dict[str, object] = {}
-        setup = str(test_setup_code).strip()
-        if setup:
-            exec(setup, namespace)
-        exec(candidate_code, namespace)
-        for test in tests:
-            exec(test, namespace)
-        result_queue.put(True)
-    except Exception:
-        result_queue.put(False)
+_SUBPROCESS_TEST_RUNNER = r"""
+import json
+import sys
+
+payload = json.loads(sys.argv[1])
+namespace = {}
+setup = str(payload["setup"]).strip()
+if setup:
+    exec(setup, namespace)
+exec(payload["code"], namespace)
+for test in payload["tests"]:
+    exec(test, namespace)
+"""
 
 
 def _run_tests_in_subprocess(
@@ -214,22 +210,25 @@ def _run_tests_in_subprocess(
     *,
     timeout_sec: float = 3.0,
 ) -> tuple[bool, bool]:
-    ctx = mp.get_context("spawn")
-    result_queue = ctx.Queue()
-    process = ctx.Process(
-        target=_run_python_tests_target,
-        args=(result_queue, candidate_code, str(test_setup_code), tests),
+    payload = json.dumps(
+        {
+            "code": candidate_code,
+            "setup": str(test_setup_code),
+            "tests": tests,
+        },
+        ensure_ascii=False,
     )
-    process.start()
-    process.join(timeout_sec)
-    if process.is_alive():
-        process.terminate()
-        process.join(1.0)
-        return False, True
     try:
-        return bool(result_queue.get_nowait()), False
-    except Exception:
-        return False, False
+        completed = subprocess.run(
+            [sys.executable, "-c", _SUBPROCESS_TEST_RUNNER, payload],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            timeout=timeout_sec,
+            check=False,
+        )
+    except subprocess.TimeoutExpired:
+        return False, True
+    return completed.returncode == 0, False
 
 
 MBPP_REWARD_LOG_EVERY = 32
