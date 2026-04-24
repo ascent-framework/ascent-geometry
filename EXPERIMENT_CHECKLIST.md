@@ -261,6 +261,13 @@ Recommended order for the next concrete steps:
 - `2026-04-23`: The AIME task path has been wired using `math-ai/aime25`
   (`problem`/`answer`) and the reward remains
   `final_number_exact_match`.
+- `2026-04-24`: One additional Kaggle Phase 0 pilot run completed for
+  `Qwen2.5-1.5B-Instruct` on `AIME`, and the imported run record is stored
+  under `runs/2026-04-23-phase0-aime-qwen2.5-1.5b/`.
+- `2026-04-24`: Six valid pilot task vectors now exist:
+  `GSM8K`, `CommonsenseQA`, `MATH`, `HellaSwag`, `ARC-Challenge`, and `AIME`.
+  These analyzed vectors are non-degenerate and share dimensionality
+  (`9,232,384`).
 - Remaining unchecked Phase 0 items above should be treated as "not recorded"
   rather than "known failed" where the imported Kaggle report did not preserve
   full operator-side preflight or environment details.

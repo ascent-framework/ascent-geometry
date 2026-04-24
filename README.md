@@ -41,15 +41,18 @@ See [`ascent-framework/docs/phase0/execution-plan.md`](https://github.com/ascent
 - The task-aware training path now also covers `AIME`, using the `AIME 2025`
   dataset with `problem` plus `answer` under the numeric
   final-answer reward.
+- One additional Kaggle Phase 0 pilot run completed for
+  `Qwen2.5-1.5B-Instruct` on `AIME`, and the imported run record is stored
+  under `runs/2026-04-23-phase0-aime-qwen2.5-1.5b/`.
 - `MBPP` is now wired through the same task-aware code path, and its Kaggle
   pilot run has completed successfully after aligning the notebook with the
   dataset's `text`/`code` schema.
 - `MBPP` is retained as a logged pilot capture, but it is excluded from the
   geometry analysis set because the reward remained flat and the SVD diagnostic
   was degenerate.
-- Five analyzed pilot vectors now remain across `GSM8K`, `CommonsenseQA`,
-  `MATH`, `HellaSwag`, and `ARC-Challenge`; the imported run records live
-  under `runs/`.
+- Six analyzed pilot vectors now remain across `GSM8K`, `CommonsenseQA`,
+  `MATH`, `HellaSwag`, `ARC-Challenge`, and `AIME`; the imported run records
+  live under `runs/`.
 - Initial reusable CLI entry points now exist in `training/`, `extraction/`,
   and `analysis/` for the Phase 0 path.
 - The imported pilot analysis indicates a stronger adaptation signal in

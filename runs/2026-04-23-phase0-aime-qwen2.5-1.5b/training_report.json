@@ -1,0 +1,70 @@
+{
+  "schema_version": "2026-04-21",
+  "generated_at": "2026-04-23T17:25:07.809877",
+  "stage": "training",
+  "phase": 0,
+  "task": "AIME",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "method": "GRPO",
+  "scope": "pilot_only",
+  "summary": {
+    "description": "Task-aware GRPO run for AIME.",
+    "task_status": "implemented"
+  },
+  "config": {
+    "task_registry_path": "/Users/son/prj/ascent-geometry/config/task_registry.json",
+    "dataset_loader": {
+      "path": "math-ai/aime25",
+      "split": "test"
+    },
+    "prompt_style": "chat_reasoning",
+    "reward": "final_number_exact_match",
+    "max_steps": 50,
+    "per_device_train_batch_size": 2,
+    "gradient_accumulation_steps": 4,
+    "num_generations": 4,
+    "max_new_tokens": 256,
+    "learning_rate": 0.0001,
+    "lora_rank": 8,
+    "lora_alpha": 16,
+    "lora_target_modules": [
+      "down_proj",
+      "gate_proj",
+      "k_proj",
+      "o_proj",
+      "q_proj",
+      "up_proj",
+      "v_proj"
+    ]
+  },
+  "metrics": {
+    "train_examples": 30,
+    "total_time_sec": 3605.5,
+    "per_step_time_sec": 72.11
+  },
+  "artifacts": {
+    "adapter_path": "/kaggle/working/aime-qwen2.5-1.5b-phase0/adapter"
+  },
+  "runtime": {
+    "hardware": {
+      "gpu_model": {
+        "gpu_model": "Tesla T4",
+        "vram_gb": 15.6,
+        "bf16_supported": true,
+        "torch_version": "2.10.0+cu128"
+      },
+      "vram_gb": 15.6,
+      "bf16_supported": true,
+      "torch_version": "2.10.0+cu128"
+    },
+    "precision": "bf16"
+  },
+  "validation": {
+    "model_loaded": true,
+    "training_completed": true,
+    "adapter_saved": true
+  },
+  "notes": [
+    "Task config loaded from config/task_registry.json."
+  ]
+}
