@@ -1,0 +1,33 @@
+{
+  "schema_version": "2026-04-21",
+  "generated_at": "2026-04-24T10:50:12.165121",
+  "stage": "analysis",
+  "phase": 0,
+  "task": "HumanEval",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "method": "pilot_svd_diagnostic",
+  "scope": "pilot_only",
+  "summary": {
+    "description": "Layerwise pilot SVD diagnostic on dense effective LoRA deltas.",
+    "registered_primary_analysis_run": false
+  },
+  "config": {
+    "analysis_scope": {
+      "registered_primary_analysis_run": false,
+      "pilot_svd_diagnostic_run": true
+    }
+  },
+  "metrics": {
+    "svd_result_count": 196,
+    "sample_first_layer": "base_model.model.model.layers.0.self_attn.q_proj",
+    "sample_first_r90": 6,
+    "sample_first_s_max": 0.04412752389907837
+  },
+  "runtime": {
+    "device_dtype": "bfloat16"
+  },
+  "validation": {
+    "svd_diagnostic_ran": true,
+    "pilot_only": true
+  }
+}

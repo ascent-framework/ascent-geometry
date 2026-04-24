@@ -51,6 +51,9 @@ See [`ascent-framework/docs/phase0/execution-plan.md`](https://github.com/ascent
   `openai/openai_humaneval` with `prompt`/`canonical_solution` and
   test-execution reward on `test` plus `entry_point`.
 - One additional Kaggle Phase 0 pilot run completed for
+  `Qwen2.5-1.5B-Instruct` on `HumanEval`, and the imported run record is
+  stored under `runs/2026-04-24-phase0-humaneval-qwen2.5-1.5b/`.
+- One additional Kaggle Phase 0 pilot run completed for
   `Qwen2.5-1.5B-Instruct` on `AMC`, and the imported run record is stored
   under `runs/2026-04-24-phase0-amc-qwen2.5-1.5b/`.
 - One additional Kaggle Phase 0 pilot run completed for
@@ -62,9 +65,9 @@ See [`ascent-framework/docs/phase0/execution-plan.md`](https://github.com/ascent
 - `MBPP` is retained as a logged pilot capture, but it is excluded from the
   geometry analysis set because the reward remained flat and the SVD diagnostic
   was degenerate.
-- Eight analyzed pilot vectors now remain across `GSM8K`, `CommonsenseQA`,
-  `MATH`, `HellaSwag`, `ARC-Challenge`, `AIME`, `AMC`, and `MATH500`; the
-  imported run records live under `runs/`.
+- Nine analyzed pilot vectors now remain across `GSM8K`, `CommonsenseQA`,
+  `MATH`, `HellaSwag`, `ARC-Challenge`, `AIME`, `AMC`, `MATH500`, and
+  `HumanEval`; the imported run records live under `runs/`.
 - Initial reusable CLI entry points now exist in `training/`, `extraction/`,
   and `analysis/` for the Phase 0 path.
 - The imported pilot analysis indicates a stronger adaptation signal in

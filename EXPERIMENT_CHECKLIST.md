@@ -289,6 +289,14 @@ Recommended order for the next concrete steps:
   when normalizing generated code, preventing false-zero reward outcomes from
   invalidly de-indented function bodies in `MBPP`/`HumanEval`.
 - `2026-04-24`: One additional Kaggle Phase 0 pilot run completed for
+  `Qwen2.5-1.5B-Instruct` on `HumanEval`, and the imported run record is stored
+  under `runs/2026-04-24-phase0-humaneval-qwen2.5-1.5b/`.
+- `2026-04-24`: Nine analyzed pilot task vectors now exist:
+  `GSM8K`, `CommonsenseQA`, `MATH`, `HellaSwag`, `ARC-Challenge`, `AIME`,
+  `AMC`, `MATH500`, and `HumanEval`. These analyzed vectors are non-degenerate
+  and share dimensionality (`9,232,384`); `MBPP` remains excluded from
+  geometry analysis due to prior degenerate SVD diagnostics.
+- `2026-04-24`: One additional Kaggle Phase 0 pilot run completed for
   `Qwen2.5-1.5B-Instruct` on `AMC`, and the imported run record is stored
   under `runs/2026-04-24-phase0-amc-qwen2.5-1.5b/`.
 - `2026-04-24`: Seven valid pilot task vectors now exist:

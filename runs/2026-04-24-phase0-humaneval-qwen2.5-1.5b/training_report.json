@@ -1,0 +1,69 @@
+{
+  "schema_version": "2026-04-21",
+  "generated_at": "2026-04-24T10:50:12.165121",
+  "stage": "training",
+  "phase": 0,
+  "task": "HumanEval",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "method": "GRPO",
+  "scope": "pilot_only",
+  "summary": {
+    "description": "Task-aware GRPO run for HumanEval.",
+    "task_status": "implemented"
+  },
+  "config": {
+    "task_registry_path": "/Users/son/prj/ascent-geometry/config/task_registry.json",
+    "dataset_loader": {
+      "path": "openai/openai_humaneval",
+      "split": "test"
+    },
+    "prompt_style": "chat_code",
+    "reward": "humaneval_test_pass",
+    "max_steps": 50,
+    "per_device_train_batch_size": 2,
+    "gradient_accumulation_steps": 4,
+    "num_generations": 4,
+    "max_new_tokens": 256,
+    "learning_rate": 0.0001,
+    "lora_rank": 8,
+    "lora_alpha": 16,
+    "lora_target_modules": [
+      "down_proj",
+      "gate_proj",
+      "k_proj",
+      "o_proj",
+      "q_proj",
+      "up_proj",
+      "v_proj"
+    ]
+  },
+  "metrics": {
+    "total_time_sec": 3191.6,
+    "per_step_time_sec": 63.83
+  },
+  "artifacts": {
+    "adapter_path": "/kaggle/working/humaneval-qwen2.5-1.5b-phase0/adapter"
+  },
+  "runtime": {
+    "hardware": {
+      "gpu_model": {
+        "gpu_model": "Tesla T4",
+        "vram_gb": 15.6,
+        "bf16_supported": true,
+        "torch_version": "2.10.0+cu128"
+      },
+      "vram_gb": 15.6,
+      "bf16_supported": true,
+      "torch_version": "2.10.0+cu128"
+    },
+    "precision": "bf16"
+  },
+  "validation": {
+    "model_loaded": true,
+    "training_completed": true,
+    "adapter_saved": true
+  },
+  "notes": [
+    "Task config loaded from config/task_registry.json."
+  ]
+}
