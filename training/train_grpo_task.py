@@ -94,8 +94,9 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def extract_final_number(text: str) -> str | None:
-    matches = re.findall(r"[-+]?\d+(?:\.\d+)?", text.replace(",", ""))
+def extract_final_number(text: object) -> str | None:
+    text_str = str(text)
+    matches = re.findall(r"[-+]?\d+(?:\.\d+)?", text_str.replace(",", ""))
     return matches[-1] if matches else None
 
 
