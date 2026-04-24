@@ -1,0 +1,49 @@
+{
+  "schema_version": "2026-04-21",
+  "generated_at": "2026-04-24T14:34:07.678268",
+  "stage": "extraction",
+  "phase": 0,
+  "task": "MBPP",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "method": "registered_concat_lora_A_B",
+  "scope": "pilot_only",
+  "summary": {
+    "description": "Registered update vector extraction for MBPP after rerun fixes.",
+    "task_status": "implemented"
+  },
+  "config": {
+    "adapter_path": "/kaggle/working/mbpp-qwen2.5-1.5b-phase0/adapter",
+    "output_path": "/kaggle/working/mbpp-qwen2.5-1.5b-phase0/update_vector.npy",
+    "registered_targets": [
+      "down_proj",
+      "gate_proj",
+      "k_proj",
+      "o_proj",
+      "q_proj",
+      "up_proj",
+      "v_proj"
+    ]
+  },
+  "metrics": {
+    "shape": [
+      9232384
+    ],
+    "norm": 22.886627197265625,
+    "sha256": "2413b99e418edc4f065e81a2d91df5bbdd53f1c4125316bf9b58c4c50c789fbc",
+    "layers_captured": 196,
+    "b_norm_total": 1.1453260869221105
+  },
+  "artifacts": {
+    "vector_path": "/kaggle/working/mbpp-qwen2.5-1.5b-phase0/update_vector.npy",
+    "provenance_path": "/kaggle/working/mbpp-qwen2.5-1.5b-phase0/update_vector_provenance.json"
+  },
+  "validation": {
+    "registered_targets_all_covered": true,
+    "update_vector_non_degenerate": true,
+    "effective_delta_non_zero": true
+  },
+  "notes": [
+    "Extraction completed successfully on Kaggle.",
+    "Aggregate LoRA B norm confirms a non-zero effective delta for the MBPP rerun."
+  ]
+}

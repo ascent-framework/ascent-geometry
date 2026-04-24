@@ -301,6 +301,18 @@ Recommended order for the next concrete steps:
   first test assertion, and (3) extraction report now logs
   `effective_delta_non_zero` via aggregate `b_norm_total` to prevent false-pass
   non-degeneracy checks from LoRA initialization alone.
+- `2026-04-24`: One additional Kaggle Phase 0 pilot rerun completed for
+  `Qwen2.5-1.5B-Instruct` on `MBPP`, and the imported run record is stored
+  under `runs/2026-04-24-phase0-mbpp-qwen2.5-1.5b/`.
+- `2026-04-24`: The MBPP rerun restored a live reward signal
+  (`pass_rate ~= 0.395`, `timeouts = 0`), passed the new
+  `effective_delta_non_zero` gate (`b_norm_total = 1.1453`), and produced
+  non-zero `s_max` in all 196 captured layers, so MBPP is no longer excluded
+  from pilot geometry analysis.
+- `2026-04-24`: Ten analyzed pilot task vectors now exist:
+  `GSM8K`, `CommonsenseQA`, `MATH`, `HellaSwag`, `ARC-Challenge`, `AIME`,
+  `AMC`, `MATH500`, `HumanEval`, and `MBPP`. These analyzed vectors are
+  non-degenerate and share dimensionality (`9,232,384`).
 - `2026-04-24`: One additional Kaggle Phase 0 pilot run completed for
   `Qwen2.5-1.5B-Instruct` on `AMC`, and the imported run record is stored
   under `runs/2026-04-24-phase0-amc-qwen2.5-1.5b/`.

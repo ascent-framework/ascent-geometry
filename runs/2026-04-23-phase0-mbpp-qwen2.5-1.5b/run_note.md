@@ -1,5 +1,10 @@
 # Phase 0 Run Note
 
+> Superseded for analysis inclusion by the successful rerun in
+> `runs/2026-04-24-phase0-mbpp-qwen2.5-1.5b/`. This `2026-04-23` record is
+> retained as the failure history for the earlier flat-reward / degenerate-SVD
+> MBPP pilot.
+
 ## Summary
 
 - Date: 2026-04-23 KST
@@ -76,7 +81,7 @@
 ## Analysis Status
 
 - Excluded from geometry analysis due to flat reward, zero gradient norms, and
-  degenerate SVD output.
+  degenerate SVD output in this specific run only.
 
 ## Notes
 

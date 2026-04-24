@@ -1,0 +1,38 @@
+{
+  "schema_version": "2026-04-21",
+  "generated_at": "2026-04-24T14:34:07.678268",
+  "stage": "analysis",
+  "phase": 0,
+  "task": "MBPP",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "method": "pilot_svd_diagnostic",
+  "scope": "pilot_only",
+  "summary": {
+    "description": "Pilot SVD diagnostic for MBPP after reward/execution fixes.",
+    "task_status": "implemented"
+  },
+  "metrics": {
+    "layer_count": 196,
+    "r90_mean": 6.566326530612245,
+    "r90_min": 4,
+    "r90_max": 7,
+    "s_max_mean": 0.043009757482427725,
+    "s_max_max": 0.1244187206029892,
+    "module_means_s_max": {
+      "q_proj": 0.03460575673463089,
+      "k_proj": 0.014628782868385315,
+      "v_proj": 0.015723881112145528,
+      "o_proj": 0.03572162713057229,
+      "gate_proj": 0.08348086529544421,
+      "up_proj": 0.08483422281486648,
+      "down_proj": 0.03207316642094936
+    }
+  },
+  "validation": {
+    "pilot_svd_diagnostic_ran": true
+  },
+  "notes": [
+    "The diagnostic completed with non-zero spectra across all 196 captured layers.",
+    "MBPP is no longer excluded for flat reward or degenerate SVD in this rerun."
+  ]
+}
