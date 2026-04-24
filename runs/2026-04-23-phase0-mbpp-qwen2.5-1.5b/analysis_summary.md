@@ -1,5 +1,9 @@
 # MBPP Phase 0 Analysis Summary
 
+> Historical failure summary only. The successful rerun that restores MBPP to
+> the analyzed pilot set lives under
+> `runs/2026-04-24-phase0-mbpp-qwen2.5-1.5b/`.
+
 The latest MBPP pilot completed end-to-end on `Tesla T4`, but it is excluded
 from the geometry analysis set because the diagnostic signal is flat.
 

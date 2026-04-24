@@ -105,12 +105,16 @@ def main() -> None:
     np.save(output_path, update_vector)
 
     checksum = hashlib.sha256(update_vector.tobytes()).hexdigest()
+    b_norm_total = float(np.sqrt(sum(float(layer["b_norm"]) ** 2 for layer in layer_meta)))
+    effective_delta_non_zero = bool(b_norm_total > 0.0)
     provenance = {
         "vector_path": str(output_path),
         "object_type": "registered_concat_lora_A_B",
         "sha256": checksum,
         "shape": list(update_vector.shape),
         "norm": float(np.linalg.norm(update_vector)),
+        "b_norm_total": b_norm_total,
+        "effective_delta_non_zero": effective_delta_non_zero,
         "registered_targets": sorted(REGISTERED_TARGETS),
         "layers": layer_meta,
     }
@@ -145,6 +149,8 @@ def main() -> None:
         validation={
             "registered_targets_all_covered": True,
             "vector_non_degenerate": bool(np.linalg.norm(update_vector) > 0),
+            "b_norm_total": b_norm_total,
+            "effective_delta_non_zero": effective_delta_non_zero,
             "checksum_sha256": checksum,
         },
         notes=[

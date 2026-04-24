@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import subprocess
 import sys
 import time
 from dataclasses import asdict, dataclass
@@ -187,6 +188,81 @@ def _run_mbpp_tests(candidate_code: str, test_setup_code: object, tests: object)
     return True
 
 
+_SUBPROCESS_TEST_RUNNER = r"""
+import json
+import sys
+
+payload = json.loads(sys.argv[1])
+namespace = {}
+setup = str(payload["setup"]).strip()
+if setup:
+    exec(setup, namespace)
+exec(payload["code"], namespace)
+for test in payload["tests"]:
+    exec(test, namespace)
+"""
+
+
+def _run_tests_in_subprocess(
+    candidate_code: str,
+    test_setup_code: object,
+    tests: list[str],
+    *,
+    timeout_sec: float = 3.0,
+) -> tuple[bool, bool]:
+    payload = json.dumps(
+        {
+            "code": candidate_code,
+            "setup": str(test_setup_code),
+            "tests": tests,
+        },
+        ensure_ascii=False,
+    )
+    try:
+        completed = subprocess.run(
+            [sys.executable, "-c", _SUBPROCESS_TEST_RUNNER, payload],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            timeout=timeout_sec,
+            check=False,
+        )
+    except subprocess.TimeoutExpired:
+        return False, True
+    return completed.returncode == 0, False
+
+
+MBPP_REWARD_LOG_EVERY = 32
+MBPP_REWARD_LOG_SECS = 60.0
+_MBPP_REWARD_STATE = {
+    "seen": 0,
+    "passed": 0,
+    "timeouts": 0,
+    "last_log_ts": 0.0,
+}
+
+
+def _log_mbpp_reward_progress(batch_total: int, batch_passed: int, batch_timeouts: int, batch_elapsed_sec: float) -> None:
+    state = _MBPP_REWARD_STATE
+    state["seen"] += batch_total
+    state["passed"] += batch_passed
+    state["timeouts"] += batch_timeouts
+    now = time.time()
+    should_log = (
+        state["seen"] % MBPP_REWARD_LOG_EVERY == 0
+        or now - state["last_log_ts"] >= MBPP_REWARD_LOG_SECS
+    )
+    if not should_log:
+        return
+    pass_rate = state["passed"] / state["seen"] if state["seen"] else 0.0
+    print(
+        "[MBPP-REWARD] "
+        f"seen={state['seen']} passed={state['passed']} pass_rate={pass_rate:.3f} "
+        f"timeouts={state['timeouts']} batch_n={batch_total} batch_sec={batch_elapsed_sec:.2f}",
+        flush=True,
+    )
+    state["last_log_ts"] = now
+
+
 def _resolve_humaneval_candidate(prompt: object, completion: object, entry_point: object) -> str:
     prompt_text = str(prompt)
     candidate_code = normalize_code_text(str(completion))
@@ -227,6 +303,9 @@ def mbpp_test_pass(
     )
     n_gen = len(completions) // n_prompts
     rewards = []
+    batch_passed = 0
+    batch_timeouts = 0
+    batch_start = time.perf_counter()
     for i, completion in enumerate(completions):
         prompt_idx = i // n_gen
         candidate_code = normalize_code_text(completion)
@@ -238,11 +317,25 @@ def mbpp_test_pass(
         if not tests:
             rewards.append(0.0)
             continue
-        try:
-            _run_mbpp_tests(candidate_code, test_setup_code[prompt_idx] if test_setup_code is not None else "", tests)
+        passed, timed_out = _run_tests_in_subprocess(
+            candidate_code,
+            test_setup_code[prompt_idx] if test_setup_code is not None else "",
+            tests,
+            timeout_sec=3.0,
+        )
+        if passed:
+            batch_passed += 1
             rewards.append(1.0)
-        except Exception:
+        else:
+            if timed_out:
+                batch_timeouts += 1
             rewards.append(0.0)
+    _log_mbpp_reward_progress(
+        batch_total=len(completions),
+        batch_passed=batch_passed,
+        batch_timeouts=batch_timeouts,
+        batch_elapsed_sec=time.perf_counter() - batch_start,
+    )
     return rewards
 
 
@@ -352,6 +445,15 @@ def build_formatted_example(task_config: dict[str, object], example: dict[str, o
         answer_field = task_config["fields"]["answer"]
         user_prompt = str(example[prompt_field])
         answer_value = str(example[answer_field])
+        test_list_field = task_config.get("fields", {}).get("test_list")
+        if test_list_field and test_list_field in example:
+            tests = _ensure_list_of_strings(example.get(test_list_field))
+            if tests:
+                user_prompt = (
+                    f"{user_prompt}\n\n"
+                    "Your solution must satisfy this test:\n"
+                    f"{tests[0]}"
+                )
     payload = {"user_prompt": user_prompt, "answer": answer_value}
     for key, field_name in task_config.get("fields", {}).items():
         if key in {"prompt", "answer"}:
