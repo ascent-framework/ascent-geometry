@@ -296,6 +296,11 @@ Recommended order for the next concrete steps:
   `AMC`, `MATH500`, and `HumanEval`. These analyzed vectors are non-degenerate
   and share dimensionality (`9,232,384`); `MBPP` remains excluded from
   geometry analysis due to prior degenerate SVD diagnostics.
+- `2026-04-24`: MBPP rerun patch set landed for the next pilot:
+  (1) code normalization preserves indentation, (2) MBPP prompt includes the
+  first test assertion, and (3) extraction report now logs
+  `effective_delta_non_zero` via aggregate `b_norm_total` to prevent false-pass
+  non-degeneracy checks from LoRA initialization alone.
 - `2026-04-24`: One additional Kaggle Phase 0 pilot run completed for
   `Qwen2.5-1.5B-Instruct` on `AMC`, and the imported run record is stored
   under `runs/2026-04-24-phase0-amc-qwen2.5-1.5b/`.
