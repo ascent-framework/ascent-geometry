@@ -14,6 +14,7 @@ diagnostics here as pilot-only rather than registered Phase 1 analyses.
 Current notebook set:
 
 - `phase0-gsm8k-qwen2.5-1.5b-pilot.ipynb`
+- `phase0-aime-qwen2.5-1.5b-pilot.ipynb`
 - `phase0-commonsenseqa-qwen2.5-1.5b-pilot.ipynb`
 - `phase0-math-qwen2.5-1.5b-pilot.ipynb`
 - `phase0-hellaswag-qwen2.5-1.5b-pilot.ipynb`

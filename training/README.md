@@ -51,9 +51,8 @@ occur:
 
 ## Current implementation status
 
-- Implemented tasks: `GSM8K`, `MATH`, `CommonsenseQA`, `HellaSwag`,
-  `ARC-Challenge`, `MBPP`
-- Planned tasks: `AIME`, `AMC`, `MATH500`, `HumanEval`
+- Implemented tasks: `GSM8K`, `MATH`, `AIME`, `CommonsenseQA`, `HellaSwag`, `ARC-Challenge`, `MBPP`
+- Planned tasks: `AMC`, `MATH500`, `HumanEval`
 
 ## Preflight examples
 

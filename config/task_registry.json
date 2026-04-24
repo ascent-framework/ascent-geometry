@@ -35,10 +35,18 @@
     },
     "AIME": {
       "slug": "aime",
-      "status": "planned",
+      "status": "implemented",
+      "dataset_loader": {
+        "path": "math-ai/aime25",
+        "split": "test"
+      },
+      "fields": {
+        "prompt": "problem",
+        "answer": "answer"
+      },
       "prompt_style": "chat_reasoning",
-      "reward": "task_specific_pending",
-      "notes": "Dataset wiring and reward verification still needed."
+      "reward": "final_number_exact_match",
+      "notes": "AIME 2025 problems with final answers in the answer field."
     },
     "AMC": {
       "slug": "amc",
