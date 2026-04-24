@@ -213,7 +213,7 @@ def _run_tests_in_subprocess(
     tests: list[str],
     *,
     timeout_sec: float = 3.0,
-) -> bool:
+) -> tuple[bool, bool]:
     ctx = mp.get_context("spawn")
     result_queue = ctx.Queue()
     process = ctx.Process(
@@ -225,11 +225,43 @@ def _run_tests_in_subprocess(
     if process.is_alive():
         process.terminate()
         process.join(1.0)
-        return False
+        return False, True
     try:
-        return bool(result_queue.get_nowait())
+        return bool(result_queue.get_nowait()), False
     except Exception:
-        return False
+        return False, False
+
+
+MBPP_REWARD_LOG_EVERY = 32
+MBPP_REWARD_LOG_SECS = 60.0
+_MBPP_REWARD_STATE = {
+    "seen": 0,
+    "passed": 0,
+    "timeouts": 0,
+    "last_log_ts": 0.0,
+}
+
+
+def _log_mbpp_reward_progress(batch_total: int, batch_passed: int, batch_timeouts: int, batch_elapsed_sec: float) -> None:
+    state = _MBPP_REWARD_STATE
+    state["seen"] += batch_total
+    state["passed"] += batch_passed
+    state["timeouts"] += batch_timeouts
+    now = time.time()
+    should_log = (
+        state["seen"] % MBPP_REWARD_LOG_EVERY == 0
+        or now - state["last_log_ts"] >= MBPP_REWARD_LOG_SECS
+    )
+    if not should_log:
+        return
+    pass_rate = state["passed"] / state["seen"] if state["seen"] else 0.0
+    print(
+        "[MBPP-REWARD] "
+        f"seen={state['seen']} passed={state['passed']} pass_rate={pass_rate:.3f} "
+        f"timeouts={state['timeouts']} batch_n={batch_total} batch_sec={batch_elapsed_sec:.2f}",
+        flush=True,
+    )
+    state["last_log_ts"] = now
 
 
 def _resolve_humaneval_candidate(prompt: object, completion: object, entry_point: object) -> str:
@@ -272,6 +304,9 @@ def mbpp_test_pass(
     )
     n_gen = len(completions) // n_prompts
     rewards = []
+    batch_passed = 0
+    batch_timeouts = 0
+    batch_start = time.perf_counter()
     for i, completion in enumerate(completions):
         prompt_idx = i // n_gen
         candidate_code = normalize_code_text(completion)
@@ -283,16 +318,25 @@ def mbpp_test_pass(
         if not tests:
             rewards.append(0.0)
             continue
-        rewards.append(
-            1.0
-            if _run_tests_in_subprocess(
-                candidate_code,
-                test_setup_code[prompt_idx] if test_setup_code is not None else "",
-                tests,
-                timeout_sec=3.0,
-            )
-            else 0.0
+        passed, timed_out = _run_tests_in_subprocess(
+            candidate_code,
+            test_setup_code[prompt_idx] if test_setup_code is not None else "",
+            tests,
+            timeout_sec=3.0,
         )
+        if passed:
+            batch_passed += 1
+            rewards.append(1.0)
+        else:
+            if timed_out:
+                batch_timeouts += 1
+            rewards.append(0.0)
+    _log_mbpp_reward_progress(
+        batch_total=len(completions),
+        batch_passed=batch_passed,
+        batch_timeouts=batch_timeouts,
+        batch_elapsed_sec=time.perf_counter() - batch_start,
+    )
     return rewards
 
 
