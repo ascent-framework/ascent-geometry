@@ -258,6 +258,13 @@ Recommended order for the next concrete steps:
   the SVD diagnostic was degenerate.
 - `2026-04-23`: MBPP is documented as an exclusion note with the prior
   blocker history and diagnostics preserved in `runs/`.
+- `2026-04-24`: One additional Kaggle Phase 0 pilot run completed for
+  `Qwen2.5-1.5B-Instruct` on `MATH500`, and the imported run record is stored
+  under `runs/2026-04-24-phase0-math500-qwen2.5-1.5b/`.
+- `2026-04-24`: Seven pilot task vectors are now captured in run records
+  (`GSM8K`, `CommonsenseQA`, `MATH`, `HellaSwag`, `ARC-Challenge`, `MBPP`,
+  `MATH500`), all with matching dimensionality (`9,232,384`); `MBPP` remains
+  excluded from geometry analysis due to prior degenerate SVD diagnostics.
 - `2026-04-23`: The AIME task path has been wired using `math-ai/aime25`
   (`problem`/`answer`) and the reward remains
   `final_number_exact_match`.
