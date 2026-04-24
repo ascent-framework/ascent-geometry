@@ -105,7 +105,7 @@ Goal: collect registered update vectors for the minimum registered task set.
 - [x] GSM8K
 - [x] MATH
 - [x] AIME
-- [ ] AMC
+- [x] AMC
 - [ ] MATH500
 - [ ] HumanEval
 - [x] MBPP
@@ -268,6 +268,9 @@ Recommended order for the next concrete steps:
   `GSM8K`, `CommonsenseQA`, `MATH`, `HellaSwag`, `ARC-Challenge`, and `AIME`.
   These analyzed vectors are non-degenerate and share dimensionality
   (`9,232,384`).
+- `2026-04-24`: The AMC task path has been wired using
+  `kaggle-aimo/amc_filtered` (`task`/`answer`) and
+  `final_number_exact_match`, with notebook and kernel metadata scaffolded.
 - Remaining unchecked Phase 0 items above should be treated as "not recorded"
   rather than "known failed" where the imported Kaggle report did not preserve
   full operator-side preflight or environment details.

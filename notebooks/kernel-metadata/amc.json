@@ -1,0 +1,15 @@
+{
+  "id": "chson0316/ascent-g-phase-0-pilot-amc-qwen2-5-1-5b",
+  "title": "ASCENT G Phase 0 Pilot AMC Qwen2 5 1 5B",
+  "code_file": "phase0-amc-qwen2.5-1.5b-pilot.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "accelerator": "nvidiagput4",
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}

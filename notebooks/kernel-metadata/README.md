@@ -6,6 +6,7 @@ Use the file that matches the notebook you are pushing to Kaggle:
 
 - `gsm8k.json`
 - `aime.json`
+- `amc.json`
 - `commonsenseqa.json`
 - `math.json`
 - `hellaswag.json`
