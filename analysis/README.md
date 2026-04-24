@@ -35,8 +35,24 @@ registered hypotheses.
 
 - `pilot_svd_diagnostic.py`: dense effective-delta SVD diagnostic for Phase 0
   pipeline validation
+- `prepare_h1a_h1b_inputs.py`: resolve the 10 registered task vectors,
+  validate local `update_vector.npy` artifacts against recorded SHA-256, and
+  emit the exact H1a/H1b command once the inputs exist locally
 - `h1a_h1b_task_matrix.py`: registered multi-task H1a/H1b analysis on
   normalized `concat(ΔW_A, ΔW_B)` vectors
+
+## Preflight
+
+Before running registered H1a/H1b, verify that all 10 `update_vector.npy`
+artifacts exist locally:
+
+```bash
+python analysis/prepare_h1a_h1b_inputs.py \
+  --output-path runs/phase1-h1a-h1b-inputs.json
+```
+
+If vectors were downloaded outside the repository, repeat `--artifacts-root`
+to point at those local artifact directories.
 
 ## Example usage
 
