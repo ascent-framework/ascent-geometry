@@ -1,0 +1,97 @@
+{
+  "schema_version": "2026-04-21",
+  "generated_at": "2026-04-25T06:22:16+00:00",
+  "stage": "analysis",
+  "phase": 1,
+  "task": "MULTI_TASK",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "method": "SVD+cosine",
+  "scope": "registered",
+  "summary": {
+    "description": "Registered H1a/H1b analysis on normalized task update vectors.",
+    "tasks": [
+      "CommonsenseQA",
+      "ARC-Challenge",
+      "HellaSwag"
+    ],
+    "registered_ready": false
+  },
+  "config": {
+    "bootstrap_samples": 1000,
+    "seed": 42,
+    "minimum_registered_tasks": 10,
+    "input_vectors": [
+      {
+        "task": "CommonsenseQA",
+        "path": "/tmp/vectors-1000/commonsenseqa/commonsenseqa-qwen2.5-1.5b-phase0/update_vector.npy"
+      },
+      {
+        "task": "ARC-Challenge",
+        "path": "/tmp/vectors-1000/arc-challenge/arc-challenge-qwen2.5-1.5b-phase0/update_vector.npy"
+      },
+      {
+        "task": "HellaSwag",
+        "path": "/tmp/vectors-1000/hellaswag/hellaswag-qwen2.5-1.5b-phase0/update_vector.npy"
+      }
+    ]
+  },
+  "metrics": {
+    "num_tasks": 3,
+    "effective_dim": 9232384,
+    "singular_values": [
+      1.0002061128616333,
+      1.000022053718567,
+      0.9997766613960266
+    ],
+    "r90": 3,
+    "rho": 1.0,
+    "rho_ci_95": [
+      0.3333333333333333,
+      1.0
+    ],
+    "bootstrap_r90_mean": 2.125,
+    "bootstrap_rho_mean": 0.7083333333333333,
+    "h1a_decision": "inconclusive",
+    "h1b": {
+      "computed": true,
+      "decision": "pass",
+      "mean_abs_cos": 0.0003688180919804533,
+      "max_abs_cos": 0.0007751506636850536,
+      "pair_count": 3
+    },
+    "task_magnitudes": [
+      {
+        "task": "CommonsenseQA",
+        "path": "/tmp/vectors-1000/commonsenseqa/commonsenseqa-qwen2.5-1.5b-phase0/update_vector.npy",
+        "norm": 23.164812088012695,
+        "numel": 9232384
+      },
+      {
+        "task": "ARC-Challenge",
+        "path": "/tmp/vectors-1000/arc-challenge/arc-challenge-qwen2.5-1.5b-phase0/update_vector.npy",
+        "norm": 23.170312881469727,
+        "numel": 9232384
+      },
+      {
+        "task": "HellaSwag",
+        "path": "/tmp/vectors-1000/hellaswag/hellaswag-qwen2.5-1.5b-phase0/update_vector.npy",
+        "norm": 23.106719970703125,
+        "numel": 9232384
+      }
+    ]
+  },
+  "artifacts": {
+    "report_path": "/tmp/h1-preview-3tasks.json"
+  },
+  "runtime": {},
+  "validation": {
+    "all_vectors_same_dimension": true,
+    "all_vectors_nonzero": true,
+    "registered_minimum_tasks_met": false
+  },
+  "notes": [
+    "Input vectors are normalized per preregistration v1.3 for direction analysis.",
+    "Magnitude metadata is retained separately for B_adaptive follow-up analysis.",
+    "Registered H1a evaluation requires at least 10 tasks; current N=3."
+  ]
+}
