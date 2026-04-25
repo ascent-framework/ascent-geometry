@@ -52,6 +52,8 @@ occur:
 ## Current implementation status
 
 - Implemented tasks: `GSM8K`, `MATH`, `AIME`, `AMC`, `MATH500`, `HumanEval`, `CommonsenseQA`, `HellaSwag`, `ARC-Challenge`, `MBPP`
+- Replacement tasks (2026-04-25): `winogrande`, `piqa` added to replace `MATH` (excluded) and `AIME` (excluded)
+- `AMC`, `MATH500`: run with `max_completion_length=64` (deviation from default 256; not registered in v1.3)
 
 ## Preflight examples
 
