@@ -1,0 +1,44 @@
+{
+  "schema_version": "2026-04-21",
+  "generated_at": "2026-04-25T06:15:15.847018",
+  "stage": "analysis",
+  "phase": 1,
+  "task": "HellaSwag",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "method": "pipeline",
+  "scope": "registered",
+  "summary": {
+    "description": "1000-step registered run for HellaSwag.",
+    "status": "completed"
+  },
+  "config": {
+    "source_kernel_id": "chson0316/ascent-g-phase-0-pilot-hellaswag-qwen2-5-1-5b",
+    "max_steps": 1000
+  },
+  "metrics": {
+    "max_steps": 1000,
+    "training_total_time_sec": 12637.9,
+    "per_step_time_sec": 12.64,
+    "vector_norm": 23.1060791015625,
+    "vector_sha256": "9a1b832b6f603e50ba21793765ffc7c6305476655d93a220bbbacbf5e4cef292",
+    "r90_mean": 6.03,
+    "r90_range": [
+      3,
+      7
+    ],
+    "svd_result_count": 196
+  },
+  "artifacts": {
+    "run_dir": "runs/2026-04-25-phase1-hellaswag-qwen2.5-1.5b",
+    "vector_path": "/tmp/vectors-1000/hellaswag/hellaswag-qwen2.5-1.5b-phase0/update_vector.npy"
+  },
+  "runtime": {
+    "environment": "Kaggle notebook",
+    "gpu": "Tesla T4",
+    "precision": "bf16"
+  },
+  "validation": {},
+  "notes": [
+    "Registered 1000-step full run per preregistration v1.3."
+  ]
+}
