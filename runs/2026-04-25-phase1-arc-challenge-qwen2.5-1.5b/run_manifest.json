@@ -1,0 +1,53 @@
+{
+  "schema_version": "2026-04-21",
+  "generated_at": "2026-04-25T01:07:11.339097",
+  "stage": "analysis",
+  "phase": 1,
+  "task": "ARC-Challenge",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "method": "pipeline",
+  "scope": "registered",
+  "summary": {
+    "description": "1000-step registered run for ARC-Challenge.",
+    "run_name": "2026-04-25-phase1-arc-challenge-qwen2.5-1.5b",
+    "status": "completed"
+  },
+  "config": {
+    "source_kernel_id": "chson0316/ascent-g-phase-0-pilot-arc-challenge-qwen2-5-1-5b",
+    "max_steps": 1000,
+    "source_report_timestamp_utc": "2026-04-24T18:30:05.509595"
+  },
+  "metrics": {
+    "max_steps": 1000,
+    "training_total_time_sec": 7469.8,
+    "per_step_time_sec": 7.47,
+    "vector_shape": [
+      9232384
+    ],
+    "vector_norm": 23.16986083984375,
+    "vector_sha256": "d5391f24cc5a6b2c0f6556c1c6adf61e29b88ddf3efc34701eb7bd0637b2845e",
+    "r90_mean": 6.44,
+    "r90_range": [
+      4,
+      7
+    ],
+    "svd_result_count": 196
+  },
+  "artifacts": {
+    "run_dir": "runs/2026-04-25-phase1-arc-challenge-qwen2.5-1.5b",
+    "vector_path": "/tmp/vectors-1000/arc-challenge/arc-challenge-qwen2.5-1.5b-phase0/update_vector.npy",
+    "provenance_path": "/tmp/vectors-1000/arc-challenge/arc-challenge-qwen2.5-1.5b-phase0/update_vector_provenance.json",
+    "source_report_path": "/tmp/vectors-1000/arc-challenge/arc-challenge-qwen2.5-1.5b-phase0/run_report.json"
+  },
+  "runtime": {
+    "environment": "Kaggle notebook",
+    "gpu": "Tesla T4",
+    "precision": "bf16",
+    "torch_version": "2.10.0+cu128"
+  },
+  "validation": {},
+  "notes": [
+    "Registered 1000-step full run per preregistration v1.3.",
+    "Artifact paths point to /tmp downloads \u2014 re-download from chson0316/ascent-g-phase-0-pilot-arc-challenge-qwen2-5-1-5b for durability."
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": "2026-04-21",
+  "generated_at": "2026-04-25T01:07:11.311024",
+  "stage": "analysis",
+  "phase": 1,
+  "task": "CommonsenseQA",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "method": "pipeline",
+  "scope": "registered",
+  "summary": {
+    "description": "1000-step registered run for CommonsenseQA.",
+    "run_name": "2026-04-25-phase1-commonsenseqa-qwen2.5-1.5b",
+    "status": "completed"
+  },
+  "config": {
+    "source_kernel_id": "chson0316/ascent-g-phase-0-pilot-commonsenseqa-qwen2-5-1-5b",
+    "max_steps": 1000,
+    "source_report_timestamp_utc": "2026-04-24T18:05:27.428536"
+  },
+  "metrics": {
+    "max_steps": 1000,
+    "training_total_time_sec": 5955.3,
+    "per_step_time_sec": 5.96,
+    "vector_shape": [
+      9232384
+    ],
+    "vector_norm": 23.164283752441406,
+    "vector_sha256": "933f21cee08d711e8dcd7eb1d00bacdc9ea8e0c85c45aa39335c122b3bc18949",
+    "r90_mean": 6.22,
+    "r90_range": [
+      4,
+      7
+    ],
+    "svd_result_count": 196
+  },
+  "artifacts": {
+    "run_dir": "runs/2026-04-25-phase1-commonsenseqa-qwen2.5-1.5b",
+    "vector_path": "/tmp/vectors-1000/commonsenseqa/commonsenseqa-qwen2.5-1.5b-phase0/update_vector.npy",
+    "provenance_path": "/tmp/vectors-1000/commonsenseqa/commonsenseqa-qwen2.5-1.5b-phase0/update_vector_provenance.json",
+    "source_report_path": "/tmp/vectors-1000/commonsenseqa/commonsenseqa-qwen2.5-1.5b-phase0/run_report.json"
+  },
+  "runtime": {
+    "environment": "Kaggle notebook",
+    "gpu": "Tesla T4",
+    "precision": "bf16",
+    "torch_version": "2.10.0+cu128"
+  },
+  "validation": {},
+  "notes": [
+    "Registered 1000-step full run per preregistration v1.3.",
+    "Artifact paths point to /tmp downloads \u2014 re-download from chson0316/ascent-g-phase-0-pilot-commonsenseqa-qwen2-5-1-5b for durability."
+  ]
+}
