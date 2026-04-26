@@ -4,6 +4,7 @@
     "GSM8K": {
       "slug": "gsm8k",
       "status": "implemented",
+      "default_max_new_tokens": 256,
       "dataset_loader": {
         "path": "openai/gsm8k",
         "name": "main",
@@ -20,6 +21,7 @@
     "MATH": {
       "slug": "math",
       "status": "implemented",
+      "default_max_new_tokens": 256,
       "dataset_loader": {
         "path": "jeggers/competition_math",
         "name": "numeric",
@@ -36,6 +38,7 @@
     "AIME": {
       "slug": "aime",
       "status": "implemented",
+      "default_max_new_tokens": 256,
       "dataset_loader": {
         "path": "math-ai/aime25",
         "split": "test"
@@ -51,6 +54,7 @@
     "AMC": {
       "slug": "amc",
       "status": "implemented",
+      "default_max_new_tokens": 64,
       "dataset_loader": {
         "path": "kaggle-aimo/amc_filtered",
         "split": "train"
@@ -66,6 +70,7 @@
     "MATH500": {
       "slug": "math500",
       "status": "implemented",
+      "default_max_new_tokens": 96,
       "dataset_loader": {
         "path": "HuggingFaceH4/MATH-500",
         "split": "test"
@@ -81,6 +86,7 @@
     "HumanEval": {
       "slug": "humaneval",
       "status": "implemented",
+      "default_max_new_tokens": 256,
       "dataset_loader": {
         "path": "openai/openai_humaneval",
         "split": "test"
@@ -99,6 +105,7 @@
     "MBPP": {
       "slug": "mbpp",
       "status": "implemented",
+      "default_max_new_tokens": 256,
       "dataset_loader": {
         "path": "mbpp",
         "split": "train"
@@ -117,6 +124,7 @@
     "CommonsenseQA": {
       "slug": "commonsenseqa",
       "status": "implemented",
+      "default_max_new_tokens": 64,
       "dataset_loader": {
         "path": "tau/commonsense_qa",
         "split": "train"
@@ -133,6 +141,7 @@
     "HellaSwag": {
       "slug": "hellaswag",
       "status": "implemented",
+      "default_max_new_tokens": 64,
       "dataset_loader": {
         "path": "allenai/hellaswag",
         "split": "train"
@@ -149,6 +158,7 @@
     "ARC-Challenge": {
       "slug": "arc-challenge",
       "status": "implemented",
+      "default_max_new_tokens": 64,
       "dataset_loader": {
         "path": "allenai/ai2_arc",
         "name": "ARC-Challenge",
@@ -162,6 +172,43 @@
         "label": "answerKey"
       },
       "notes": "Multiple-choice baseline task using ARC-Challenge labels and the CommonsenseQA formatter."
+    },
+    "ARC-Easy": {
+      "slug": "arc-easy",
+      "status": "implemented",
+      "default_max_new_tokens": 64,
+      "dataset_loader": {
+        "path": "allenai/ai2_arc",
+        "name": "ARC-Easy",
+        "split": "train"
+      },
+      "prompt_style": "chat_mcq",
+      "reward": "mcq_label_exact_match",
+      "choice_format": "commonsenseqa",
+      "fields": {
+        "question": "question",
+        "label": "answerKey"
+      },
+      "notes": "ARC-Easy baseline task using ARC labels and the CommonsenseQA formatter."
+    },
+    "WinoGrande": {
+      "slug": "winogrande",
+      "status": "implemented",
+      "default_max_new_tokens": 64,
+      "dataset_loader": {
+        "path": "allenai/winogrande",
+        "name": "winogrande_debiased",
+        "split": "train"
+      },
+      "prompt_style": "chat_mcq",
+      "reward": "mcq_label_exact_match",
+      "choice_format": "winogrande",
+      "choice_labels": ["A", "B"],
+      "answer_index_base": 1,
+      "fields": {
+        "label": "answer"
+      },
+      "notes": "Binary-choice commonsense reasoning task using sentence plus option1/option2."
     }
   }
 }
