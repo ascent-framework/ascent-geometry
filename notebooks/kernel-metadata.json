@@ -1,7 +1,7 @@
 {
-  "id": "chson0316/ascent-g-phase-0-pilot-gsm8k-qwen2-5-1-5b",
-  "title": "ASCENT G Phase 0 Pilot GSM8K Qwen2 5 1 5B",
-  "code_file": "phase0-gsm8k-qwen2.5-1.5b-pilot.ipynb",
+  "id": "chson0316/ascent-g-phase-0-pilot-humaneval-qwen2-5-1-5b",
+  "title": "ASCENT G Phase 0 Pilot HumanEval Qwen2 5 1 5B",
+  "code_file": "phase0-humaneval-qwen2.5-1.5b-pilot.ipynb",
   "language": "python",
   "kernel_type": "notebook",
   "is_private": true,

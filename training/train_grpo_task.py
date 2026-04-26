@@ -279,18 +279,94 @@ def _resolve_humaneval_candidate(prompt: object, completion: object, entry_point
 
 
 def _run_humaneval_check(candidate_program: str, test_code: object, entry_point: object) -> bool:
-    namespace: dict[str, object] = {}
-    exec(candidate_program, namespace)
-    exec(str(test_code), namespace)
+    passed, timed_out = _run_humaneval_check_in_subprocess(candidate_program, test_code, entry_point)
+    if timed_out:
+        raise TimeoutError("HumanEval test execution timed out.")
+    return passed
 
-    entry_name = str(entry_point).strip()
-    if not entry_name or entry_name not in namespace:
-        raise NameError(f"entry_point '{entry_name}' was not defined by candidate program.")
-    check_fn = namespace.get("check")
-    if not callable(check_fn):
-        raise NameError("HumanEval test block did not define callable 'check'.")
-    check_fn(namespace[entry_name])
-    return True
+
+_HUMANEVAL_SUBPROCESS_RUNNER = r"""
+import json
+import sys
+
+payload = json.loads(sys.argv[1])
+namespace = {}
+exec(payload["candidate_program"], namespace)
+exec(str(payload["test_code"]), namespace)
+
+entry_name = str(payload["entry_point"]).strip()
+if not entry_name or entry_name not in namespace:
+    raise NameError(f"entry_point '{entry_name}' was not defined by candidate program.")
+check_fn = namespace.get("check")
+if not callable(check_fn):
+    raise NameError("HumanEval test block did not define callable 'check'.")
+check_fn(namespace[entry_name])
+"""
+
+
+def _run_humaneval_check_in_subprocess(
+    candidate_program: str,
+    test_code: object,
+    entry_point: object,
+    *,
+    timeout_sec: float = 3.0,
+) -> tuple[bool, bool]:
+    payload = json.dumps(
+        {
+            "candidate_program": candidate_program,
+            "test_code": str(test_code),
+            "entry_point": str(entry_point),
+        },
+        ensure_ascii=False,
+    )
+    try:
+        completed = subprocess.run(
+            [sys.executable, "-c", _HUMANEVAL_SUBPROCESS_RUNNER, payload],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            timeout=timeout_sec,
+            check=False,
+        )
+    except subprocess.TimeoutExpired:
+        return False, True
+    return completed.returncode == 0, False
+
+
+HUMANEVAL_REWARD_LOG_EVERY = 32
+HUMANEVAL_REWARD_LOG_SECS = 60.0
+_HUMANEVAL_REWARD_STATE = {
+    "seen": 0,
+    "passed": 0,
+    "timeouts": 0,
+    "last_log_ts": 0.0,
+}
+
+
+def _log_humaneval_reward_progress(
+    batch_total: int,
+    batch_passed: int,
+    batch_timeouts: int,
+    batch_elapsed_sec: float,
+) -> None:
+    state = _HUMANEVAL_REWARD_STATE
+    state["seen"] += batch_total
+    state["passed"] += batch_passed
+    state["timeouts"] += batch_timeouts
+    now = time.time()
+    should_log = (
+        state["seen"] % HUMANEVAL_REWARD_LOG_EVERY == 0
+        or now - state["last_log_ts"] >= HUMANEVAL_REWARD_LOG_SECS
+    )
+    if not should_log:
+        return
+    pass_rate = state["passed"] / state["seen"] if state["seen"] else 0.0
+    print(
+        "[HUMANEVAL-REWARD] "
+        f"seen={state['seen']} passed={state['passed']} pass_rate={pass_rate:.3f} "
+        f"timeouts={state['timeouts']} batch_n={batch_total} batch_sec={batch_elapsed_sec:.2f}",
+        flush=True,
+    )
+    state["last_log_ts"] = now
 
 
 def mbpp_test_pass(
@@ -360,6 +436,9 @@ def humaneval_test_pass(
     )
     n_gen = len(completions) // n_prompts
     rewards = []
+    batch_passed = 0
+    batch_timeouts = 0
+    batch_start = time.perf_counter()
     for i, completion in enumerate(completions):
         prompt_idx = i // n_gen
         candidate_program = _resolve_humaneval_candidate(
@@ -368,15 +447,25 @@ def humaneval_test_pass(
         if not candidate_program:
             rewards.append(0.0)
             continue
-        try:
-            _run_humaneval_check(
-                candidate_program,
-                test[prompt_idx],
-                entry_point[prompt_idx],
-            )
+        passed, timed_out = _run_humaneval_check_in_subprocess(
+            candidate_program,
+            test[prompt_idx],
+            entry_point[prompt_idx],
+            timeout_sec=3.0,
+        )
+        if passed:
+            batch_passed += 1
             rewards.append(1.0)
-        except Exception:
+        else:
+            if timed_out:
+                batch_timeouts += 1
             rewards.append(0.0)
+    _log_humaneval_reward_progress(
+        batch_total=len(completions),
+        batch_passed=batch_passed,
+        batch_timeouts=batch_timeouts,
+        batch_elapsed_sec=time.perf_counter() - batch_start,
+    )
     return rewards
 
 
