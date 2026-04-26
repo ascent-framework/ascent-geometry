@@ -51,7 +51,10 @@ occur:
 
 ## Current implementation status
 
-- Implemented tasks: `GSM8K`, `MATH`, `AIME`, `AMC`, `MATH500`, `HumanEval`, `CommonsenseQA`, `HellaSwag`, `ARC-Challenge`, `MBPP`
+- Implemented tasks: `GSM8K`, `MATH`, `AIME`, `AMC`, `MATH500`, `HumanEval`, `CommonsenseQA`, `HellaSwag`, `ARC-Challenge`, `MBPP`, `ARC-Easy`, `WinoGrande`
+- Fallback candidates still under discussion: `openbookqa`, `piqa`
+- `train_grpo_task.py` now resolves task-specific default `max_new_tokens` from `config/task_registry.json`
+- `AMC`, `MATH500`: `max_completion_length=64` is an exploratory deviation from the default 256-token setting, not part of the registered v1.3 setup
 
 ## Preflight examples
 

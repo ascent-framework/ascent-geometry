@@ -74,7 +74,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--per-device-train-batch-size", type=int, default=2)
     parser.add_argument("--gradient-accumulation-steps", type=int, default=4)
     parser.add_argument("--num-generations", type=int, default=4)
-    parser.add_argument("--max-new-tokens", type=int, default=256)
+    parser.add_argument(
+        "--max-new-tokens",
+        type=int,
+        help="Override task-specific generation cap. Defaults to the task registry value.",
+    )
     parser.add_argument("--learning-rate", type=float, default=1e-4)
     parser.add_argument(
         "--scope",
@@ -409,28 +413,48 @@ def format_hellaswag_prompt(example: dict[str, object]) -> str:
     return f"{prefix}Context: {context}\n\nChoose the best continuation:\n{rendered}"
 
 
+def format_winogrande_prompt(example: dict[str, object]) -> str:
+    sentence = str(example["sentence"]).strip()
+    option1 = str(example["option1"]).strip()
+    option2 = str(example["option2"]).strip()
+    rendered = render_mcq_options(["A", "B"], [option1, option2])
+    return f"{sentence}\n\nChoose the better fill for the blank:\n{rendered}"
+
+
 CHOICE_FORMATTERS = {
     "commonsenseqa": format_commonsenseqa_prompt,
     "hellaswag": format_hellaswag_prompt,
+    "winogrande": format_winogrande_prompt,
 }
 
 
-def normalize_mcq_answer(raw_answer: object, *, choice_labels: list[str] | None = None) -> str:
+def normalize_mcq_answer(
+    raw_answer: object,
+    *,
+    choice_labels: list[str] | None = None,
+    answer_index_base: int = 0,
+) -> str:
     answer_text = str(raw_answer).strip()
     if choice_labels:
         if answer_text.isdigit():
-            index = int(answer_text)
+            index = int(answer_text) - answer_index_base
             if 0 <= index < len(choice_labels):
                 return choice_labels[index]
-        if isinstance(raw_answer, int) and 0 <= raw_answer < len(choice_labels):
-            return choice_labels[raw_answer]
+        if isinstance(raw_answer, int):
+            index = raw_answer - answer_index_base
+            if 0 <= index < len(choice_labels):
+                return choice_labels[index]
     return answer_text.upper()
 
 
 def format_mcq_answer(task_config: dict[str, object], example: dict[str, object]) -> str:
     answer_field = task_config["fields"]["label"]
     raw_answer = example[answer_field]
-    return normalize_mcq_answer(raw_answer, choice_labels=task_config.get("choice_labels"))
+    return normalize_mcq_answer(
+        raw_answer,
+        choice_labels=task_config.get("choice_labels"),
+        answer_index_base=int(task_config.get("answer_index_base", 0)),
+    )
 
 
 def build_formatted_example(task_config: dict[str, object], example: dict[str, object]) -> dict[str, str]:
@@ -507,6 +531,15 @@ def synthetic_example(task_name: str) -> dict[str, object]:
             },
             "answerKey": "B",
         }
+    if task_name == "ARC-Easy":
+        return {
+            "question": "What is the main source of energy for Earth?",
+            "choices": {
+                "label": ["A", "B", "C", "D"],
+                "text": ["the Moon", "the Sun", "the ocean", "the soil"],
+            },
+            "answerKey": "B",
+        }
     if task_name == "MBPP":
         return {
             "text": "Write a Python function `add_one` that returns the input plus one.",
@@ -546,6 +579,13 @@ def synthetic_example(task_name: str) -> dict[str, object]:
             ],
             "label": 0,
         }
+    if task_name == "WinoGrande":
+        return {
+            "sentence": "Jordan handed the book to Taylor because _ had finished reading it.",
+            "option1": "Jordan",
+            "option2": "Taylor",
+            "answer": "1",
+        }
     raise NotImplementedError(f"No synthetic example defined for task '{task_name}'.")
 
 
@@ -577,6 +617,10 @@ def main() -> None:
         )
     if task_config["reward"] not in REWARD_BUILDERS:
         raise NotImplementedError(f"Reward '{task_config['reward']}' is not implemented.")
+
+    resolved_max_new_tokens = int(task_config.get("default_max_new_tokens", 256))
+    if args.max_new_tokens is not None:
+        resolved_max_new_tokens = args.max_new_tokens
 
     if args.print_task_config:
         print(json.dumps(task_config, indent=2))
@@ -649,7 +693,7 @@ def main() -> None:
         per_device_train_batch_size=args.per_device_train_batch_size,
         gradient_accumulation_steps=args.gradient_accumulation_steps,
         num_generations=args.num_generations,
-        max_completion_length=args.max_new_tokens,
+        max_completion_length=resolved_max_new_tokens,
         learning_rate=args.learning_rate,
         bf16=hardware.bf16_supported,
         fp16=not hardware.bf16_supported,
@@ -697,7 +741,7 @@ def main() -> None:
             "per_device_train_batch_size": args.per_device_train_batch_size,
             "gradient_accumulation_steps": args.gradient_accumulation_steps,
             "num_generations": args.num_generations,
-            "max_new_tokens": args.max_new_tokens,
+            "max_new_tokens": resolved_max_new_tokens,
             "learning_rate": args.learning_rate,
             "lora_rank": 8,
             "lora_alpha": 16,
