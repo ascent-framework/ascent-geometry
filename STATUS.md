@@ -123,10 +123,15 @@
   - mean `|cos| = 0.00045`
   - max `|cos| = 0.00113`
   - `r90 = 4`, `rho = 1.0`
+- `완료 5태스크` precheck:
+  - mean `|cos| = 0.00131`
+  - max `|cos| = 0.00393`
+  - `r90 = 5`, `rho = 1.0`
 
 현재 판단:
 - `H1b`는 우호적이다. 풀런 벡터들은 서로 매우 다른 방향을 보인다.
 - `H1a`는 아직 우호적이라고 보기 어렵다. 다만 반박으로 결론낼 단계도 아니다.
+- 5개만 봐도 공통 저차원 subspace는 아직 뚜렷하지 않다.
 - 특히 수학 군집(`MATH`, `AIME`, `AMC`, `MATH500`)과 코드 군집(`HumanEval`, `MBPP`)이 추가돼야 공통 저차원 구조 존재 여부를 제대로 볼 수 있다.
 
 ### 운영/계측 수정
@@ -155,6 +160,7 @@
 | 런 리포트 | `runs/2026-04-25-phase1-{task}-qwen2.5-1.5b/` |
 | H1a/H1b 파일럿 리포트 | `runs/2026-04-25-phase1-h1a-h1b-pilot/` |
 | 상세 실행 계획 | `runs/2026-04-25-phase1-h1a-h1b-pilot/full_run_plan.md` |
+| 이번 대화 요약 | `runs/2026-04-26-h1a-prognosis/conversation_summary.md` |
 
 ---
 
