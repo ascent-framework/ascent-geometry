@@ -1,6 +1,6 @@
 # ASCENT-G 현황 문서
 
-**작성일**: 2026-04-26 (revised)
+**작성일**: 2026-04-27 (revised)
 **모델**: `Qwen/Qwen2.5-1.5B-Instruct`
 
 ---
@@ -12,7 +12,7 @@
 | Phase 0 파이프라인 검증 (GSM8K) | ✅ 완료 | 2026-04-21, T4 GPU |
 | Phase 1 태스크 10개 50-step 파일럿 수집 | ✅ 완료 | 2026-04-22~24 |
 | H1a/H1b 파일럿 분석 | ✅ 완료 (Inconclusive) | 2026-04-25 |
-| **개정 10-task 1000-step 수집** | 🔄 진행 중 | 4/10 완료, exploratory plan |
+| **개정 10-task 1000-step 수집** | 🔄 진행 중 | 4/10 완료, AMC/MATH500 제외 → SVAMP/OpenbookQA 대체 |
 | H2 전이 실험 | ⏳ 대기 | H1a/H1b 이후 |
 
 ---
@@ -28,20 +28,19 @@
 | HellaSwag | 23.11 | 12638s | 256 | 64~96 | ✅ 완료, 재실행 필요 없음 |
 | GSM8K | 23.21 | 26032s | 256 | 256 | ✅ 완료, `step 460` 조기중단, best reward `0.9125 @ step 280` |
 
-### 미실행 (개정 exploratory 계획)
+### 미실행 (개정 exploratory 계획 v2 — 2026-04-27)
 
-| Task | 전략 | 계획값 | 권장값 | Kaggle T4 예상 시간 |
-|------|------|--------|--------|----------------------|
-| HumanEval | 원안 유지 | 256 | 256 | ~17.7h |
-| MBPP | 원안 유지 | 256 | 256 | ~16.1h |
-| AMC | 64토큰으로 테스트 | 64 (deviation) | 64, 실패 시 96 재검토 | ~5~7h |
-| MATH500 | 64토큰으로 테스트 | 64 (deviation) | 96 권장, 속도 우선이면 64 | ~5~7h at 64, ~7~9h at 96 |
-| ~~MATH~~ → **ARC-Easy** | 대체 | 64 | 64 | ~1.5~2.5h |
-| ~~AIME~~ → **WinoGrande** | 대체 | 64 | 64 | ~2~4h |
+| Task | 전략 | max_completion | Kaggle T4 예상 시간 | 비고 |
+|------|------|----------------|----------------------|------|
+| HumanEval | 원안 유지 | 256 | ~17.7h | 노트북 준비 완료 |
+| MBPP | 원안 유지 | 256 | ~16.1h | 노트북 준비 완료 |
+| **SVAMP** | AMC/MATH500 대체 (수학 군집 유지) | 256 | ~8~12h | 신규 노트북 필요 |
+| **OpenbookQA** | AMC 대체 (상식 MCQ) | 64 | ~2~3h | 신규 노트북 필요 |
+| ARC-Easy | MATH 대체 | 64 | ~2h | 신규 노트북 필요 |
+| WinoGrande | AIME 대체 | 64 | ~2~4h | 신규 노트북 필요 |
 
 권장 원칙:
-- 코드 생성 태스크(`HumanEval`, `MBPP`)는 `256` 유지
-- 수학 최종답 태스크는 `GSM8K`만 `256` 유지, `AMC`/`MATH500`는 exploratory로 `64~96` 검토
+- 코드 생성 태스크(`HumanEval`, `MBPP`, `SVAMP`)는 `256` 유지
 - MCQ / binary-choice 태스크는 `64` 중심으로 운영
 
 ---
@@ -59,27 +58,41 @@
 - **대체**: `allenai/winogrande` — 이진 선택형 상식 추론으로 출력이 짧고 reward 경로를 단순하게 구성할 수 있음
 - **구현 상태**: CLI 경로(`config/task_registry.json`, `train_grpo_task.py`)에는 반영됨. Kaggle 노트북은 별도 생성 필요
 
-### max_completion_length 조정 (AMC, MATH500)
-- 256 → 64 토큰
-- 등록 `v1.3` 기본값과는 다른 exploratory deviation
-- 런 노트와 최종 리포트에 편차(deviation)로 명시 기록
+### AMC → OpenbookQA (대체, 2026-04-27)
+- **사유**: AMC 64-token(v5), 96-token(v7) 모두 step 190 조기중단. best reward 0.1125~0.1250 @ step 10, 이후 개선 없음. `kaggle-aimo/amc_filtered`가 Qwen2.5-1.5B-Instruct 수준에서 reward 신호를 생성하지 못함. preregistration §4.5 exclusion criterion 2 충족.
+- **대체**: `allenai/openbookqa` — 과학 상식 MCQ, 출력 짧음, ARC-Challenge와 유사한 reward 구조
+
+### AMC + MATH500 → SVAMP (2개 → 1개 수학 태스크로 통합, 2026-04-27)
+- **사유**: MATH500(`HuggingFaceH4/MATH-500`)은 competition math 하위셋으로 AMC와 동일한 실패 패턴 예상. MATH(1000-step)에서도 step 100~190 reward 대부분 0.0000 관측.
+- **수학 군집 유지 필요**: AMC/MATH500 둘 다 제외 시 수학 태스크가 GSM8K 1개뿐이 됨 → H1a 군집 분석에 불리.
+- **대체**: `ChilleD/SVAMP` — GSM8K와 동일한 word problem 구조, `final_number_exact_match` reward 재사용 가능, 구현 비용 최소.
+
+### max_completion_length 조정 기록
+- AMC 64-token (v5): near-zero reward → 실패
+- AMC 96-token (v7): near-zero reward → 실패 (토큰 길이가 아닌 태스크 난이도 문제 확인)
 
 ---
 
-## 개정 exploratory 10개 태스크 후보
+## 개정 exploratory 10개 태스크 목록 (v2 — 2026-04-27)
 
-| # | Task | Domain |
-|---|------|--------|
-| 1 | CommonsenseQA | 상식 추론 ✅ |
-| 2 | ARC-Challenge | 과학 상식 ✅ |
-| 3 | HellaSwag | 자연어 추론 ✅ |
-| 4 | GSM8K | 초등 수학 |
-| 5 | HumanEval | 코드 생성 |
-| 6 | MBPP | 코드 생성 |
-| 7 | AMC | 수학 경시 (64tok) |
-| 8 | MATH500 | 수학 경시 (64tok) |
-| 9 | ARC-Easy | 과학 상식 |
-| 10 | WinoGrande | 언어/상식 추론 |
+| # | Task | Domain | 상태 | max_completion |
+|---|------|--------|------|----------------|
+| 1 | CommonsenseQA | 상식 추론 | ✅ 완료 | 256 |
+| 2 | ARC-Challenge | 과학 MCQ | ✅ 완료 | 256 |
+| 3 | HellaSwag | 자연어 추론 | ✅ 완료 | 256 |
+| 4 | GSM8K | 수학 word problem | ✅ 완료 | 256 |
+| 5 | HumanEval | 코드 생성 | ⏳ 미실행 | 256 |
+| 6 | MBPP | 코드 생성 | ⏳ 미실행 | 256 |
+| 7 | **SVAMP** | 수학 word problem | ⏳ 미실행 (신규) | 256 |
+| 8 | **OpenbookQA** | 과학 상식 MCQ | ⏳ 미실행 (신규) | 64 |
+| 9 | ARC-Easy | 과학 MCQ | ⏳ 미실행 | 64 |
+| 10 | WinoGrande | 언어/상식 추론 | ⏳ 미실행 | 64 |
+
+제외 기록:
+- ~~MATH~~ → ARC-Easy (2026-04-25, competition math reward 신호 없음)
+- ~~AIME~~ → WinoGrande (2026-04-25, 고난도 + 긴 런타임)
+- ~~AMC~~ → OpenbookQA (2026-04-27, 64/96-token 모두 step 190 조기중단)
+- ~~MATH500~~ → SVAMP (2026-04-27, competition math 동일 패턴 예상, 수학 군집 유지 위해 SVAMP로 대체)
 
 이 목록은 등록 태스크 세트 대체안이 아니라, 운영 제약을 반영한 exploratory 후보 목록이다.
 등록 태스크 세트는 여전히 `README.md`의 `v1.3` 목록을 따른다.
@@ -164,9 +177,24 @@
 
 ---
 
+## 2026-04-27 업데이트
+
+### AMC 실험 결과
+- 64-token (v5): best reward 0.1125 @ step 10, step 190 조기중단
+- 96-token (v7): best reward 0.1250 @ step 10, step 190 조기중단
+- 판정: **제외 확정** — reward 신호 부재 (preregistration §4.5 criterion 2)
+- run record: `runs/2026-04-27-phase1-amc-qwen2.5-1.5b/`
+
+### 태스크 목록 개정 (v2)
+- AMC → **OpenbookQA** 대체
+- MATH500 → **SVAMP** 대체 (수학 군집 유지 목적)
+- 수학 도메인: GSM8K + SVAMP 2개 유지
+
+---
+
 ## 다음 액션 (우선순위 순)
 
-1. HumanEval, MBPP 노트북 → Kaggle T4에서 실행 (max_steps=1000)
-2. AMC, MATH500 노트북 → max_completion_length=64으로 실행
+1. SVAMP, OpenbookQA 노트북 신규 생성 → Kaggle 실행 (new branch)
+2. HumanEval, MBPP 노트북 → Kaggle T4에서 실행 (max_steps=1000)
 3. ARC-Easy, WinoGrande 노트북 신규 생성 → 실행
 4. 10개 벡터 수집 완료 후 `h1a_h1b_task_matrix.py` 실행 → revised exploratory H1a/H1b 판정
