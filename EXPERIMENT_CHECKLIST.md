@@ -100,18 +100,31 @@ Goal: validate one end-to-end `train → extract → SVD` pipeline on
 
 Goal: collect registered update vectors for the minimum registered task set.
 
-### Task coverage
+### Task coverage (registered v1.3 — reference only)
 
 - [x] GSM8K
-- [x] MATH
-- [x] AIME
-- [x] AMC
-- [x] MATH500
+- [x] MATH _(excluded: competition math, reward absent)_
+- [x] AIME _(excluded: too hard/slow for 1.5B)_
+- [x] AMC _(excluded 2026-04-27: 64/96-token both step 190 early-stop, reward absent)_
+- [x] MATH500 _(excluded 2026-04-27: same failure pattern expected as AMC/MATH)_
 - [x] HumanEval
 - [x] MBPP
 - [x] CommonsenseQA
 - [x] HellaSwag
 - [x] ARC-Challenge
+
+### Exploratory task set (v2 — 2026-04-27)
+
+- [x] GSM8K ✅ 1000-step complete
+- [x] CommonsenseQA ✅ 1000-step complete
+- [x] ARC-Challenge ✅ 1000-step complete
+- [x] HellaSwag ✅ 1000-step complete
+- [ ] HumanEval ⏳ pending
+- [ ] MBPP ⏳ pending
+- [ ] SVAMP ⏳ pending (replaces AMC + MATH500, math cluster)
+- [ ] OpenbookQA ⏳ pending (replaces AMC, science MCQ)
+- [ ] ARC-Easy ⏳ pending (replaces MATH)
+- [ ] WinoGrande ⏳ pending (replaces AIME)
 
 ### Run-record collection workflow
 
