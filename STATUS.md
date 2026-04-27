@@ -1,6 +1,6 @@
 # ASCENT-G 현황 문서
 
-**작성일**: 2026-04-27 (revised 2)
+**작성일**: 2026-04-27 (revised 4)
 **모델**: `Qwen/Qwen2.5-1.5B-Instruct`
 
 ---
@@ -12,7 +12,7 @@
 | Phase 0 파이프라인 검증 (GSM8K) | ✅ 완료 | 2026-04-21, T4 GPU |
 | Phase 1 태스크 10개 50-step 파일럿 수집 | ✅ 완료 | 2026-04-22~24 |
 | H1a/H1b 파일럿 분석 | ✅ 완료 (Inconclusive) | 2026-04-25 |
-| **개정 10-task 1000-step 수집** | 🔄 진행 중 | 5/10 완료, AMC/MATH500 제외 → SVAMP/OpenbookQA 대체 |
+| **개정 10-task 1000-step 수집** | 🔄 진행 중 | 7/10 완료, HumanEval/MBPP/SVAMP 대기 중 |
 | H2 전이 실험 | ⏳ 대기 | H1a/H1b 이후 |
 
 ---
@@ -28,6 +28,8 @@
 | HellaSwag | 23.11 | 12638s | 256 | 64~96 | ✅ 완료, 재실행 필요 없음 |
 | GSM8K | 23.21 | 26032s | 256 | 256 | ✅ 완료, `step 460` 조기중단, best reward `0.9125 @ step 280` |
 | OpenbookQA | 23.14 | 2919s | 64 | 64 | ✅ 완료, `step 460` 조기중단, best reward `0.9250 @ step 280` |
+| ARC-Easy | 23.12 | 2594s | 64 | 64 | ✅ 완료, `step 350` 조기중단, best reward `1.0000 @ step 170` |
+| WinoGrande | 23.01 | 2068s | 64 | 64 | ✅ 완료, `step 270` 조기중단, best reward `0.6500 @ step 90` |
 
 ### 미실행 (개정 exploratory 계획 v2 — 2026-04-27)
 
@@ -85,8 +87,8 @@
 | 6 | MBPP | 코드 생성 | ⏳ 미실행 | 256 |
 | 7 | **SVAMP** | 수학 word problem | ⏳ 미실행 (신규) | 256 |
 | 8 | **OpenbookQA** | 과학 상식 MCQ | ✅ 완료 | 64 |
-| 9 | ARC-Easy | 과학 MCQ | ⏳ 미실행 | 64 |
-| 10 | WinoGrande | 언어/상식 추론 | ⏳ 미실행 | 64 |
+| 9 | ARC-Easy | 과학 MCQ | ✅ 완료 | 64 |
+| 10 | WinoGrande | 언어/상식 추론 | ✅ 완료 | 64 |
 
 제외 기록:
 - ~~MATH~~ → ARC-Easy (2026-04-25, competition math reward 신호 없음)
@@ -200,6 +202,17 @@
 - norm: `23.14` — 다른 완료 태스크들과 일치
 - run record: `runs/2026-04-27-phase1-openbookqa-qwen2.5-1.5b/`
 
+### WinoGrande 1000-step 풀런 결과 (2026-04-27)
+- Kaggle T4에서 `max_steps=1000`으로 실행, 실제 종료는 `step 270`
+- 종료 이유: `180 step` 동안 reward 최고값 갱신 없음
+- 최고 reward: `0.6500 @ step 90`
+- 마지막 reward: `0.4000 @ step 270`
+- 평균 reward: `0.5005`
+- 실제 step 시간: `7.66s/step` (2067.7s / 270 step)
+- norm: `23.01` — 타 완료 태스크(23.11~23.21) 대비 소폭 낮음, 사용 가능
+- 해석: binary-choice(1/2) 태스크, random baseline=0.5. 초기 상승 후 수렴 실패 → GRPO 신호 약함. 벡터 자체는 non-degenerate.
+- run record: `runs/2026-04-27-phase1-winogrande-qwen2.5-1.5b/`
+
 ### 4h Kaggle 할당량 제약 대응
 - HumanEval, MBPP, SVAMP: `MAX_RUNTIME_MINUTES=220` 적용 → 3h40m 훈련 후 clean stop
 - 짧은 태스크(ARC-Easy, WinoGrande)는 4h 내 완주 가능
@@ -208,6 +221,5 @@
 
 ## 다음 액션 (우선순위 순)
 
-1. ARC-Easy, WinoGrande → Kaggle T4 실행 (4h 내 완주 가능)
-2. GPU 할당량 회복 후 HumanEval, MBPP, SVAMP 실행 (MAX_RUNTIME_MINUTES=220)
-3. 10개 벡터 수집 완료 후 `h1a_h1b_task_matrix.py` 실행 → revised exploratory H1a/H1b 판정
+1. GPU 할당량 회복 후 HumanEval, MBPP, SVAMP 실행 (MAX_RUNTIME_MINUTES=220)
+2. 10개 벡터 수집 완료 후 `h1a_h1b_task_matrix.py` 실행 → revised exploratory H1a/H1b 판정
