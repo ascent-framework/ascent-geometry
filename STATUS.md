@@ -1,6 +1,6 @@
 # ASCENT-G 현황 문서
 
-**작성일**: 2026-04-27 (revised 2)
+**작성일**: 2026-04-27 (revised 3)
 **모델**: `Qwen/Qwen2.5-1.5B-Instruct`
 
 ---
@@ -12,7 +12,7 @@
 | Phase 0 파이프라인 검증 (GSM8K) | ✅ 완료 | 2026-04-21, T4 GPU |
 | Phase 1 태스크 10개 50-step 파일럿 수집 | ✅ 완료 | 2026-04-22~24 |
 | H1a/H1b 파일럿 분석 | ✅ 완료 (Inconclusive) | 2026-04-25 |
-| **개정 10-task 1000-step 수집** | 🔄 진행 중 | 5/10 완료, AMC/MATH500 제외 → SVAMP/OpenbookQA 대체 |
+| **개정 10-task 1000-step 수집** | 🔄 진행 중 | 6/10 완료, WinoGrande 실행 중 |
 | H2 전이 실험 | ⏳ 대기 | H1a/H1b 이후 |
 
 ---
@@ -28,6 +28,7 @@
 | HellaSwag | 23.11 | 12638s | 256 | 64~96 | ✅ 완료, 재실행 필요 없음 |
 | GSM8K | 23.21 | 26032s | 256 | 256 | ✅ 완료, `step 460` 조기중단, best reward `0.9125 @ step 280` |
 | OpenbookQA | 23.14 | 2919s | 64 | 64 | ✅ 완료, `step 460` 조기중단, best reward `0.9250 @ step 280` |
+| ARC-Easy | 23.12 | 2594s | 64 | 64 | ✅ 완료, `step 350` 조기중단, best reward `1.0000 @ step 170` |
 
 ### 미실행 (개정 exploratory 계획 v2 — 2026-04-27)
 
@@ -85,7 +86,7 @@
 | 6 | MBPP | 코드 생성 | ⏳ 미실행 | 256 |
 | 7 | **SVAMP** | 수학 word problem | ⏳ 미실행 (신규) | 256 |
 | 8 | **OpenbookQA** | 과학 상식 MCQ | ✅ 완료 | 64 |
-| 9 | ARC-Easy | 과학 MCQ | ⏳ 미실행 | 64 |
+| 9 | ARC-Easy | 과학 MCQ | ✅ 완료 | 64 |
 | 10 | WinoGrande | 언어/상식 추론 | ⏳ 미실행 | 64 |
 
 제외 기록:
@@ -208,6 +209,6 @@
 
 ## 다음 액션 (우선순위 순)
 
-1. ARC-Easy, WinoGrande → Kaggle T4 실행 (4h 내 완주 가능)
+1. WinoGrande → 실행 중 (3h 할당량 내 완주 예상)
 2. GPU 할당량 회복 후 HumanEval, MBPP, SVAMP 실행 (MAX_RUNTIME_MINUTES=220)
 3. 10개 벡터 수집 완료 후 `h1a_h1b_task_matrix.py` 실행 → revised exploratory H1a/H1b 판정
