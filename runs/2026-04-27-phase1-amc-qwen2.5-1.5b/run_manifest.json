@@ -1,0 +1,69 @@
+{
+  "schema_version": "2026-04-21",
+  "generated_at": "2026-04-27T03:42:34.518532",
+  "stage": "analysis",
+  "phase": 1,
+  "task": "AMC",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "method": "pipeline",
+  "scope": "exploratory",
+  "summary": {
+    "description": "1000-step exploratory run for AMC (early-stopped at step 190). Two attempts: max_completion_length=64 (v5) and max_completion_length=96 (v7). Both terminated at step 190 with near-zero reward improvement.",
+    "run_name": "2026-04-27-phase1-amc-qwen2.5-1.5b",
+    "status": "early_stopped"
+  },
+  "config": {
+    "source_kernel_id": "chson0316/ascent-g-phase-0-pilot-amc-qwen2-5-1-5b",
+    "max_steps": 1000,
+    "actual_steps": 190,
+    "source_report_timestamp_utc": "2026-04-27T03:42:34.518532",
+    "deviations": {
+      "max_completion_length": {
+        "registered": 256,
+        "attempts": [64, 96],
+        "final_used": 96,
+        "rationale": "64-token run (v5) yielded near-zero reward; 96-token run (v7) showed identical pattern"
+      }
+    }
+  },
+  "metrics": {
+    "max_steps": 1000,
+    "actual_steps": 190,
+    "training_total_time_sec": 5227.4,
+    "per_step_time_sec": 27.51,
+    "best_reward": 0.125,
+    "best_reward_step": 10,
+    "vector_shape": [9232384],
+    "vector_norm": 23.0622,
+    "vector_sha256": "ca1428f774791108222216cd0071877a9e2c92d0a91b464f9e1d7e841e16c73b",
+    "r90_mean": 6.61,
+    "r90_range": [5, 7],
+    "svd_result_count": 196
+  },
+  "artifacts": {
+    "run_dir": "runs/2026-04-27-phase1-amc-qwen2.5-1.5b",
+    "vector_path": "/tmp/amc-phase1-output/amc-qwen2.5-1.5b-phase1/update_vector.npy",
+    "provenance_path": "/tmp/amc-phase1-output/amc-qwen2.5-1.5b-phase1/update_vector_provenance.json",
+    "source_report_path": "/tmp/amc-phase1-output/amc-qwen2.5-1.5b-phase1/run_report.json"
+  },
+  "runtime": {
+    "environment": "Kaggle notebook",
+    "gpu": "Tesla T4",
+    "precision": "bf16",
+    "torch_version": "2.10.0+cu128"
+  },
+  "exclusion": {
+    "candidate": true,
+    "criterion_triggered": "reward = 0 for > 80% of rollouts sustained through step 190",
+    "preregistration_ref": "v1.3 §4.5 exclusion criterion 2",
+    "decision": "pending"
+  },
+  "notes": [
+    "Exploratory run — max_completion_length deviated from v1.3 registered value of 256.",
+    "v5 run (64-token): best reward 0.1125 @ step 10, early-stopped at step 190.",
+    "v7 run (96-token): best reward 0.1250 @ step 10, early-stopped at step 190.",
+    "Pattern identical across both token lengths — root cause is task difficulty, not truncation.",
+    "AMC (kaggle-aimo/amc_filtered) appears too hard for Qwen2.5-1.5B-Instruct to produce consistent reward signal.",
+    "Exclusion decision pending — see run_note.md."
+  ]
+}
