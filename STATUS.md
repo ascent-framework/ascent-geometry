@@ -1,6 +1,6 @@
 # ASCENT-G 현황 문서
 
-**작성일**: 2026-04-28 (revised 5)
+**작성일**: 2026-04-29 (revised 6)
 **모델**: `Qwen/Qwen2.5-1.5B-Instruct`
 
 ---
@@ -12,7 +12,7 @@
 | Phase 0 파이프라인 검증 (GSM8K) | ✅ 완료 | 2026-04-21, T4 GPU |
 | Phase 1 태스크 10개 50-step 파일럿 수집 | ✅ 완료 | 2026-04-22~24 |
 | H1a/H1b 파일럿 분석 | ✅ 완료 (Inconclusive) | 2026-04-25 |
-| **개정 10-task 1000-step 수집** | 🔄 진행 중 | 8/10 완료, HumanEval/MBPP 대기 중 |
+| **개정 10-task 1000-step 수집** | 🔄 진행 중 | 9/10 완료, MBPP 대기 중 |
 | H2 전이 실험 | ⏳ 대기 | H1a/H1b 이후 |
 
 ---
@@ -31,12 +31,12 @@
 | ARC-Easy | 23.12 | 2594s | 64 | 64 | ✅ 완료, `step 350` 조기중단, best reward `1.0000 @ step 170` |
 | WinoGrande | 23.01 | 2068s | 64 | 64 | ✅ 완료, `step 270` 조기중단, best reward `0.6500 @ step 90` |
 | SVAMP | 23.11 | 13446s | 256 | 256 | ✅ 완료, `step 290` runtime cap, best reward `0.9500 @ step 220` |
+| HumanEval | 23.17 | 13774s | 256 | 256 | ✅ 완료, `step 230` runtime cap, best reward `0.7125 @ step 200` |
 
 ### 미실행 (개정 exploratory 계획 v2 — 2026-04-27)
 
 | Task | 전략 | max_completion | Kaggle T4 예상 시간 | 비고 |
 |------|------|----------------|----------------------|------|
-| HumanEval | 원안 유지 | 256 | ~17.7h | 노트북 준비 완료, MAX_RUNTIME_MINUTES=220 |
 | MBPP | 원안 유지 | 256 | ~16.1h | 노트북 준비 완료, MAX_RUNTIME_MINUTES=220 |
 | ARC-Easy | MATH 대체 | 64 | ~2h | 완료 |
 | WinoGrande | AIME 대체 | 64 | ~2~4h | 완료 |
@@ -83,7 +83,7 @@
 | 2 | ARC-Challenge | 과학 MCQ | ✅ 완료 | 256 |
 | 3 | HellaSwag | 자연어 추론 | ✅ 완료 | 256 |
 | 4 | GSM8K | 수학 word problem | ✅ 완료 | 256 |
-| 5 | HumanEval | 코드 생성 | ⏳ 미실행 | 256 |
+| 5 | HumanEval | 코드 생성 | ✅ 완료 | 256 |
 | 6 | MBPP | 코드 생성 | ⏳ 미실행 | 256 |
 | 7 | **SVAMP** | 수학 word problem | ✅ 완료 | 256 |
 | 8 | **OpenbookQA** | 과학 상식 MCQ | ✅ 완료 | 64 |
@@ -234,7 +234,22 @@
 
 ---
 
+## 2026-04-29 업데이트
+
+### HumanEval 1000-step 풀런 결과 (2026-04-29)
+- Kaggle T4에서 `max_steps=1000`으로 실행, 실제 종료는 `step 230`
+- 종료 이유: runtime 229.6m가 MAX_RUNTIME_MINUTES=220 초과
+- 최고 reward: `0.7125 @ step 200`
+- 마지막 reward: `0.5375 @ step 230`
+- 평균 reward: `0.5190`
+- 실제 step 시간: `59.89s/step` (13774.1s / 230 step)
+- norm: `23.17` — 정상 범위
+- 해석: 코드 생성 태스크, pass@1 reward. 1.5B 모델 치고 양호한 수렴. reward 노이즈하게 진행(0.31~0.71). 벡터 non-degenerate.
+- run record: `runs/2026-04-29-phase1-humaneval-qwen2.5-1.5b/`
+
+---
+
 ## 다음 액션 (우선순위 순)
 
-1. GPU 할당량 회복 후 HumanEval, MBPP 실행 (MAX_RUNTIME_MINUTES=220)
+1. GPU 할당량 회복 후 MBPP 실행 (MAX_RUNTIME_MINUTES=220)
 2. 10개 벡터 수집 완료 후 `h1a_h1b_task_matrix.py` 실행 → revised exploratory H1a/H1b 판정
