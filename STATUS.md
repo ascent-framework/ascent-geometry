@@ -1,6 +1,6 @@
 # ASCENT-G 현황 문서
 
-**작성일**: 2026-04-29 (revised 7)
+**작성일**: 2026-04-29 (revised 8)
 **모델**: `Qwen/Qwen2.5-1.5B-Instruct`
 
 ---
@@ -13,6 +13,7 @@
 | Phase 1 태스크 10개 50-step 파일럿 수집 | ✅ 완료 | 2026-04-22~24 |
 | H1a/H1b 파일럿 분석 | ✅ 완료 (Inconclusive) | 2026-04-25 |
 | **개정 10-task 1000-step 수집** | ✅ 완료 | 10/10 완료 (2026-04-29) |
+| **revised H1a/H1b 분석 (10-task)** | ✅ 완료 | H1a inconclusive, H1b pass (2026-04-29) |
 | H2 전이 실험 | ⏳ 대기 | H1a/H1b 이후 |
 
 ---
@@ -264,7 +265,27 @@
 
 ---
 
+## 2026-04-29 H1a/H1b 분석 결과 (10-task revised exploratory)
+
+| 지표 | 값 |
+|------|-----|
+| num_tasks | 10 |
+| r90 | 9 |
+| ρ | 0.9000 |
+| ρ CI₉₅ | [0.40, 0.70] |
+| **H1a 판정** | **inconclusive (weak fail)** |
+| H1b mean\|cos\| | 0.07375 |
+| H1b max\|cos\| | 0.33535 |
+| **H1b 판정** | **pass** |
+
+해석:
+- r90=9 → 10개 벡터가 거의 전 차원을 점유. 공통 저차원 subspace 없음.
+- H1b pass → 벡터들 서로 거의 수직. 태스크 특화성 확인.
+- 결론: 공통 기하 구조(H1a) 없이 태스크별 독립 방향(H1b pass). H1a는 사실상 weak fail.
+- run record: `runs/2026-04-29-phase1-h1a-h1b-revised/`
+
+---
+
 ## 다음 액션 (우선순위 순)
 
-1. **`h1a_h1b_task_matrix.py` 실행** — 10개 벡터로 revised exploratory H1a/H1b 판정
-2. H2 전이 실험 설계
+1. H2 전이 실험 설계 및 실행

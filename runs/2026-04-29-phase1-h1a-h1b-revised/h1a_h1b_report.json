@@ -1,0 +1,180 @@
+{
+  "schema_version": "2026-04-21",
+  "generated_at": "2026-04-29T09:40:36+00:00",
+  "stage": "analysis",
+  "phase": 1,
+  "task": "MULTI_TASK",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "method": "SVD+cosine",
+  "scope": "registered",
+  "summary": {
+    "description": "Registered H1a/H1b analysis on normalized task update vectors.",
+    "tasks": [
+      "CommonsenseQA",
+      "ARC-Challenge",
+      "HellaSwag",
+      "GSM8K",
+      "OpenbookQA",
+      "ARC-Easy",
+      "WinoGrande",
+      "SVAMP",
+      "HumanEval",
+      "MBPP"
+    ],
+    "registered_ready": true
+  },
+  "config": {
+    "bootstrap_samples": 1000,
+    "seed": 42,
+    "minimum_registered_tasks": 10,
+    "input_vectors": [
+      {
+        "task": "CommonsenseQA",
+        "path": "/private/tmp/phase1-vectors/commonsenseqa/commonsenseqa-qwen2.5-1.5b-phase0/update_vector.npy"
+      },
+      {
+        "task": "ARC-Challenge",
+        "path": "/private/tmp/phase1-vectors/arc-challenge/arc-challenge-qwen2.5-1.5b-phase0/update_vector.npy"
+      },
+      {
+        "task": "HellaSwag",
+        "path": "/private/tmp/phase1-vectors/hellaswag/hellaswag-qwen2.5-1.5b-phase0/update_vector.npy"
+      },
+      {
+        "task": "GSM8K",
+        "path": "/private/tmp/phase1-vectors/gsm8k/gsm8k-qwen2.5-1.5b-phase0/update_vector.npy"
+      },
+      {
+        "task": "OpenbookQA",
+        "path": "/private/tmp/openbookqa-output/openbookqa-qwen2.5-1.5b-phase1/update_vector.npy"
+      },
+      {
+        "task": "ARC-Easy",
+        "path": "/private/tmp/arc-easy-output/arc-easy-qwen2.5-1.5b-phase1/update_vector.npy"
+      },
+      {
+        "task": "WinoGrande",
+        "path": "/private/tmp/winogrande-output2/winogrande-qwen2.5-1.5b-phase1/update_vector.npy"
+      },
+      {
+        "task": "SVAMP",
+        "path": "/private/tmp/svamp-output/svamp-qwen2.5-1.5b-phase1/update_vector.npy"
+      },
+      {
+        "task": "HumanEval",
+        "path": "/private/tmp/humaneval-output/humaneval-qwen2.5-1.5b-phase1/update_vector.npy"
+      },
+      {
+        "task": "MBPP",
+        "path": "/private/tmp/mbpp-output/mbpp-qwen2.5-1.5b-phase1/update_vector.npy"
+      }
+    ]
+  },
+  "metrics": {
+    "num_tasks": 10,
+    "effective_dim": 9232384,
+    "singular_values": [
+      1.001291275024414,
+      1.001083254814148,
+      1.0007436275482178,
+      1.0003831386566162,
+      1.0001983642578125,
+      1.0000476837158203,
+      0.9995201826095581,
+      0.9993159174919128,
+      0.9989829659461975,
+      0.9984440803527832
+    ],
+    "r90": 9,
+    "rho": 0.9,
+    "rho_ci_95": [
+      0.4,
+      0.7
+    ],
+    "bootstrap_r90_mean": 5.493,
+    "bootstrap_rho_mean": 0.5492999999999999,
+    "h1a_decision": "inconclusive",
+    "h1b": {
+      "computed": true,
+      "decision": "pass",
+      "mean_abs_cos": 0.07374597992287212,
+      "max_abs_cos": 0.33535176515579224,
+      "pair_count": 45
+    },
+    "task_magnitudes": [
+      {
+        "task": "CommonsenseQA",
+        "path": "/private/tmp/phase1-vectors/commonsenseqa/commonsenseqa-qwen2.5-1.5b-phase0/update_vector.npy",
+        "norm": 23.164812088012695,
+        "numel": 9232384
+      },
+      {
+        "task": "ARC-Challenge",
+        "path": "/private/tmp/phase1-vectors/arc-challenge/arc-challenge-qwen2.5-1.5b-phase0/update_vector.npy",
+        "norm": 23.170312881469727,
+        "numel": 9232384
+      },
+      {
+        "task": "HellaSwag",
+        "path": "/private/tmp/phase1-vectors/hellaswag/hellaswag-qwen2.5-1.5b-phase0/update_vector.npy",
+        "norm": 23.106719970703125,
+        "numel": 9232384
+      },
+      {
+        "task": "GSM8K",
+        "path": "/private/tmp/phase1-vectors/gsm8k/gsm8k-qwen2.5-1.5b-phase0/update_vector.npy",
+        "norm": 23.213449478149414,
+        "numel": 9232384
+      },
+      {
+        "task": "OpenbookQA",
+        "path": "/private/tmp/openbookqa-output/openbookqa-qwen2.5-1.5b-phase1/update_vector.npy",
+        "norm": 23.1380672454834,
+        "numel": 9232384
+      },
+      {
+        "task": "ARC-Easy",
+        "path": "/private/tmp/arc-easy-output/arc-easy-qwen2.5-1.5b-phase1/update_vector.npy",
+        "norm": 23.120391845703125,
+        "numel": 9232384
+      },
+      {
+        "task": "WinoGrande",
+        "path": "/private/tmp/winogrande-output2/winogrande-qwen2.5-1.5b-phase1/update_vector.npy",
+        "norm": 23.008602142333984,
+        "numel": 9232384
+      },
+      {
+        "task": "SVAMP",
+        "path": "/private/tmp/svamp-output/svamp-qwen2.5-1.5b-phase1/update_vector.npy",
+        "norm": 23.11009407043457,
+        "numel": 9232384
+      },
+      {
+        "task": "HumanEval",
+        "path": "/private/tmp/humaneval-output/humaneval-qwen2.5-1.5b-phase1/update_vector.npy",
+        "norm": 23.17104721069336,
+        "numel": 9232384
+      },
+      {
+        "task": "MBPP",
+        "path": "/private/tmp/mbpp-output/mbpp-qwen2.5-1.5b-phase1/update_vector.npy",
+        "norm": 23.19091033935547,
+        "numel": 9232384
+      }
+    ]
+  },
+  "artifacts": {
+    "report_path": "runs/2026-04-29-phase1-h1a-h1b-revised/h1a_h1b_report.json"
+  },
+  "runtime": {},
+  "validation": {
+    "all_vectors_same_dimension": true,
+    "all_vectors_nonzero": true,
+    "registered_minimum_tasks_met": true
+  },
+  "notes": [
+    "Input vectors are normalized per preregistration v1.3 for direction analysis.",
+    "Magnitude metadata is retained separately for B_adaptive follow-up analysis."
+  ]
+}
