@@ -1,0 +1,166 @@
+{
+  "analysis": "h1a_cluster_analysis",
+  "bootstrap_samples": 1000,
+  "seed": 42,
+  "clusters": {
+    "pair_ARC": {
+      "n_tasks": 2,
+      "dim": 9232384,
+      "r90": 2,
+      "rho": 1.0,
+      "rho_ci_95": [
+        0.5,
+        1.0
+      ],
+      "h1a_decision": "inconclusive",
+      "singular_values": [
+        1.0002963542938232,
+        0.9997060298919678
+      ],
+      "tasks": [
+        "ARC-Challenge",
+        "ARC-Easy"
+      ]
+    },
+    "pair_Math": {
+      "n_tasks": 2,
+      "dim": 9232384,
+      "r90": 2,
+      "rho": 1.0,
+      "rho_ci_95": [
+        0.5,
+        1.0
+      ],
+      "h1a_decision": "inconclusive",
+      "singular_values": [
+        1.0000426769256592,
+        0.9999595284461975
+      ],
+      "tasks": [
+        "GSM8K",
+        "SVAMP"
+      ]
+    },
+    "pair_Code": {
+      "n_tasks": 2,
+      "dim": 9232384,
+      "r90": 2,
+      "rho": 1.0,
+      "rho_ci_95": [
+        0.5,
+        1.0
+      ],
+      "h1a_decision": "inconclusive",
+      "singular_values": [
+        1.0004087686538696,
+        0.9995933175086975
+      ],
+      "tasks": [
+        "HumanEval",
+        "MBPP"
+      ]
+    },
+    "science_MCQ": {
+      "n_tasks": 3,
+      "dim": 9232384,
+      "r90": 3,
+      "rho": 1.0,
+      "rho_ci_95": [
+        0.3333,
+        1.0
+      ],
+      "h1a_decision": "inconclusive",
+      "singular_values": [
+        1.0005830526351929,
+        0.9998363852500916,
+        0.9995842576026917
+      ],
+      "tasks": [
+        "ARC-Challenge",
+        "ARC-Easy",
+        "OpenbookQA"
+      ]
+    },
+    "MCQ_5": {
+      "n_tasks": 5,
+      "dim": 9232384,
+      "r90": 5,
+      "rho": 1.0,
+      "rho_ci_95": [
+        0.4,
+        1.0
+      ],
+      "h1a_decision": "inconclusive",
+      "singular_values": [
+        1.0008162260055542,
+        1.0003302097320557,
+        1.000054955482483,
+        0.9997257590293884,
+        0.9990797638893127
+      ],
+      "tasks": [
+        "CommonsenseQA",
+        "ARC-Challenge",
+        "ARC-Easy",
+        "OpenbookQA",
+        "HellaSwag"
+      ]
+    },
+    "commonsense": {
+      "n_tasks": 3,
+      "dim": 9232384,
+      "r90": 3,
+      "rho": 1.0,
+      "rho_ci_95": [
+        0.3333,
+        1.0
+      ],
+      "h1a_decision": "inconclusive",
+      "singular_values": [
+        1.0003174543380737,
+        1.0000413656234741,
+        0.999646782875061
+      ],
+      "tasks": [
+        "CommonsenseQA",
+        "HellaSwag",
+        "WinoGrande"
+      ]
+    },
+    "all_10": {
+      "n_tasks": 10,
+      "dim": 9232384,
+      "r90": 9,
+      "rho": 0.9,
+      "rho_ci_95": [
+        0.4,
+        0.7
+      ],
+      "h1a_decision": "inconclusive",
+      "singular_values": [
+        1.001291275024414,
+        1.001083254814148,
+        1.0007436275482178,
+        1.0003831386566162,
+        1.0001983642578125,
+        1.0000476837158203,
+        0.9995201826095581,
+        0.9993159174919128,
+        0.9989829659461975,
+        0.9984440803527832
+      ],
+      "tasks": [
+        "CommonsenseQA",
+        "ARC-Challenge",
+        "HellaSwag",
+        "GSM8K",
+        "OpenbookQA",
+        "ARC-Easy",
+        "WinoGrande",
+        "SVAMP",
+        "HumanEval",
+        "MBPP"
+      ]
+    }
+  }
+}

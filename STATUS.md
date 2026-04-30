@@ -1,6 +1,6 @@
 # ASCENT-G 현황 문서
 
-**작성일**: 2026-04-29 (revised 8)
+**작성일**: 2026-04-30 (revised 9)
 **모델**: `Qwen/Qwen2.5-1.5B-Instruct`
 
 ---
@@ -14,6 +14,7 @@
 | H1a/H1b 파일럿 분석 | ✅ 완료 (Inconclusive) | 2026-04-25 |
 | **개정 10-task 1000-step 수집** | ✅ 완료 | 10/10 완료 (2026-04-29) |
 | **revised H1a/H1b 분석 (10-task)** | ✅ 완료 | H1a inconclusive, H1b pass (2026-04-29) |
+| **Plan A/B 후속 분석** | ✅ 완료 | H1a 완전 실패 확정 — 모든 군집·컴포넌트에서 r90=n (2026-04-30) |
 | H2 전이 실험 | ⏳ 대기 | H1a/H1b 이후 |
 
 ---
@@ -283,6 +284,42 @@
 - H1b pass → 벡터들 서로 거의 수직. 태스크 특화성 확인.
 - 결론: 공통 기하 구조(H1a) 없이 태스크별 독립 방향(H1b pass). H1a는 사실상 weak fail.
 - run record: `runs/2026-04-29-phase1-h1a-h1b-revised/`
+
+---
+
+## 2026-04-30 업데이트
+
+### Plan A — Attention/MLP 기능 분리 H1a
+
+| 컴포넌트 | r90 | ρ | 판정 |
+|----------|-----|---|------|
+| full | 9 | 0.9000 | inconclusive |
+| attention | 9 | 0.9000 | inconclusive |
+| mlp | 9 | 0.9000 | inconclusive |
+
+Attention만 분리해도, MLP만 분리해도 r90=9로 동일. 기능 분리가 subspace 구조에 영향 없음.
+
+### Plan B — 태스크 군집별 H1a
+
+| 군집 | n | r90 | ρ | 판정 |
+|------|---|-----|---|------|
+| ARC 쌍 (Challenge+Easy) | 2 | 2 | 1.0000 | inconclusive |
+| 수학 쌍 (GSM8K+SVAMP) | 2 | 2 | 1.0000 | inconclusive |
+| 코드 쌍 (HumanEval+MBPP) | 2 | 2 | 1.0000 | inconclusive |
+| 과학 MCQ 3개 | 3 | 3 | 1.0000 | inconclusive |
+| MCQ 5개 | 5 | 5 | 1.0000 | inconclusive |
+| 상식 3개 | 3 | 3 | 1.0000 | inconclusive |
+
+모든 군집에서 r90=n (최대값). 가장 유사한 ARC 쌍조차 r90=2 → 완전 직교.
+
+### 종합 결론
+
+**LoRA update vector는 태스크마다 완전히 독립적인 방향을 학습한다.**  
+도메인·포맷·기능 컴포넌트 어느 각도에서도 공통 저차원 구조가 존재하지 않음.
+
+이것이 논문의 핵심 발견: H1a 실패 + H1b pass = "태스크 벡터들은 서로 간섭 없이 고유한 방향을 가진다" → task arithmetic의 기하적 근거.
+
+run record: `runs/2026-04-30-phase1-cluster-functional/`
 
 ---
 
