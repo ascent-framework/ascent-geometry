@@ -1,7 +1,7 @@
 {
-  "id": "chson0316/ascent-g-h2-retention-math-code-eval",
-  "title": "ASCENT G H2 Retention Math Code Eval",
-  "code_file": "h2-retention-math-code-eval.ipynb",
+  "id": "chson0316/ascent-g-h2-diagnostic",
+  "title": "ASCENT G H2 Diagnostic",
+  "code_file": "h2-diagnostic.ipynb",
   "language": "python",
   "kernel_type": "notebook",
   "is_private": true,
